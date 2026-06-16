@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhaleWatch — BTC Borsa Takibi</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐋</text></svg>" />
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --bg2: #13161e;
+      --bg3: #1a1e28;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(255,255,255,0.13);
+      --text: #e8eaf0;
+      --muted: #7a7f8e;
+      --accent: #f7931a;
+      --accent2: #ff6b35;
+      --green: #22c55e;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --purple: #a78bfa;
+      --yellow: #fbbf24;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      --sans: 'Inter', system-ui, sans-serif;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 14px; }
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,15,20,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo-whale { font-size: 22px; }
+    .logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+    .logo-name span { color: var(--accent); }
+    .live-badge {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      color: var(--green);
+      padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    }
+    .dot-pulse {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+      animation: pulse 1.8s ease infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
+    .topbar-right { display: flex; align-items: center; gap: 10px; }
+    #btc-price-tag {
+      font-size: 13px; font-weight: 600; color: var(--accent);
+      background: rgba(247,147,26,0.1);
+      border: 1px solid rgba(247,147,26,0.2);
+      padding: 4px 10px; border-radius: 8px;
+      font-family: var(--mono);
+    }
+    #last-update { font-size: 11px; color: var(--muted); }
+
+    /* ── LAYOUT ── */
+    .main { max-width: 1280px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+
+    /* ── CONFIG BANNER ── */
+    #config-banner {
+      background: rgba(247,147,26,0.08);
+      border: 1px solid rgba(247,147,26,0.3);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 1.5rem;
+      display: flex; align-items: flex-start; gap: 12px;
+    }
+    #config-banner .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    #config-banner h3 { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
+    #config-banner p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+    #config-banner a { color: var(--accent); text-decoration: none; }
+    #config-banner a:hover { text-decoration: underline; }
+    #config-banner.hidden { display: none; }
+
+    /* ── STATS ── */
+    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 1.5rem; }
+    .stat {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 6px; }
+    .stat-val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; font-family: var(--mono); }
+    .stat-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
+    .stat-val.orange { color: var(--accent); }
+    .stat-val.green { color: var(--green); }
+    .stat-val.red { color: var(--red); }
+    .stat-val.blue { color: var(--blue); }
+
+    /* ── GRID ── */
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+    .grid3 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
+
+    /* ── PANELS ── */
+    .panel {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .panel-head {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .panel-title {
+      font-size: 12px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.6px; color: var(--muted);
+      display: flex; align-items: center; gap: 7px;
+    }
+    .panel-title .icon { font-size: 14px; }
+    .panel-body { padding: 0; }
+
+    /* ── TABLE ── */
+    .tbl { width: 100%; border-collapse: collapse; }
+    .tbl th {
+      font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--muted); padding: 9px 14px; text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-weight: 500; white-space: nowrap;
+    }
+    .tbl td {
+      padding: 9px 14px; font-size: 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    .tbl tr:last-child td { border-bottom: none; }
+    .tbl tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ── CELLS ── */
+    .mono { font-family: var(--mono); font-size: 11px; }
+    .addr-link { color: var(--blue); cursor: pointer; text-decoration: none; }
+    .addr-link:hover { text-decoration: underline; color: #60a5fa; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 600;
+    }
+    .badge-in { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+    .badge-out { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+    .badge-unknown { background: rgba(161,161,170,0.1); color: var(--muted); border: 1px solid var(--border); }
+    .badge-whale { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
+    .badge-exchange { background: rgba(247,147,26,0.1); color: var(--accent); border: 1px solid rgba(247,147,26,0.2); }
+    .amount-btc { font-family: var(--mono); font-weight: 600; color: var(--accent); }
+    .amount-usd { font-size: 10px; color: var(--muted); margin-top: 1px; }
+    .dir-in { color: var(--green); font-weight: 700; }
+    .dir-out { color: var(--red); font-weight: 700; }
+
+    /* ── ALERT LIST ── */
+    .alert-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .alert-item:last-child { border-bottom: none; }
+    .alert-item:hover { background: rgba(255,255,255,0.02); }
+    .alert-severity {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
+    }
+    .sev-critical { background: var(--red); box-shadow: 0 0 6px rgba(239,68,68,0.5); }
+    .sev-high { background: var(--yellow); }
+    .sev-medium { background: var(--blue); }
+    .alert-body { flex: 1; min-width: 0; }
+    .alert-msg { font-size: 12px; line-height: 1.55; }
+    .alert-msg strong { color: var(--text); }
+    .alert-meta { font-size: 10px; color: var(--muted); margin-top: 3px; }
+    .alert-time { font-size: 10px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+
+    /* ── WATCH LIST ── */
+    .watch-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .watch-item:last-child { border-bottom: none; }
+    .watch-rank { font-size: 10px; color: var(--muted); width: 18px; text-align: center; }
+    .watch-info { flex: 1; min-width: 0; }
+    .watch-label { font-size: 12px; font-weight: 600; margin-bottom: 1px; }
+    .watch-addr { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+    .watch-bal { text-align: right; }
+    .watch-btc { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); }
+    .watch-usd { font-size: 10px; color: var(--muted); }
+    .watch-btn-del {
+      background: none; border: 1px solid var(--border);
+      color: var(--muted); padding: 3px 7px; border-radius: 6px;
+      cursor: pointer; font-size: 11px; transition: all 0.15s;
+    }
+    .watch-btn-del:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── ADD ADDRESS ── */
+    .add-addr-form {
+      display: flex; gap: 8px; padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .add-addr-form input {
+      flex: 1; background: var(--bg); border: 1px solid var(--border2);
+      color: var(--text); padding: 7px 11px; border-radius: 7px;
+      font-family: var(--mono); font-size: 11px; outline: none;
+      transition: border 0.15s;
+    }
+    .add-addr-form input:focus { border-color: var(--accent); }
+    .add-addr-form input::placeholder { color: var(--muted); }
+    .btn {
+      padding: 7px 14px; border-radius: 7px; border: none;
+      cursor: pointer; font-size: 12px; font-weight: 600;
+      transition: all 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-primary:hover { background: #e8861a; }
+    .btn-ghost {
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--text);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* ── EXCHANGE MAP ── */
+    .exmap { padding: 10px 14px; }
+    .exmap-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 7px 0; border-bottom: 1px solid var(--border);
+    }
+    .exmap-row:last-child { border-bottom: none; }
+    .exmap-name { font-size: 12px; font-weight: 600; }
+    .exmap-bar-wrap { flex: 1; margin: 0 12px; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
+    .exmap-bar { height: 100%; border-radius: 2px; transition: width 0.5s; }
+    .exmap-val { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+    /* ── EMPTY / LOADING ── */
+    .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+    .empty-icon { font-size: 2rem; margin-bottom: 8px; }
+    .empty-msg { font-size: 13px; }
+    .spinner {
+      display: inline-block; width: 16px; height: 16px;
+      border: 2px solid var(--border2); border-top-color: var(--accent);
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading-row { text-align: center; padding: 2rem; }
+
+    /* ── ERROR ── */
+    .error-box {
+      background: rgba(239,68,68,0.08);
+      border: 1px solid rgba(239,68,68,0.2);
+      border-radius: var(--radius);
+      padding: 12px 16px; margin: 12px 14px;
+      font-size: 12px; color: var(--red);
+    }
+
+    /* ── TOAST ── */
+    #toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      background: var(--bg3); border: 1px solid var(--border2);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 12px; max-width: 320px;
+      animation: slideIn 0.2s ease; display: flex; align-items: center; gap: 8px;
+    }
+    .toast.err { border-color: rgba(239,68,68,0.4); }
+    .toast.ok { border-color: rgba(34,197,94,0.4); }
+    @keyframes slideIn { from{transform:translateX(20px);opacity:0} to{transform:none;opacity:1} }
+
+    /* ── SETTINGS MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      z-index: 500; display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.hidden { display: none; }
+    .modal {
+      background: var(--bg2); border: 1px solid var(--border2);
+      border-radius: 14px; width: 520px; max-width: calc(100vw - 2rem);
+      padding: 24px;
+    }
+    .modal h2 { font-size: 16px; margin-bottom: 4px; }
+    .modal p { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+    .form-group input {
+      width: 100%; background: var(--bg); border: 1px solid var(--border2);
+      color: var(--text); padding: 9px 12px; border-radius: 7px;
+      font-family: var(--mono); font-size: 12px; outline: none; transition: border 0.15s;
+    }
+    .form-group input:focus { border-color: var(--accent); }
+    .form-group .hint { font-size: 11px; color: var(--muted); margin-top: 5px; }
+    .form-group .hint a { color: var(--accent); }
+    .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
+    .step-list { counter-reset: step; margin: 12px 0; }
+    .step-list li { counter-increment: step; padding: 5px 0 5px 28px; font-size: 12px; color: var(--muted); position: relative; }
+    .step-list li::before { content: counter(step); position: absolute; left: 0; width: 18px; height: 18px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: var(--accent); top: 6px; }
+    .step-list li a { color: var(--accent); }
+
+    /* ── FOOTER ── */
+    .footer { text-align: center; padding: 2rem 0 0; font-size: 11px; color: var(--muted); }
+    .footer a { color: var(--accent); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .stats { grid-template-columns: repeat(2,1fr); }
+      .grid2, .grid3 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .topbar { padding: 0 1rem; }
+      .main { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="logo">
+    <span class="logo-whale">🐋</span>
+    <span class="logo-name">Whale<span>Watch</span></span>
+  </div>
+  <div class="topbar-right">
+    <div id="btc-price-tag">BTC yükleniyor…</div>
+    <div class="live-badge"><div class="dot-pulse"></div> Canlı</div>
+    <button class="btn btn-ghost" onclick="openSettings()" style="padding:5px 10px;font-size:11px">⚙ API Ayarları</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- CONFIG BANNER -->
+  <div id="config-banner">
+    <div class="icon">⚠️</div>
+    <div>
+      <h3>API anahtarı gerekli (Whale Alert)</h3>
+      <p>
+        Borsa giriş/çıkış uyarıları için ücretsiz
+        <a href="https://whale-alert.io/api" target="_blank">Whale Alert API anahtarı</a> gereklidir.
+        BTC fiyat ve bakiye verileri anahtar olmadan çalışır.
+        <button onclick="openSettings()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;padding:0;text-decoration:underline">Şimdi yapılandır →</button>
+      </p>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">BTC Fiyat</div>
+      <div class="stat-val orange" id="stat-price">—</div>
+      <div class="stat-sub" id="stat-price-change">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">24s Borsa Girişi</div>
+      <div class="stat-val red" id="stat-inflow">—</div>
+      <div class="stat-sub">Büyük transferler</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">24s Borsa Çıkışı</div>
+      <div class="stat-val green" id="stat-outflow">—</div>
+      <div class="stat-sub">Soğuk cüzdana</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">İzlenen Adres</div>
+      <div class="stat-val blue" id="stat-watched">0</div>
+      <div class="stat-sub">Whale listesi</div>
+    </div>
+  </div>
+
+  <!-- ROW 1: Whale Alerts + Exchange Inflow -->
+  <div class="grid3">
+    <!-- WHALE ALERTS -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title"><span class="icon">🚨</span> Büyük BTC Hareketleri</div>
+        <button class="btn btn-ghost" onclick="loadWhaleAlerts()" style="padding:4px 9px;font-size:11px" id="refresh-alerts">↺ Yenile</button>
+      </div>
+      <div class="panel-body">
+        <div id="alerts-container"><div class="loading-row"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
+    <!-- EXCHANGE INFLOW BAR -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title"><span class="icon">🏦</span> Borsa Hacim Dağılımı</div>
+      </div>
+      <div class="panel-body">
+        <div class="exmap" id="exchange-map">
+          <div class="loading-row"><div class="spinner"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: Watchlist + Recent Transfers -->
+  <div class="grid2">
+    <!-- WATCHLIST -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title"><span class="icon">👁</span> İzleme Listesi</div>
+        <button class="btn btn-ghost" onclick="refreshWatchlist()" style="padding:4px 9px;font-size:11px">↺</button>
+      </div>
+      <div class="panel-body">
+        <div class="add-addr-form">
+          <input id="new-addr" placeholder="BTC adresi ekle  (1... 3... bc1...)" maxlength="90" />
+          <input id="new-label" placeholder="Etiket" style="width:110px;flex:none" />
+          <button class="btn btn-primary" onclick="addAddress()">Ekle</button>
+        </div>
+        <div id="watchlist-container">
+          <div class="empty"><div class="empty-icon">📋</div><div class="empty-msg">Henüz adres eklenmedi</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT TX FROM WATCHLIST -->
+    <div class="panel">
+      <div class="panel-head">
+        <div class="panel-title"><span class="icon">⚡</span> İzlenen Adres İşlemleri</div>
+      </div>
+      <div class="panel-body">
+        <div id="watched-txns-container">
+          <div class="empty"><div class="empty-icon">🔍</div><div class="empty-msg">İzleme listesi boş</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<!-- SETTINGS MODAL -->
+<div class="modal-overlay hidden" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <h2>🔧 API Yapılandırması</h2>
+    <p>Anahtarlar tarayıcınızda (localStorage) saklanır, hiçbir yere gönderilmez.</p>
+
+    <div class="form-group">
+      <label>Whale Alert API Key</label>
+      <input id="cfg-whale-key" placeholder="Ör: T2gExxxxxxxxxxxxxxx" />
+      <div class="hint">
+        <ol class="step-list">
+          <li><a href="https://whale-alert.io/signup" target="_blank">whale-alert.io/signup</a> adresinde ücretsiz kayıt ol</li>
+          <li>E-posta doğrulamasını yap</li>
+          <li>Dashboard → API Keys → New Key</li>
+          <li>Free plan: 10 istek/dk, son 1 saatlik veri</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Minimum Uyarı Miktarı (BTC)</label>
+      <input id="cfg-min-btc" type="number" placeholder="500" min="1" />
+      <div class="hint">Bu miktarın altındaki transferler gösterilmez. Önerilen: 100–1000 BTC</div>
+    </div>
+
+    <div class="form-group">
+      <label>Yenileme Aralığı (dakika)</label>
+      <input id="cfg-interval" type="number" placeholder="5" min="1" max="60" />
+      <div class="hint">Whale Alert free plan için minimum 1 dakika önerilir.</div>
+    </div>
+
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeSettings()">İptal</button>
+      <button class="btn btn-primary" onclick="saveSettings()">Kaydet ve Başlat</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   CONFIG & STATE
+═══════════════════════════════════════════ */
+const CFG_KEY = 'ww_config';
+const WATCH_KEY = 'ww_watchlist';
+const ALERTS_CACHE_KEY = 'ww_alerts_cache';
+
+let config = {
+  whaleApiKey: '',
+  minBtc: 500,
+  intervalMin: 5,
+};
+let watchlist = []; // [{addr, label, bal, lastChecked}]
+let alertIntervalId = null;
+let btcPrice = 0;
+let alertsData = [];
+let exchangeFlows = {};
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+function init() {
+  loadConfig();
+  loadWatchlist();
+  fetchBTCPrice();
+  renderWatchlist();
+  if (config.whaleApiKey) {
+    hideBanner();
+    loadWhaleAlerts();
+    startAutoRefresh();
+  }
+  // Price refresh every 60s
+  setInterval(fetchBTCPrice, 60000);
+  // Watchlist balance check every 5min
+  setInterval(refreshWatchlist, 5 * 60 * 1000);
+}
+
+/* ═══════════════════════════════════════════
+   CONFIG
+═══════════════════════════════════════════ */
+function loadConfig() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
+    config = { ...config, ...saved };
+  } catch {}
+}
+function saveSettings() {
+  const key = document.getElementById('cfg-whale-key').value.trim();
+  const min = parseFloat(document.getElementById('cfg-min-btc').value) || 500;
+  const interval = parseInt(document.getElementById('cfg-interval').value) || 5;
+  if (!key) { toast('API anahtarı boş olamaz', 'err'); return; }
+  config = { whaleApiKey: key, minBtc: min, intervalMin: interval };
+  localStorage.setItem(CFG_KEY, JSON.stringify(config));
+  closeSettings();
+  hideBanner();
+  toast('Ayarlar kaydedildi ✓', 'ok');
+  loadWhaleAlerts();
+  startAutoRefresh();
+}
+function openSettings() {
+  document.getElementById('cfg-whale-key').value = config.whaleApiKey || '';
+  document.getElementById('cfg-min-btc').value = config.minBtc || 500;
+  document.getElementById('cfg-interval').value = config.intervalMin || 5;
+  document.getElementById('settings-modal').classList.remove('hidden');
+}
+function closeSettings() {
+  document.getElementById('settings-modal').classList.add('hidden');
+}
+function hideBanner() {
+  document.getElementById('config-banner').classList.add('hidden');
+}
+
+/* ═══════════════════════════════════════════
+   BTC PRICE  (CoinGecko — no key needed)
+═══════════════════════════════════════════ */
+async function fetchBTCPrice() {
+  try {
+    const r = await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true',
+      { cache: 'no-store' }
+    );
+    if (!r.ok) throw new Error('CoinGecko ' + r.status);
+    const d = await r.json();
+    btcPrice = d.bitcoin.usd;
+    const change = d.bitcoin.usd_24h_change;
+    document.getElementById('btc-price-tag').textContent = '$' + btcPrice.toLocaleString('en-US');
+    document.getElementById('stat-price').textContent = '$' + btcPrice.toLocaleString('en-US');
+    document.getElementById('stat-price-change').textContent =
+      (change >= 0 ? '▲ +' : '▼ ') + change.toFixed(2) + '% (24s)';
+    document.getElementById('stat-price-change').style.color = change >= 0 ? 'var(--green)' : 'var(--red)';
+    document.getElementById('last-update') && (document.getElementById('last-update').textContent = 'Güncellendi: ' + new Date().toLocaleTimeString('tr-TR'));
+    // refresh watchlist USD values
+    renderWatchlist();
+  } catch (e) {
+    console.warn('Price fetch failed:', e);
+  }
+}
+
+/* ═══════════════════════════════════════════
+   WHALE ALERT API
+═══════════════════════════════════════════ */
+async function loadWhaleAlerts() {
+  if (!config.whaleApiKey) {
+    document.getElementById('alerts-container').innerHTML =
+      '<div class="error-box">⚠️ Whale Alert API anahtarı girilmedi. Üst sağdaki <b>API Ayarları</b> butonunu kullanın.</div>';
+    return;
+  }
+
+  const btn = document.getElementById('refresh-alerts');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="display:inline-block"></div>';
+
+  // Whale Alert: transactions in last 1 hour above min amount, BTC only
+  const since = Math.floor(Date.now() / 1000) - 3600;
+  const minVal = config.minBtc * btcPrice || config.minBtc * 65000;
+
+  // Whale Alert free plan endpoint
+  const url = `https://api.whale-alert.io/v1/transactions?api_key=${config.whaleApiKey}&min_value=${Math.round(minVal)}&start=${since}&limit=100&currency=btc`;
+
+  try {
+    const r = await fetch(url);
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.message || 'HTTP ' + r.status);
+    }
+    const data = await r.json();
+    alertsData = (data.transactions || []).sort((a, b) => b.timestamp - a.timestamp);
+
+    // Save cache
+    localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: alertsData }));
+
+    renderAlerts();
+    updateExchangeMap();
+    updateFlowStats();
+    toast(`${alertsData.length} işlem alındı`, 'ok');
+  } catch (e) {
+    // Try cache fallback
+    try {
+      const cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
+      if (cached) {
+        alertsData = cached.data;
+        renderAlerts(true);
+        document.getElementById('alerts-container').insertAdjacentHTML('afterbegin',
+          `<div class="error-box" style="margin:10px 14px 0">API hatası: ${e.message} — önbellek gösteriliyor</div>`);
+        return;
+      }
+    } catch {}
+    document.getElementById('alerts-container').innerHTML =
+      `<div class="error-box">❌ Whale Alert API hatası: ${e.message}<br><small>API anahtarını kontrol edin veya rate limit (10 istek/dk) bekleniyor olabilir.</small></div>`;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '↺ Yenile';
+  }
+}
+
+function renderAlerts(fromCache = false) {
+  const container = document.getElementById('alerts-container');
+  if (!alertsData.length) {
+    container.innerHTML = '<div class="empty"><div class="empty-icon">✅</div><div class="empty-msg">Son 1 saatte büyük hareket yok</div></div>';
+    return;
+  }
+
+  container.innerHTML = alertsData.map(tx => {
+    const btcAmt = (tx.amount / 1e8).toFixed(2);
+    const usdAmt = tx.amount_usd;
+    const fromEx = tx.from?.owner_type === 'exchange' ? tx.from.owner : null;
+    const toEx = tx.to?.owner_type === 'exchange' ? tx.to.owner : null;
+    const isExchangeIn = toEx && !fromEx;
+    const isExchangeOut = fromEx && !toEx;
+    const isBetweenEx = fromEx && toEx;
+    const isUnknown = !fromEx && !toEx;
+
+    let dirBadge, sev;
+    if (isExchangeIn) {
+      dirBadge = `<span class="badge badge-in">↓ Borsa Girişi · ${toEx}</span>`;
+      sev = usdAmt > 50e6 ? 'critical' : 'high';
+    } else if (isExchangeOut) {
+      dirBadge = `<span class="badge badge-out">↑ Borsa Çıkışı · ${fromEx}</span>`;
+      sev = usdAmt > 50e6 ? 'high' : 'medium';
+    } else if (isBetweenEx) {
+      dirBadge = `<span class="badge badge-exchange">⇄ ${fromEx} → ${toEx}</span>`;
+      sev = 'medium';
+    } else {
+      dirBadge = `<span class="badge badge-whale">🐋 Bilinmeyen → Bilinmeyen</span>`;
+      sev = usdAmt > 100e6 ? 'high' : 'medium';
+    }
+
+    const fromLabel = tx.from?.owner || shortAddr(tx.from?.address || '?');
+    const toLabel = tx.to?.owner || shortAddr(tx.to?.address || '?');
+    const timeAgo = fmtTimeAgo(tx.timestamp * 1000);
+
+    return `<div class="alert-item">
+      <div class="alert-severity sev-${sev}"></div>
+      <div class="alert-body">
+        <div class="alert-msg">
+          <strong>${parseFloat(btcAmt).toLocaleString('tr-TR')} BTC</strong>
+          · $${fmtUSD(usdAmt)}
+          &nbsp;${dirBadge}
+        </div>
+        <div class="alert-meta">
+          <a href="https://blockchair.com/bitcoin/address/${tx.from?.address || ''}" target="_blank" class="addr-link">${fromLabel}</a>
+          → 
+          <a href="https://blockchair.com/bitcoin/address/${tx.to?.address || ''}" target="_blank" class="addr-link">${toLabel}</a>
+          &nbsp;·&nbsp;
+          <a href="https://blockchair.com/bitcoin/transaction/${tx.hash}" target="_blank" class="addr-link">tx ↗</a>
+        </div>
+      </div>
+      <div class="alert-time">${timeAgo}</div>
+    </div>`;
+  }).join('');
+}
+
+function updateFlowStats() {
+  let totalIn = 0, totalOut = 0;
+  alertsData.forEach(tx => {
+    const fromEx = tx.from?.owner_type === 'exchange';
+    const toEx = tx.to?.owner_type === 'exchange';
+    if (toEx && !fromEx) totalIn += tx.amount_usd || 0;
+    if (fromEx && !toEx) totalOut += tx.amount_usd || 0;
+  });
+  document.getElementById('stat-inflow').textContent = totalIn ? '$' + fmtUSD(totalIn) : '—';
+  document.getElementById('stat-outflow').textContent = totalOut ? '$' + fmtUSD(totalOut) : '—';
+}
+
+function updateExchangeMap() {
+  const flows = {};
+  alertsData.forEach(tx => {
+    const toEx = tx.to?.owner_type === 'exchange' ? tx.to.owner : null;
+    if (toEx) {
+      const key = toEx.charAt(0).toUpperCase() + toEx.slice(1);
+      flows[key] = (flows[key] || 0) + (tx.amount_usd || 0);
+    }
+  });
+
+  const sorted = Object.entries(flows).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const maxVal = sorted[0]?.[1] || 1;
+  const colors = ['#f7931a','#3b82f6','#22c55e','#a78bfa','#fbbf24','#ef4444','#06b6d4','#f472b6'];
+
+  if (!sorted.length) {
+    document.getElementById('exchange-map').innerHTML =
+      '<div class="empty" style="padding:1.5rem"><div class="empty-msg">Borsa akışı verisi yok</div></div>';
+    return;
+  }
+
+  document.getElementById('exchange-map').innerHTML = sorted.map(([name, val], i) => `
+    <div class="exmap-row">
+      <div class="exmap-name">${name}</div>
+      <div class="exmap-bar-wrap">
+        <div class="exmap-bar" style="width:${(val/maxVal*100).toFixed(1)}%;background:${colors[i%colors.length]}"></div>
+      </div>
+      <div class="exmap-val">$${fmtUSD(val)}</div>
+    </div>
+  `).join('');
+}
+
+/* ═══════════════════════════════════════════
+   WATCHLIST  (Blockchain.info API — no key)
+═══════════════════════════════════════════ */
+function loadWatchlist() {
+  try {
+    watchlist = JSON.parse(localStorage.getItem(WATCH_KEY) || '[]');
+  } catch { watchlist = []; }
+  document.getElementById('stat-watched').textContent = watchlist.length;
+}
+
+function saveWatchlist() {
+  localStorage.setItem(WATCH_KEY, JSON.stringify(watchlist));
+  document.getElementById('stat-watched').textContent = watchlist.length;
+}
+
+async function addAddress() {
+  const addr = document.getElementById('new-addr').value.trim();
+  const label = document.getElementById('new-label').value.trim() || shortAddr(addr);
+  if (!addr) { toast('Adres boş olamaz', 'err'); return; }
+  if (!isValidBTCAddr(addr)) { toast('Geçersiz BTC adresi', 'err'); return; }
+  if (watchlist.find(w => w.addr === addr)) { toast('Bu adres zaten listede', 'err'); return; }
+
+  document.getElementById('new-addr').value = '';
+  document.getElementById('new-label').value = '';
+
+  const entry = { addr, label, bal: null, txCount: null, lastChecked: null };
+  watchlist.push(entry);
+  saveWatchlist();
+  renderWatchlist();
+  toast('Adres eklendi, bakiye alınıyor…');
+  await fetchAddressBalance(entry);
+  renderWatchlist();
+  renderWatchedTxns();
+}
+
+function removeAddress(addr) {
+  watchlist = watchlist.filter(w => w.addr !== addr);
+  saveWatchlist();
+  renderWatchlist();
+  renderWatchedTxns();
+}
+
+async function fetchAddressBalance(entry) {
+  try {
+    // Blockchain.info multi-address (no CORS on client — use single)
+    const r = await fetch(
+      `https://blockchain.info/rawaddr/${entry.addr}?limit=5&cors=true`
+    );
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    const d = await r.json();
+    entry.bal = d.final_balance / 1e8;
+    entry.txCount = d.n_tx;
+    entry.lastTxs = (d.txs || []).map(tx => {
+      // Calculate net change for this address
+      let net = 0;
+      tx.out.forEach(o => { if (o.addr === entry.addr) net += o.value; });
+      tx.inputs.forEach(i => { if (i.prev_out?.addr === entry.addr) net -= i.prev_out.value; });
+      return {
+        hash: tx.hash,
+        time: tx.time * 1000,
+        net: net / 1e8,
+        block: tx.block_height,
+      };
+    });
+    entry.lastChecked = Date.now();
+  } catch (e) {
+    entry.balError = e.message;
+  }
+}
+
+async function refreshWatchlist() {
+  if (!watchlist.length) return;
+  await Promise.all(watchlist.map(e => fetchAddressBalance(e)));
+  renderWatchlist();
+  renderWatchedTxns();
+}
+
+function renderWatchlist() {
+  const el = document.getElementById('watchlist-container');
+  if (!watchlist.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-msg">Henüz adres eklenmedi</div></div>';
+    return;
+  }
+  const sorted = [...watchlist].sort((a, b) => (b.bal || 0) - (a.bal || 0));
+  el.innerHTML = sorted.map((w, i) => {
+    const balStr = w.bal != null ? w.bal.toLocaleString('tr-TR', { maximumFractionDigits: 4 }) + ' BTC' : '—';
+    const usdStr = w.bal != null && btcPrice ? '$' + fmtUSD(w.bal * btcPrice) : '';
+    return `<div class="watch-item">
+      <div class="watch-rank">${i + 1}</div>
+      <div class="watch-info">
+        <div class="watch-label">${escHtml(w.label)}</div>
+        <div class="watch-addr">
+          <a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="addr-link mono">${shortAddr(w.addr)}</a>
+          ${w.txCount != null ? `· ${w.txCount.toLocaleString('tr-TR')} tx` : ''}
+          ${w.balError ? `<span style="color:var(--red);font-size:10px"> · hata</span>` : ''}
+        </div>
+      </div>
+      <div class="watch-bal">
+        <div class="watch-btc">${balStr}</div>
+        <div class="watch-usd">${usdStr}</div>
+      </div>
+      <button class="watch-btn-del" onclick="removeAddress('${w.addr}')">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function renderWatchedTxns() {
+  const el = document.getElementById('watched-txns-container');
+  const txns = [];
+  watchlist.forEach(w => {
+    (w.lastTxs || []).forEach(tx => {
+      txns.push({ ...tx, label: w.label, addr: w.addr });
+    });
+  });
+  if (!txns.length) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-msg">İzleme listesi boş veya işlem yok</div></div>';
+    return;
+  }
+  txns.sort((a, b) => b.time - a.time);
+  el.innerHTML = `<table class="tbl">
+    <thead><tr>
+      <th>Adres</th>
+      <th>Zaman</th>
+      <th>Net Değişim</th>
+      <th>Tx</th>
+    </tr></thead>
+    <tbody>${txns.slice(0, 30).map(tx => `
+      <tr>
+        <td><span class="mono" style="color:var(--text)">${escHtml(tx.label)}</span></td>
+        <td style="color:var(--muted)">${fmtTimeAgo(tx.time)}</td>
+        <td>
+          <span class="${tx.net >= 0 ? 'dir-in' : 'dir-out'} mono">
+            ${tx.net >= 0 ? '+' : ''}${tx.net.toFixed(6)} BTC
+          </span>
+          <div class="amount-usd">${btcPrice ? fmtUSD(Math.abs(tx.net) * btcPrice, true) : ''}</div>
+        </td>
+        <td><a href="https://blockchair.com/bitcoin/transaction/${tx.hash}" target="_blank" class="addr-link mono">${tx.hash.slice(0, 8)}… ↗</a></td>
+      </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+/* ═══════════════════════════════════════════
+   AUTO REFRESH
+═══════════════════════════════════════════ */
+function startAutoRefresh() {
+  if (alertIntervalId) clearInterval(alertIntervalId);
+  const ms = (config.intervalMin || 5) * 60 * 1000;
+  alertIntervalId = setInterval(loadWhaleAlerts, ms);
+}
+
+/* ═══════════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════════ */
+function shortAddr(addr) {
+  if (!addr || addr.length < 12) return addr || '?';
+  return addr.slice(0, 6) + '…' + addr.slice(-4);
+}
+
+function fmtUSD(v, withSign) {
+  if (v >= 1e9) return (v / 1e9).toFixed(2) + 'B';
+  if (v >= 1e6) return (v / 1e6).toFixed(2) + 'M';
+  if (v >= 1e3) return (v / 1e3).toFixed(1) + 'K';
+  return '$' + v.toFixed(0);
+}
+
+function fmtTimeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return s + 'sn önce';
+  if (s < 3600) return Math.floor(s / 60) + 'dk önce';
+  if (s < 86400) return Math.floor(s / 3600) + 'sa önce';
+  return Math.floor(s / 86400) + 'g önce';
+}
+
+function isValidBTCAddr(addr) {
+  return /^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(addr) ||
+         /^bc1[a-z0-9]{39,59}$/i.test(addr);
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function toast(msg, type = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type;
+  t.textContent = msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(() => t.remove(), 4000);
+}
+
+/* ═══════════════════════════════════════════
+   KEYBOARD
+═══════════════════════════════════════════ */
+document.getElementById('new-addr').addEventListener('keydown', e => {
+  if (e.key === 'Enter') addAddress();
+});
+
+/* ═══════════════════════════════════════════
+   START
+═══════════════════════════════════════════ */
+init();
+</script>
+
+</body>
+</html>

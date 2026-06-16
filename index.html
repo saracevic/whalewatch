@@ -3,944 +3,810 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WhaleWatch — BTC Borsa Takibi</title>
+  <title>WhaleWatch BTC — Canlı Borsa Takibi</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐋</text></svg>" />
   <style>
     :root {
-      --bg: #0d0f14;
-      --bg2: #13161e;
-      --bg3: #1a1e28;
-      --border: rgba(255,255,255,0.07);
-      --border2: rgba(255,255,255,0.13);
-      --text: #e8eaf0;
-      --muted: #7a7f8e;
-      --accent: #f7931a;
-      --accent2: #ff6b35;
+      --bg: #0b0d12;
+      --bg2: #111318;
+      --bg3: #181b22;
+      --bd: rgba(255,255,255,0.06);
+      --bd2: rgba(255,255,255,0.11);
+      --tx: #dde0e8;
+      --mut: #5c6070;
+      --acc: #f7931a;
       --green: #22c55e;
       --red: #ef4444;
       --blue: #3b82f6;
-      --purple: #a78bfa;
       --yellow: #fbbf24;
-      --mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      --purple: #a78bfa;
+      --r: 10px;
       --sans: 'Inter', system-ui, sans-serif;
-      --radius: 10px;
+      --mono: 'JetBrains Mono', 'Fira Code', monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { font-size: 14px; }
-    body {
-      font-family: var(--sans);
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      line-height: 1.6;
-    }
+    body { font-family: var(--sans); background: var(--bg); color: var(--tx); min-height: 100vh; font-size: 13px; }
 
-    /* ── TOP BAR ── */
-    .topbar {
+    /* TOP BAR */
+    .bar {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(13,15,20,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-      padding: 0 1.5rem;
+      height: 52px; padding: 0 20px;
       display: flex; align-items: center; justify-content: space-between;
-      height: 56px;
+      background: rgba(11,13,18,0.94); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--bd);
     }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo-whale { font-size: 22px; }
-    .logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
-    .logo-name span { color: var(--accent); }
-    .live-badge {
-      display: flex; align-items: center; gap: 6px;
-      background: rgba(34,197,94,0.1);
-      border: 1px solid rgba(34,197,94,0.25);
-      color: var(--green);
-      padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
+    .logo { display: flex; align-items: center; gap: 9px; font-size: 15px; font-weight: 700; }
+    .logo em { color: var(--acc); font-style: normal; }
+    .bar-right { display: flex; align-items: center; gap: 10px; }
+    .price-pill {
+      font-family: var(--mono); font-size: 12px; font-weight: 600;
+      color: var(--acc); background: rgba(247,147,26,0.1);
+      border: 1px solid rgba(247,147,26,0.22); padding: 4px 10px; border-radius: 20px;
     }
-    .dot-pulse {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
-      animation: pulse 1.8s ease infinite;
+    .live-dot {
+      display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--green);
     }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(0.8)} }
-    .topbar-right { display: flex; align-items: center; gap: 10px; }
-    #btc-price-tag {
-      font-size: 13px; font-weight: 600; color: var(--accent);
-      background: rgba(247,147,26,0.1);
-      border: 1px solid rgba(247,147,26,0.2);
-      padding: 4px 10px; border-radius: 8px;
-      font-family: var(--mono);
-    }
-    #last-update { font-size: 11px; color: var(--muted); }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
-    /* ── LAYOUT ── */
-    .main { max-width: 1280px; margin: 0 auto; padding: 1.5rem 1.5rem 4rem; }
+    /* LAYOUT */
+    .wrap { max-width: 1300px; margin: 0 auto; padding: 18px 20px 60px; }
 
-    /* ── CONFIG BANNER ── */
-    #config-banner {
-      background: rgba(247,147,26,0.08);
-      border: 1px solid rgba(247,147,26,0.3);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      margin-bottom: 1.5rem;
-      display: flex; align-items: flex-start; gap: 12px;
+    /* INFO BANNER */
+    .info-banner {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: rgba(59,130,246,0.07); border: 1px solid rgba(59,130,246,0.2);
+      border-radius: var(--r); padding: 12px 16px; margin-bottom: 16px;
+      font-size: 12px; color: #93c5fd; line-height: 1.6;
     }
-    #config-banner .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-    #config-banner h3 { font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 4px; }
-    #config-banner p { font-size: 12px; color: var(--muted); line-height: 1.6; }
-    #config-banner a { color: var(--accent); text-decoration: none; }
-    #config-banner a:hover { text-decoration: underline; }
-    #config-banner.hidden { display: none; }
+    .info-banner strong { color: var(--tx); }
 
-    /* ── STATS ── */
-    .stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 1.5rem; }
-    .stat {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 14px 16px;
+    /* STATS */
+    .stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 16px; }
+    .stat { background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--r); padding: 13px 15px; }
+    .stat-l { font-size: 10px; text-transform: uppercase; letter-spacing: .7px; color: var(--mut); margin-bottom: 5px; }
+    .stat-v { font-size: 20px; font-weight: 700; font-family: var(--mono); letter-spacing: -.5px; }
+    .stat-s { font-size: 10px; color: var(--mut); margin-top: 3px; }
+    .c-acc { color: var(--acc); } .c-red { color: var(--red); } .c-green { color: var(--green); }
+    .c-blue { color: var(--blue); } .c-yellow { color: var(--yellow); }
+
+    /* FILTER BAR */
+    .fbar {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
     }
-    .stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 6px; }
-    .stat-val { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; font-family: var(--mono); }
-    .stat-sub { font-size: 11px; color: var(--muted); margin-top: 3px; }
-    .stat-val.orange { color: var(--accent); }
-    .stat-val.green { color: var(--green); }
-    .stat-val.red { color: var(--red); }
-    .stat-val.blue { color: var(--blue); }
-
-    /* ── GRID ── */
-    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-    .grid3 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 16px; }
-
-    /* ── PANELS ── */
-    .panel {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
+    .fbar label { font-size: 11px; color: var(--mut); }
+    .fbar select, .fbar input[type=number] {
+      background: var(--bg2); border: 1px solid var(--bd2); color: var(--tx);
+      padding: 5px 9px; border-radius: 7px; font-size: 12px; outline: none; cursor: pointer;
     }
-    .panel-head {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
+    .fbar select:focus, .fbar input:focus { border-color: var(--acc); }
+    .fbar-sep { width: 1px; height: 20px; background: var(--bd2); }
+    .fchip {
+      padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; cursor: pointer;
+      border: 1px solid var(--bd2); background: none; color: var(--mut); transition: all .15s;
+    }
+    .fchip.on { background: rgba(247,147,26,0.12); border-color: rgba(247,147,26,0.35); color: var(--acc); }
+
+    /* GRID */
+    .g2 { display: grid; grid-template-columns: 2fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+    /* PANELS */
+    .panel { background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--r); overflow: hidden; }
+    .ph {
+      padding: 11px 14px; border-bottom: 1px solid var(--bd);
       display: flex; align-items: center; justify-content: space-between;
     }
-    .panel-title {
-      font-size: 12px; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.6px; color: var(--muted);
-      display: flex; align-items: center; gap: 7px;
+    .pt { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; color: var(--mut); }
+    .pt-count {
+      background: var(--bg3); border: 1px solid var(--bd2);
+      padding: 2px 7px; border-radius: 10px; font-size: 10px; color: var(--tx); margin-left: 6px;
     }
-    .panel-title .icon { font-size: 14px; }
-    .panel-body { padding: 0; }
 
-    /* ── TABLE ── */
+    /* LIVE TX TABLE */
     .tbl { width: 100%; border-collapse: collapse; }
     .tbl th {
-      font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
-      color: var(--muted); padding: 9px 14px; text-align: left;
-      border-bottom: 1px solid var(--border);
-      font-weight: 500; white-space: nowrap;
+      padding: 8px 12px; text-align: left; font-size: 10px; text-transform: uppercase;
+      letter-spacing: .5px; color: var(--mut); border-bottom: 1px solid var(--bd); white-space: nowrap;
     }
-    .tbl td {
-      padding: 9px 14px; font-size: 12px;
-      border-bottom: 1px solid var(--border);
-      vertical-align: middle;
-    }
+    .tbl td { padding: 8px 12px; border-bottom: 1px solid var(--bd); vertical-align: middle; }
     .tbl tr:last-child td { border-bottom: none; }
+    .tbl tr.new-tx td { animation: flash .6s ease; }
+    @keyframes flash { from{background:rgba(247,147,26,0.1)} to{background:none} }
     .tbl tr:hover td { background: rgba(255,255,255,0.02); }
-
-    /* ── CELLS ── */
     .mono { font-family: var(--mono); font-size: 11px; }
-    .addr-link { color: var(--blue); cursor: pointer; text-decoration: none; }
-    .addr-link:hover { text-decoration: underline; color: #60a5fa; }
-    .badge {
-      display: inline-flex; align-items: center; gap: 3px;
-      padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 600;
-    }
-    .badge-in { background: rgba(34,197,94,0.12); color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
-    .badge-out { background: rgba(239,68,68,0.12); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
-    .badge-unknown { background: rgba(161,161,170,0.1); color: var(--muted); border: 1px solid var(--border); }
-    .badge-whale { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.2); }
-    .badge-exchange { background: rgba(247,147,26,0.1); color: var(--accent); border: 1px solid rgba(247,147,26,0.2); }
-    .amount-btc { font-family: var(--mono); font-weight: 600; color: var(--accent); }
-    .amount-usd { font-size: 10px; color: var(--muted); margin-top: 1px; }
-    .dir-in { color: var(--green); font-weight: 700; }
-    .dir-out { color: var(--red); font-weight: 700; }
+    .al { color: var(--blue); cursor: pointer; }
+    .al:hover { text-decoration: underline; }
 
-    /* ── ALERT LIST ── */
-    .alert-item {
-      display: flex; align-items: flex-start; gap: 10px;
-      padding: 11px 14px;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s;
-    }
-    .alert-item:last-child { border-bottom: none; }
-    .alert-item:hover { background: rgba(255,255,255,0.02); }
-    .alert-severity {
-      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px;
-    }
-    .sev-critical { background: var(--red); box-shadow: 0 0 6px rgba(239,68,68,0.5); }
-    .sev-high { background: var(--yellow); }
-    .sev-medium { background: var(--blue); }
-    .alert-body { flex: 1; min-width: 0; }
-    .alert-msg { font-size: 12px; line-height: 1.55; }
-    .alert-msg strong { color: var(--text); }
-    .alert-meta { font-size: 10px; color: var(--muted); margin-top: 3px; }
-    .alert-time { font-size: 10px; color: var(--muted); white-space: nowrap; flex-shrink: 0; }
+    /* BADGES */
+    .b { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+    .b-in  { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
+    .b-out { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.2); }
+    .b-w2w { background: rgba(167,139,250,.1); color: var(--purple); border: 1px solid rgba(167,139,250,.2); }
+    .b-ex  { background: rgba(247,147,26,.1); color: var(--acc); border: 1px solid rgba(247,147,26,.2); }
+    .b-size { background: rgba(251,191,36,.1); color: var(--yellow); border: 1px solid rgba(251,191,36,.2); }
 
-    /* ── WATCH LIST ── */
-    .watch-item {
+    /* AMOUNT CELL */
+    .amt-btc { font-family: var(--mono); font-weight: 700; color: var(--acc); font-size: 12px; }
+    .amt-usd { font-size: 10px; color: var(--mut); margin-top: 1px; }
+
+    /* SIDEBAR — EXCHANGE FLOW */
+    .ex-list { padding: 4px 0; }
+    .ex-row {
+      display: flex; align-items: center; padding: 9px 14px;
+      border-bottom: 1px solid var(--bd);
+    }
+    .ex-row:last-child { border-bottom: none; }
+    .ex-name { font-size: 12px; font-weight: 600; width: 90px; flex-shrink: 0; }
+    .ex-bar-wrap { flex: 1; height: 5px; background: var(--bg); border-radius: 3px; margin: 0 10px; overflow: hidden; }
+    .ex-bar { height: 100%; border-radius: 3px; transition: width .5s; }
+    .ex-val { font-family: var(--mono); font-size: 10px; color: var(--mut); width: 60px; text-align: right; white-space: nowrap; }
+    .ex-dir { font-size: 10px; width: 26px; text-align: center; }
+
+    /* WATCHLIST */
+    .wl-add {
+      display: flex; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--bd);
+    }
+    .wl-add input {
+      flex: 1; background: var(--bg); border: 1px solid var(--bd2); color: var(--tx);
+      padding: 6px 10px; border-radius: 7px; font-family: var(--mono); font-size: 11px; outline: none;
+    }
+    .wl-add input:focus { border-color: var(--acc); }
+    .wl-add input::placeholder { color: var(--mut); }
+    .btn { padding: 6px 13px; border: none; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .btn-acc { background: var(--acc); color: #000; }
+    .btn-acc:hover { background: #e88310; }
+    .btn-ghost { background: none; border: 1px solid var(--bd2); color: var(--tx); }
+    .btn-ghost:hover { border-color: var(--acc); color: var(--acc); }
+    .wl-item {
       display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
+      padding: 9px 14px; border-bottom: 1px solid var(--bd);
     }
-    .watch-item:last-child { border-bottom: none; }
-    .watch-rank { font-size: 10px; color: var(--muted); width: 18px; text-align: center; }
-    .watch-info { flex: 1; min-width: 0; }
-    .watch-label { font-size: 12px; font-weight: 600; margin-bottom: 1px; }
-    .watch-addr { font-family: var(--mono); font-size: 10px; color: var(--muted); }
-    .watch-bal { text-align: right; }
-    .watch-btc { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--accent); }
-    .watch-usd { font-size: 10px; color: var(--muted); }
-    .watch-btn-del {
-      background: none; border: 1px solid var(--border);
-      color: var(--muted); padding: 3px 7px; border-radius: 6px;
-      cursor: pointer; font-size: 11px; transition: all 0.15s;
-    }
-    .watch-btn-del:hover { border-color: var(--red); color: var(--red); }
+    .wl-item:last-child { border-bottom: none; }
+    .wl-info { flex: 1; min-width: 0; }
+    .wl-lbl { font-size: 12px; font-weight: 600; margin-bottom: 1px; }
+    .wl-addr { font-family: var(--mono); font-size: 10px; color: var(--mut); }
+    .wl-bal { text-align: right; }
+    .wl-btc { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--acc); }
+    .wl-usd { font-size: 10px; color: var(--mut); }
+    .wl-change { font-size: 10px; margin-top: 2px; }
+    .wl-del { background: none; border: 1px solid var(--bd); color: var(--mut); padding: 3px 7px; border-radius: 6px; cursor: pointer; font-size: 11px; }
+    .wl-del:hover { border-color: var(--red); color: var(--red); }
 
-    /* ── ADD ADDRESS ── */
-    .add-addr-form {
-      display: flex; gap: 8px; padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
+    /* RECENT TX for watchlist */
+    .rtx-row {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 14px; border-bottom: 1px solid var(--bd); font-size: 11px;
     }
-    .add-addr-form input {
-      flex: 1; background: var(--bg); border: 1px solid var(--border2);
-      color: var(--text); padding: 7px 11px; border-radius: 7px;
-      font-family: var(--mono); font-size: 11px; outline: none;
-      transition: border 0.15s;
-    }
-    .add-addr-form input:focus { border-color: var(--accent); }
-    .add-addr-form input::placeholder { color: var(--muted); }
-    .btn {
-      padding: 7px 14px; border-radius: 7px; border: none;
-      cursor: pointer; font-size: 12px; font-weight: 600;
-      transition: all 0.15s;
-    }
-    .btn-primary { background: var(--accent); color: #000; }
-    .btn-primary:hover { background: #e8861a; }
-    .btn-ghost {
-      background: transparent; border: 1px solid var(--border2);
-      color: var(--text);
-    }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .rtx-row:last-child { border-bottom: none; }
+    .rtx-lbl { width: 90px; flex-shrink: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .rtx-net { font-family: var(--mono); font-weight: 700; white-space: nowrap; }
+    .rtx-time { color: var(--mut); white-space: nowrap; margin-left: auto; }
 
-    /* ── EXCHANGE MAP ── */
-    .exmap { padding: 10px 14px; }
-    .exmap-row {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 7px 0; border-bottom: 1px solid var(--border);
-    }
-    .exmap-row:last-child { border-bottom: none; }
-    .exmap-name { font-size: 12px; font-weight: 600; }
-    .exmap-bar-wrap { flex: 1; margin: 0 12px; height: 4px; background: var(--bg); border-radius: 2px; overflow: hidden; }
-    .exmap-bar { height: 100%; border-radius: 2px; transition: width 0.5s; }
-    .exmap-val { font-family: var(--mono); font-size: 11px; color: var(--muted); white-space: nowrap; }
+    /* EMPTY / LOAD */
+    .empty { text-align: center; padding: 2.5rem 1rem; color: var(--mut); }
+    .empty i { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+    .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--bd2); border-top-color: var(--acc); border-radius: 50%; animation: s .7s linear infinite; }
+    @keyframes s { to{transform:rotate(360deg)} }
+    .loading { text-align: center; padding: 20px; }
 
-    /* ── EMPTY / LOADING ── */
-    .empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
-    .empty-icon { font-size: 2rem; margin-bottom: 8px; }
-    .empty-msg { font-size: 13px; }
-    .spinner {
-      display: inline-block; width: 16px; height: 16px;
-      border: 2px solid var(--border2); border-top-color: var(--accent);
-      border-radius: 50%; animation: spin 0.7s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .loading-row { text-align: center; padding: 2rem; }
-
-    /* ── ERROR ── */
-    .error-box {
-      background: rgba(239,68,68,0.08);
-      border: 1px solid rgba(239,68,68,0.2);
-      border-radius: var(--radius);
-      padding: 12px 16px; margin: 12px 14px;
-      font-size: 12px; color: var(--red);
-    }
-
-    /* ── TOAST ── */
-    #toast-container { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    /* TOAST */
+    #toasts { position: fixed; bottom: 18px; right: 18px; z-index: 9999; display: flex; flex-direction: column; gap: 7px; }
     .toast {
-      background: var(--bg3); border: 1px solid var(--border2);
-      border-radius: 8px; padding: 10px 14px;
-      font-size: 12px; max-width: 320px;
-      animation: slideIn 0.2s ease; display: flex; align-items: center; gap: 8px;
+      background: var(--bg3); border: 1px solid var(--bd2); border-radius: 8px;
+      padding: 9px 14px; font-size: 12px; max-width: 300px;
+      animation: tin .2s ease;
     }
-    .toast.err { border-color: rgba(239,68,68,0.4); }
-    .toast.ok { border-color: rgba(34,197,94,0.4); }
-    @keyframes slideIn { from{transform:translateX(20px);opacity:0} to{transform:none;opacity:1} }
+    .toast.ok { border-color: rgba(34,197,94,.35); }
+    .toast.err { border-color: rgba(239,68,68,.35); color: var(--red); }
+    @keyframes tin { from{transform:translateX(12px);opacity:0} to{transform:none;opacity:1} }
 
-    /* ── SETTINGS MODAL ── */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      z-index: 500; display: flex; align-items: center; justify-content: center;
-      backdrop-filter: blur(4px);
-    }
-    .modal-overlay.hidden { display: none; }
-    .modal {
-      background: var(--bg2); border: 1px solid var(--border2);
-      border-radius: 14px; width: 520px; max-width: calc(100vw - 2rem);
-      padding: 24px;
-    }
-    .modal h2 { font-size: 16px; margin-bottom: 4px; }
-    .modal p { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .form-group input {
-      width: 100%; background: var(--bg); border: 1px solid var(--border2);
-      color: var(--text); padding: 9px 12px; border-radius: 7px;
-      font-family: var(--mono); font-size: 12px; outline: none; transition: border 0.15s;
-    }
-    .form-group input:focus { border-color: var(--accent); }
-    .form-group .hint { font-size: 11px; color: var(--muted); margin-top: 5px; }
-    .form-group .hint a { color: var(--accent); }
-    .modal-btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px; }
-    .step-list { counter-reset: step; margin: 12px 0; }
-    .step-list li { counter-increment: step; padding: 5px 0 5px 28px; font-size: 12px; color: var(--muted); position: relative; }
-    .step-list li::before { content: counter(step); position: absolute; left: 0; width: 18px; height: 18px; background: var(--bg3); border: 1px solid var(--border2); border-radius: 50%; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; color: var(--accent); top: 6px; }
-    .step-list li a { color: var(--accent); }
-
-    /* ── FOOTER ── */
-    .footer { text-align: center; padding: 2rem 0 0; font-size: 11px; color: var(--muted); }
-    .footer a { color: var(--accent); text-decoration: none; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .stats { grid-template-columns: repeat(2,1fr); }
-      .grid2, .grid3 { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      .stats { grid-template-columns: 1fr 1fr; }
-      .topbar { padding: 0 1rem; }
-      .main { padding: 1rem; }
-    }
+    /* RESPONSIVE */
+    @media(max-width:960px) { .stats{grid-template-columns:repeat(3,1fr)} .g2{grid-template-columns:1fr} }
+    @media(max-width:600px) { .stats{grid-template-columns:repeat(2,1fr)} .wrap{padding:12px} .bar{padding:0 12px} }
   </style>
 </head>
 <body>
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="logo">
-    <span class="logo-whale">🐋</span>
-    <span class="logo-name">Whale<span>Watch</span></span>
-  </div>
-  <div class="topbar-right">
-    <div id="btc-price-tag">BTC yükleniyor…</div>
-    <div class="live-badge"><div class="dot-pulse"></div> Canlı</div>
-    <button class="btn btn-ghost" onclick="openSettings()" style="padding:5px 10px;font-size:11px">⚙ API Ayarları</button>
+<!-- BAR -->
+<div class="bar">
+  <div class="logo">🐋 Whale<em>Watch</em> BTC</div>
+  <div class="bar-right">
+    <div class="price-pill" id="price-pill">BTC yükleniyor…</div>
+    <div class="live-dot"><div class="dot"></div> WebSocket canlı</div>
   </div>
 </div>
 
-<!-- MAIN -->
-<div class="main">
+<div class="wrap">
 
-  <!-- CONFIG BANNER -->
-  <div id="config-banner">
-    <div class="icon">⚠️</div>
-    <div>
-      <h3>API anahtarı gerekli (Whale Alert)</h3>
-      <p>
-        Borsa giriş/çıkış uyarıları için ücretsiz
-        <a href="https://whale-alert.io/api" target="_blank">Whale Alert API anahtarı</a> gereklidir.
-        BTC fiyat ve bakiye verileri anahtar olmadan çalışır.
-        <button onclick="openSettings()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:12px;padding:0;text-decoration:underline">Şimdi yapılandır →</button>
-      </p>
-    </div>
+  <!-- INFO -->
+  <div class="info-banner">
+    ℹ️&nbsp;
+    <span>
+      <strong>Ücretsiz, API anahtarı gerektirmez.</strong>
+      Canlı BTC işlemleri <strong>blockchain.info WebSocket</strong>'ten,
+      borsa etiketleri <strong>Blockchair API</strong>'den (günde 1440 ücretsiz istek),
+      fiyat <strong>CoinGecko</strong>'dan alınır.
+      Büyük işlemlerde (≥ belirlediğiniz BTC miktarı) borsa giriş/çıkış otomatik tespit edilir.
+    </span>
   </div>
 
   <!-- STATS -->
   <div class="stats">
-    <div class="stat">
-      <div class="stat-label">BTC Fiyat</div>
-      <div class="stat-val orange" id="stat-price">—</div>
-      <div class="stat-sub" id="stat-price-change">—</div>
+    <div class="stat"><div class="stat-l">BTC Fiyat</div><div class="stat-v c-acc" id="s-price">—</div><div class="stat-s" id="s-change">—</div></div>
+    <div class="stat"><div class="stat-l">Canlı TX (bugün)</div><div class="stat-v c-blue" id="s-total">0</div><div class="stat-s">WebSocket</div></div>
+    <div class="stat"><div class="stat-l">Borsa Girişi (↓)</div><div class="stat-v c-red" id="s-in">0</div><div class="stat-s" id="s-in-usd">sat. baskısı izle</div></div>
+    <div class="stat"><div class="stat-l">Borsa Çıkışı (↑)</div><div class="stat-v c-green" id="s-out">0</div><div class="stat-s" id="s-out-usd">birikim sinyali</div></div>
+    <div class="stat"><div class="stat-l">İzlenen Adres</div><div class="stat-v c-yellow" id="s-watch">0</div><div class="stat-s">kayıtlı</div></div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="fbar">
+    <label>Min BTC:</label>
+    <input type="number" id="f-min" value="100" min="1" style="width:80px" />
+    <div class="fbar-sep"></div>
+    <label>Göster:</label>
+    <button class="fchip on" data-f="all" onclick="setFilter(this,'all')">Tümü</button>
+    <button class="fchip" data-f="in"  onclick="setFilter(this,'in')">↓ Borsa Girişi</button>
+    <button class="fchip" data-f="out" onclick="setFilter(this,'out')">↑ Borsa Çıkışı</button>
+    <button class="fchip" data-f="w2w" onclick="setFilter(this,'w2w')">🐋 Whale→Whale</button>
+    <div class="fbar-sep"></div>
+    <label>Sırala:</label>
+    <select id="f-sort" onchange="renderTxTable()">
+      <option value="time">Yeniye göre</option>
+      <option value="amt">Miktara göre</option>
+    </select>
+    <button class="btn btn-ghost" style="padding:5px 10px;font-size:11px" onclick="clearTxList()">Temizle</button>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="g2">
+
+    <!-- LEFT: LIVE TX -->
+    <div class="panel">
+      <div class="ph">
+        <span class="pt">🔴 Canlı Büyük BTC Transferleri <span class="pt-count" id="tx-count">0</span></span>
+        <span style="font-size:10px;color:var(--mut)" id="ws-status">Bağlanıyor…</span>
+      </div>
+      <div style="overflow-x:auto;max-height:520px;overflow-y:auto" id="tx-scroll">
+        <table class="tbl" id="tx-table">
+          <thead>
+            <tr>
+              <th>Zaman</th>
+              <th>BTC / USD</th>
+              <th>Yön / Tip</th>
+              <th>Gönderen</th>
+              <th>Alıcı</th>
+              <th>TX</th>
+            </tr>
+          </thead>
+          <tbody id="tx-body">
+            <tr><td colspan="6" class="loading"><div class="spin"></div> WebSocket bağlanıyor…</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="stat">
-      <div class="stat-label">24s Borsa Girişi</div>
-      <div class="stat-val red" id="stat-inflow">—</div>
-      <div class="stat-sub">Büyük transferler</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">24s Borsa Çıkışı</div>
-      <div class="stat-val green" id="stat-outflow">—</div>
-      <div class="stat-sub">Soğuk cüzdana</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">İzlenen Adres</div>
-      <div class="stat-val blue" id="stat-watched">0</div>
-      <div class="stat-sub">Whale listesi</div>
+
+    <!-- RIGHT: Exchange Flow + Watchlist mini -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <!-- EXCHANGE FLOW -->
+      <div class="panel">
+        <div class="ph">
+          <span class="pt">🏦 Borsa Akış Özeti</span>
+          <span style="font-size:10px;color:var(--mut)">Oturumdan beri</span>
+        </div>
+        <div class="ex-list" id="ex-flow">
+          <div class="empty"><i>📊</i>İşlem bekleniyor…</div>
+        </div>
+      </div>
+
+      <!-- WATCHLIST QUICK -->
+      <div class="panel">
+        <div class="ph">
+          <span class="pt">👁 İzleme Listesi</span>
+          <button class="btn btn-ghost" style="padding:4px 8px;font-size:10px" onclick="refreshAll()">↺ Yenile</button>
+        </div>
+        <div class="wl-add">
+          <input id="wl-addr" placeholder="BTC adresi  (1…  3…  bc1…)" />
+          <input id="wl-lbl" placeholder="Etiket" style="width:90px;flex:none" />
+          <button class="btn btn-acc" onclick="addWatch()">+</button>
+        </div>
+        <div id="wl-body">
+          <div class="empty"><i>📋</i>Adres ekleyin</div>
+        </div>
+      </div>
+
+      <!-- WATCHLIST TX -->
+      <div class="panel">
+        <div class="ph"><span class="pt">⚡ İzlenen Son İşlemler</span></div>
+        <div id="wl-txs"><div class="empty"><i>🔍</i>İzleme listesi boş</div></div>
+      </div>
+
     </div>
   </div>
 
-  <!-- ROW 1: Whale Alerts + Exchange Inflow -->
-  <div class="grid3">
-    <!-- WHALE ALERTS -->
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title"><span class="icon">🚨</span> Büyük BTC Hareketleri</div>
-        <button class="btn btn-ghost" onclick="loadWhaleAlerts()" style="padding:4px 9px;font-size:11px" id="refresh-alerts">↺ Yenile</button>
-      </div>
-      <div class="panel-body">
-        <div id="alerts-container"><div class="loading-row"><div class="spinner"></div></div></div>
-      </div>
-    </div>
-
-    <!-- EXCHANGE INFLOW BAR -->
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title"><span class="icon">🏦</span> Borsa Hacim Dağılımı</div>
-      </div>
-      <div class="panel-body">
-        <div class="exmap" id="exchange-map">
-          <div class="loading-row"><div class="spinner"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ROW 2: Watchlist + Recent Transfers -->
-  <div class="grid2">
-    <!-- WATCHLIST -->
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title"><span class="icon">👁</span> İzleme Listesi</div>
-        <button class="btn btn-ghost" onclick="refreshWatchlist()" style="padding:4px 9px;font-size:11px">↺</button>
-      </div>
-      <div class="panel-body">
-        <div class="add-addr-form">
-          <input id="new-addr" placeholder="BTC adresi ekle  (1... 3... bc1...)" maxlength="90" />
-          <input id="new-label" placeholder="Etiket" style="width:110px;flex:none" />
-          <button class="btn btn-primary" onclick="addAddress()">Ekle</button>
-        </div>
-        <div id="watchlist-container">
-          <div class="empty"><div class="empty-icon">📋</div><div class="empty-msg">Henüz adres eklenmedi</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- RECENT TX FROM WATCHLIST -->
-    <div class="panel">
-      <div class="panel-head">
-        <div class="panel-title"><span class="icon">⚡</span> İzlenen Adres İşlemleri</div>
-      </div>
-      <div class="panel-body">
-        <div id="watched-txns-container">
-          <div class="empty"><div class="empty-icon">🔍</div><div class="empty-msg">İzleme listesi boş</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- /main -->
-
-<!-- TOAST -->
-<div id="toast-container"></div>
-
-<!-- SETTINGS MODAL -->
-<div class="modal-overlay hidden" id="settings-modal" onclick="if(event.target===this)closeSettings()">
-  <div class="modal">
-    <h2>🔧 API Yapılandırması</h2>
-    <p>Anahtarlar tarayıcınızda (localStorage) saklanır, hiçbir yere gönderilmez.</p>
-
-    <div class="form-group">
-      <label>Whale Alert API Key</label>
-      <input id="cfg-whale-key" placeholder="Ör: T2gExxxxxxxxxxxxxxx" />
-      <div class="hint">
-        <ol class="step-list">
-          <li><a href="https://whale-alert.io/signup" target="_blank">whale-alert.io/signup</a> adresinde ücretsiz kayıt ol</li>
-          <li>E-posta doğrulamasını yap</li>
-          <li>Dashboard → API Keys → New Key</li>
-          <li>Free plan: 10 istek/dk, son 1 saatlik veri</li>
-        </ol>
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label>Minimum Uyarı Miktarı (BTC)</label>
-      <input id="cfg-min-btc" type="number" placeholder="500" min="1" />
-      <div class="hint">Bu miktarın altındaki transferler gösterilmez. Önerilen: 100–1000 BTC</div>
-    </div>
-
-    <div class="form-group">
-      <label>Yenileme Aralığı (dakika)</label>
-      <input id="cfg-interval" type="number" placeholder="5" min="1" max="60" />
-      <div class="hint">Whale Alert free plan için minimum 1 dakika önerilir.</div>
-    </div>
-
-    <div class="modal-btns">
-      <button class="btn btn-ghost" onclick="closeSettings()">İptal</button>
-      <button class="btn btn-primary" onclick="saveSettings()">Kaydet ve Başlat</button>
-    </div>
-  </div>
 </div>
 
+<div id="toasts"></div>
+
 <script>
-/* ═══════════════════════════════════════════
-   CONFIG & STATE
-═══════════════════════════════════════════ */
-const CFG_KEY = 'ww_config';
-const WATCH_KEY = 'ww_watchlist';
-const ALERTS_CACHE_KEY = 'ww_alerts_cache';
-
-let config = {
-  whaleApiKey: '',
-  minBtc: 500,
-  intervalMin: 5,
+/* ─── KNOWN EXCHANGES (Blockchair etiketleri + ek bilinen adresler) ─── */
+const KNOWN_EX = {
+  /* Binance */
+  '34xp4vrocgjym3xr7ycvpfhocnxv4twseo': 'Binance',
+  '3m219kp7vlq0lbux7s0qfvxhsajfnbfqk2': 'Binance',
+  'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h': 'Binance',
+  /* Coinbase */
+  '3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr': 'Coinbase',
+  'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh': 'Coinbase',
+  /* Kraken */
+  'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3': 'Kraken',
+  '3fupgkiw5fwwgic5jal9mzu7wwsqhq7vu9': 'Kraken',
+  /* OKX */
+  '3lqtfzmqq7xqmz7gc8fq84pvzxqj3xfxp7': 'OKX',
+  /* Bybit */
+  'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz': 'Bybit',
+  /* Bitfinex */
+  '1kr1ue4462cqu9s4h1f27oa89gqpfz7lm': 'Bitfinex',
+  /* Huobi */
+  '1abcdefg': 'Huobi', /* placeholder */
 };
-let watchlist = []; // [{addr, label, bal, lastChecked}]
-let alertIntervalId = null;
+
+/* ─── STATE ─── */
 let btcPrice = 0;
-let alertsData = [];
-let exchangeFlows = {};
+let txList = [];        // {hash,time,btc,usd,from,to,fromEx,toEx,dir,isNew}
+let exFlows = {};       // {ExName: {in:usd, out:usd}}
+let statsIn = 0, statsOut = 0, statsTotal = 0;
+let watchlist = [];     // {addr,label,bal,txs,lastFetch}
+let filterDir = 'all';
+let ws = null;
+let lookupQueue = [];   // hashes waiting Blockchair lookup
+let lookupBusy = false;
+let apiCallsToday = 0;
+const MAX_API = 1400;   // Blockchair günlük limit güvenli eşiği
+const TX_MAX = 200;     // bellekte tutulacak max tx
 
-/* ═══════════════════════════════════════════
-   INIT
-═══════════════════════════════════════════ */
+/* ─── INIT ─── */
 function init() {
-  loadConfig();
   loadWatchlist();
-  fetchBTCPrice();
-  renderWatchlist();
-  if (config.whaleApiKey) {
-    hideBanner();
-    loadWhaleAlerts();
-    startAutoRefresh();
-  }
-  // Price refresh every 60s
-  setInterval(fetchBTCPrice, 60000);
-  // Watchlist balance check every 5min
-  setInterval(refreshWatchlist, 5 * 60 * 1000);
+  fetchPrice();
+  setInterval(fetchPrice, 60000);
+  connectWS();
+  setInterval(processLookupQueue, 4000); // Blockchair rate limit: ~6/dk güvenli
+  renderExFlow();
 }
 
-/* ═══════════════════════════════════════════
-   CONFIG
-═══════════════════════════════════════════ */
-function loadConfig() {
+/* ─── BTC PRICE ─── */
+async function fetchPrice() {
   try {
-    const saved = JSON.parse(localStorage.getItem(CFG_KEY) || '{}');
-    config = { ...config, ...saved };
-  } catch {}
-}
-function saveSettings() {
-  const key = document.getElementById('cfg-whale-key').value.trim();
-  const min = parseFloat(document.getElementById('cfg-min-btc').value) || 500;
-  const interval = parseInt(document.getElementById('cfg-interval').value) || 5;
-  if (!key) { toast('API anahtarı boş olamaz', 'err'); return; }
-  config = { whaleApiKey: key, minBtc: min, intervalMin: interval };
-  localStorage.setItem(CFG_KEY, JSON.stringify(config));
-  closeSettings();
-  hideBanner();
-  toast('Ayarlar kaydedildi ✓', 'ok');
-  loadWhaleAlerts();
-  startAutoRefresh();
-}
-function openSettings() {
-  document.getElementById('cfg-whale-key').value = config.whaleApiKey || '';
-  document.getElementById('cfg-min-btc').value = config.minBtc || 500;
-  document.getElementById('cfg-interval').value = config.intervalMin || 5;
-  document.getElementById('settings-modal').classList.remove('hidden');
-}
-function closeSettings() {
-  document.getElementById('settings-modal').classList.add('hidden');
-}
-function hideBanner() {
-  document.getElementById('config-banner').classList.add('hidden');
-}
-
-/* ═══════════════════════════════════════════
-   BTC PRICE  (CoinGecko — no key needed)
-═══════════════════════════════════════════ */
-async function fetchBTCPrice() {
-  try {
-    const r = await fetch(
-      'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true',
-      { cache: 'no-store' }
-    );
-    if (!r.ok) throw new Error('CoinGecko ' + r.status);
+    const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
     const d = await r.json();
     btcPrice = d.bitcoin.usd;
-    const change = d.bitcoin.usd_24h_change;
-    document.getElementById('btc-price-tag').textContent = '$' + btcPrice.toLocaleString('en-US');
-    document.getElementById('stat-price').textContent = '$' + btcPrice.toLocaleString('en-US');
-    document.getElementById('stat-price-change').textContent =
-      (change >= 0 ? '▲ +' : '▼ ') + change.toFixed(2) + '% (24s)';
-    document.getElementById('stat-price-change').style.color = change >= 0 ? 'var(--green)' : 'var(--red)';
-    document.getElementById('last-update') && (document.getElementById('last-update').textContent = 'Güncellendi: ' + new Date().toLocaleTimeString('tr-TR'));
-    // refresh watchlist USD values
-    renderWatchlist();
-  } catch (e) {
-    console.warn('Price fetch failed:', e);
-  }
+    const ch = d.bitcoin.usd_24h_change;
+    document.getElementById('price-pill').textContent = '$' + btcPrice.toLocaleString('en-US');
+    document.getElementById('s-price').textContent = '$' + btcPrice.toLocaleString('en-US');
+    const cs = document.getElementById('s-change');
+    cs.textContent = (ch >= 0 ? '▲ +' : '▼ ') + ch.toFixed(2) + '% (24s)';
+    cs.style.color = ch >= 0 ? 'var(--green)' : 'var(--red)';
+    rerenderUSD();
+  } catch(e) { console.warn('price err', e); }
 }
 
-/* ═══════════════════════════════════════════
-   WHALE ALERT API
-═══════════════════════════════════════════ */
-async function loadWhaleAlerts() {
-  if (!config.whaleApiKey) {
-    document.getElementById('alerts-container').innerHTML =
-      '<div class="error-box">⚠️ Whale Alert API anahtarı girilmedi. Üst sağdaki <b>API Ayarları</b> butonunu kullanın.</div>';
-    return;
-  }
+/* ─── WEBSOCKET (blockchain.info) ─── */
+function connectWS() {
+  setWsStatus('Bağlanıyor…', '#fbbf24');
+  ws = new WebSocket('wss://ws.blockchain.info/inv');
 
-  const btn = document.getElementById('refresh-alerts');
-  btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="display:inline-block"></div>';
+  ws.onopen = () => {
+    ws.send(JSON.stringify({op: 'unconfirmed_sub'}));
+    setWsStatus('Bağlı ✓', 'var(--green)');
+    toast('WebSocket bağlı — canlı BTC işlemleri geliyor', 'ok');
+  };
 
-  // Whale Alert: transactions in last 1 hour above min amount, BTC only
-  const since = Math.floor(Date.now() / 1000) - 3600;
-  const minVal = config.minBtc * btcPrice || config.minBtc * 65000;
-
-  // Whale Alert free plan endpoint
-  const url = `https://api.whale-alert.io/v1/transactions?api_key=${config.whaleApiKey}&min_value=${Math.round(minVal)}&start=${since}&limit=100&currency=btc`;
-
-  try {
-    const r = await fetch(url);
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}));
-      throw new Error(err.message || 'HTTP ' + r.status);
-    }
-    const data = await r.json();
-    alertsData = (data.transactions || []).sort((a, b) => b.timestamp - a.timestamp);
-
-    // Save cache
-    localStorage.setItem(ALERTS_CACHE_KEY, JSON.stringify({ ts: Date.now(), data: alertsData }));
-
-    renderAlerts();
-    updateExchangeMap();
-    updateFlowStats();
-    toast(`${alertsData.length} işlem alındı`, 'ok');
-  } catch (e) {
-    // Try cache fallback
+  ws.onmessage = e => {
     try {
-      const cached = JSON.parse(localStorage.getItem(ALERTS_CACHE_KEY) || 'null');
-      if (cached) {
-        alertsData = cached.data;
-        renderAlerts(true);
-        document.getElementById('alerts-container').insertAdjacentHTML('afterbegin',
-          `<div class="error-box" style="margin:10px 14px 0">API hatası: ${e.message} — önbellek gösteriliyor</div>`);
-        return;
-      }
+      const msg = JSON.parse(e.data);
+      if (msg.op === 'utx') handleTx(msg.x);
     } catch {}
-    document.getElementById('alerts-container').innerHTML =
-      `<div class="error-box">❌ Whale Alert API hatası: ${e.message}<br><small>API anahtarını kontrol edin veya rate limit (10 istek/dk) bekleniyor olabilir.</small></div>`;
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '↺ Yenile';
+  };
+
+  ws.onclose = () => {
+    setWsStatus('Bağlantı kesildi — yeniden bağlanıyor…', 'var(--red)');
+    setTimeout(connectWS, 5000);
+  };
+
+  ws.onerror = () => {
+    setWsStatus('Hata', 'var(--red)');
+    ws.close();
+  };
+}
+
+function setWsStatus(msg, color) {
+  const el = document.getElementById('ws-status');
+  el.textContent = msg;
+  el.style.color = color;
+}
+
+/* ─── HANDLE INCOMING TX ─── */
+function handleTx(tx) {
+  // Toplam input value (satoshi)
+  let totalIn = 0;
+  tx.inputs.forEach(i => { totalIn += i.prev_out?.value || 0; });
+  const btc = totalIn / 1e8;
+  const minBtc = parseFloat(document.getElementById('f-min').value) || 100;
+
+  // Her tx sayıya ekle
+  statsTotal++;
+  document.getElementById('s-total').textContent = statsTotal.toLocaleString('tr-TR');
+
+  if (btc < minBtc) return; // eşik altı → gösterme
+
+  const fromAddrs = tx.inputs.map(i => i.prev_out?.addr).filter(Boolean);
+  const toAddrs = tx.out.map(o => o.addr).filter(Boolean);
+
+  // Hızlı yerel kontrol
+  const fromEx = findKnownEx(fromAddrs);
+  const toEx = findKnownEx(toAddrs);
+
+  const entry = {
+    hash: tx.hash,
+    time: Date.now(),
+    btc,
+    usd: btc * btcPrice,
+    from: fromAddrs[0] || '?',
+    fromAll: fromAddrs,
+    to: toAddrs[0] || '?',
+    toAll: toAddrs,
+    fromEx,
+    toEx,
+    dir: classifyDir(fromEx, toEx),
+    isNew: true,
+  };
+
+  txList.unshift(entry);
+  if (txList.length > TX_MAX) txList.pop();
+
+  updateStats(entry);
+  renderTxTable();
+
+  // Blockchair'e sorgu kuyruğu (API bütçesi varsa)
+  if (!fromEx && !toEx && apiCallsToday < MAX_API) {
+    lookupQueue.push(entry.hash);
   }
 }
 
-function renderAlerts(fromCache = false) {
-  const container = document.getElementById('alerts-container');
-  if (!alertsData.length) {
-    container.innerHTML = '<div class="empty"><div class="empty-icon">✅</div><div class="empty-msg">Son 1 saatte büyük hareket yok</div></div>';
+function findKnownEx(addrs) {
+  for (const a of addrs) {
+    const key = a.toLowerCase();
+    if (KNOWN_EX[key]) return KNOWN_EX[key];
+  }
+  return null;
+}
+
+function classifyDir(fromEx, toEx) {
+  if (toEx && !fromEx) return 'in';
+  if (fromEx && !toEx) return 'out';
+  if (fromEx && toEx) return 'ex2ex';
+  return 'w2w';
+}
+
+function updateStats(entry) {
+  if (entry.dir === 'in') {
+    statsIn++;
+    document.getElementById('s-in').textContent = statsIn;
+    document.getElementById('s-in-usd').textContent = '≈ $' + fmtUSD(statsIn * entry.usd / statsIn); // avg placeholder
+  }
+  if (entry.dir === 'out') {
+    statsOut++;
+    document.getElementById('s-out').textContent = statsOut;
+  }
+  // Exchange flow
+  const ex = entry.toEx || entry.fromEx;
+  if (ex) {
+    if (!exFlows[ex]) exFlows[ex] = { in: 0, out: 0 };
+    if (entry.dir === 'in') exFlows[ex].in += entry.usd;
+    if (entry.dir === 'out') exFlows[ex].out += entry.usd;
+    renderExFlow();
+  }
+}
+
+/* ─── BLOCKCHAIR LOOKUP (kuyruğu eriyen tek tek işle) ─── */
+async function processLookupQueue() {
+  if (lookupBusy || !lookupQueue.length || apiCallsToday >= MAX_API) return;
+  lookupBusy = true;
+  const hash = lookupQueue.shift();
+  try {
+    // Blockchair transaction endpoint — borsa etiketleri var
+    const r = await fetch(`https://api.blockchair.com/bitcoin/dashboards/transaction/${hash}?transaction_details=true`);
+    if (!r.ok) { lookupBusy = false; return; }
+    apiCallsToday++;
+    const d = await r.json();
+    const txData = d.data?.[hash];
+    if (!txData) { lookupBusy = false; return; }
+
+    // inputs / outputs
+    const inputs = txData.inputs || [];
+    const outputs = txData.outputs || [];
+
+    // Blockchair context.label = borsa adı (ör: "binance.com")
+    const fromLabels = inputs.map(i => i.recipient).filter(Boolean);
+    const toLabels = outputs.map(o => {
+      // Blockchair'in label alanı
+      return o.label || null;
+    }).filter(Boolean);
+
+    // Adresleri context ile eşleştir
+    const fromEx = extractExLabel(inputs.map(i => ({ addr: i.recipient, label: d.context?.labels?.[i.recipient] })));
+    const toEx   = extractExLabel(outputs.map(o => ({ addr: o.recipient, label: d.context?.labels?.[o.recipient] })));
+
+    // txList'i güncelle
+    const entry = txList.find(t => t.hash === hash);
+    if (entry && (fromEx || toEx)) {
+      entry.fromEx = fromEx || entry.fromEx;
+      entry.toEx   = toEx   || entry.toEx;
+      entry.dir    = classifyDir(entry.fromEx, entry.toEx);
+      updateStats(entry);
+      renderTxTable();
+    }
+  } catch(e) { console.warn('blockchair lookup err', e); }
+  lookupBusy = false;
+}
+
+function extractExLabel(list) {
+  for (const item of list) {
+    if (!item.label) continue;
+    const l = item.label.toLowerCase();
+    if (l.includes('binance')) return 'Binance';
+    if (l.includes('coinbase')) return 'Coinbase';
+    if (l.includes('kraken')) return 'Kraken';
+    if (l.includes('okx') || l.includes('okex')) return 'OKX';
+    if (l.includes('bybit')) return 'Bybit';
+    if (l.includes('bitfinex')) return 'Bitfinex';
+    if (l.includes('huobi') || l.includes('htx')) return 'Huobi/HTX';
+    if (l.includes('kucoin')) return 'KuCoin';
+    if (l.includes('gate')) return 'Gate.io';
+    if (l.includes('gemini')) return 'Gemini';
+    if (l.includes('bitmex')) return 'BitMEX';
+    if (l.includes('bitstamp')) return 'Bitstamp';
+  }
+  return null;
+}
+
+/* ─── RENDER TX TABLE ─── */
+function renderTxTable() {
+  const fDir = filterDir;
+  const sort = document.getElementById('f-sort').value;
+
+  let list = txList.filter(t => {
+    if (fDir === 'all') return true;
+    return t.dir === fDir;
+  });
+
+  if (sort === 'amt') list = [...list].sort((a,b) => b.btc - a.btc);
+
+  document.getElementById('tx-count').textContent = list.length;
+
+  if (!list.length) {
+    document.getElementById('tx-body').innerHTML =
+      '<tr><td colspan="6" class="loading" style="color:var(--mut)">Eşik üzeri işlem bekleniyor…</td></tr>';
     return;
   }
 
-  container.innerHTML = alertsData.map(tx => {
-    const btcAmt = (tx.amount / 1e8).toFixed(2);
-    const usdAmt = tx.amount_usd;
-    const fromEx = tx.from?.owner_type === 'exchange' ? tx.from.owner : null;
-    const toEx = tx.to?.owner_type === 'exchange' ? tx.to.owner : null;
-    const isExchangeIn = toEx && !fromEx;
-    const isExchangeOut = fromEx && !toEx;
-    const isBetweenEx = fromEx && toEx;
-    const isUnknown = !fromEx && !toEx;
-
-    let dirBadge, sev;
-    if (isExchangeIn) {
-      dirBadge = `<span class="badge badge-in">↓ Borsa Girişi · ${toEx}</span>`;
-      sev = usdAmt > 50e6 ? 'critical' : 'high';
-    } else if (isExchangeOut) {
-      dirBadge = `<span class="badge badge-out">↑ Borsa Çıkışı · ${fromEx}</span>`;
-      sev = usdAmt > 50e6 ? 'high' : 'medium';
-    } else if (isBetweenEx) {
-      dirBadge = `<span class="badge badge-exchange">⇄ ${fromEx} → ${toEx}</span>`;
-      sev = 'medium';
-    } else {
-      dirBadge = `<span class="badge badge-whale">🐋 Bilinmeyen → Bilinmeyen</span>`;
-      sev = usdAmt > 100e6 ? 'high' : 'medium';
-    }
-
-    const fromLabel = tx.from?.owner || shortAddr(tx.from?.address || '?');
-    const toLabel = tx.to?.owner || shortAddr(tx.to?.address || '?');
-    const timeAgo = fmtTimeAgo(tx.timestamp * 1000);
-
-    return `<div class="alert-item">
-      <div class="alert-severity sev-${sev}"></div>
-      <div class="alert-body">
-        <div class="alert-msg">
-          <strong>${parseFloat(btcAmt).toLocaleString('tr-TR')} BTC</strong>
-          · $${fmtUSD(usdAmt)}
-          &nbsp;${dirBadge}
-        </div>
-        <div class="alert-meta">
-          <a href="https://blockchair.com/bitcoin/address/${tx.from?.address || ''}" target="_blank" class="addr-link">${fromLabel}</a>
-          → 
-          <a href="https://blockchair.com/bitcoin/address/${tx.to?.address || ''}" target="_blank" class="addr-link">${toLabel}</a>
-          &nbsp;·&nbsp;
-          <a href="https://blockchair.com/bitcoin/transaction/${tx.hash}" target="_blank" class="addr-link">tx ↗</a>
-        </div>
-      </div>
-      <div class="alert-time">${timeAgo}</div>
-    </div>`;
+  document.getElementById('tx-body').innerHTML = list.slice(0, 80).map((t,i) => {
+    const dirBadge = dirBadgeHtml(t);
+    const fromLabel = t.fromEx ? `<span class="b b-ex">${t.fromEx}</span>` : `<a class="mono al" href="https://blockchair.com/bitcoin/address/${t.from}" target="_blank">${shortAddr(t.from)}</a>`;
+    const toLabel   = t.toEx   ? `<span class="b b-ex">${t.toEx}</span>`   : `<a class="mono al" href="https://blockchair.com/bitcoin/address/${t.to}" target="_blank">${shortAddr(t.to)}</a>`;
+    const cls = t.isNew ? 'new-tx' : '';
+    t.isNew = false;
+    return `<tr class="${cls}">
+      <td style="color:var(--mut);white-space:nowrap">${timeAgo(t.time)}</td>
+      <td>
+        <div class="amt-btc">${t.btc.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:4})} BTC</div>
+        <div class="amt-usd">${t.usd ? '$' + fmtUSD(t.usd) : '—'}</div>
+      </td>
+      <td>${dirBadge}</td>
+      <td>${fromLabel}</td>
+      <td>${toLabel}</td>
+      <td><a class="mono al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,8)}… ↗</a></td>
+    </tr>`;
   }).join('');
 }
 
-function updateFlowStats() {
-  let totalIn = 0, totalOut = 0;
-  alertsData.forEach(tx => {
-    const fromEx = tx.from?.owner_type === 'exchange';
-    const toEx = tx.to?.owner_type === 'exchange';
-    if (toEx && !fromEx) totalIn += tx.amount_usd || 0;
-    if (fromEx && !toEx) totalOut += tx.amount_usd || 0;
-  });
-  document.getElementById('stat-inflow').textContent = totalIn ? '$' + fmtUSD(totalIn) : '—';
-  document.getElementById('stat-outflow').textContent = totalOut ? '$' + fmtUSD(totalOut) : '—';
+function dirBadgeHtml(t) {
+  if (t.dir === 'in')    return `<span class="b b-in">↓ Borsa Girişi${t.toEx ? ' · ' + t.toEx : ''}</span>`;
+  if (t.dir === 'out')   return `<span class="b b-out">↑ Borsa Çıkışı${t.fromEx ? ' · ' + t.fromEx : ''}</span>`;
+  if (t.dir === 'ex2ex') return `<span class="b b-ex">⇄ Borsa→Borsa</span>`;
+  return `<span class="b b-w2w">🐋 Whale→Whale</span>`;
 }
 
-function updateExchangeMap() {
-  const flows = {};
-  alertsData.forEach(tx => {
-    const toEx = tx.to?.owner_type === 'exchange' ? tx.to.owner : null;
-    if (toEx) {
-      const key = toEx.charAt(0).toUpperCase() + toEx.slice(1);
-      flows[key] = (flows[key] || 0) + (tx.amount_usd || 0);
-    }
-  });
-
-  const sorted = Object.entries(flows).sort((a, b) => b[1] - a[1]).slice(0, 8);
-  const maxVal = sorted[0]?.[1] || 1;
-  const colors = ['#f7931a','#3b82f6','#22c55e','#a78bfa','#fbbf24','#ef4444','#06b6d4','#f472b6'];
-
-  if (!sorted.length) {
-    document.getElementById('exchange-map').innerHTML =
-      '<div class="empty" style="padding:1.5rem"><div class="empty-msg">Borsa akışı verisi yok</div></div>';
+/* ─── EXCHANGE FLOW PANEL ─── */
+function renderExFlow() {
+  const el = document.getElementById('ex-flow');
+  const entries = Object.entries(exFlows);
+  if (!entries.length) {
+    el.innerHTML = '<div class="empty"><i>📊</i>İşlem bekleniyor…</div>';
     return;
   }
+  // Sort by total flow
+  entries.sort((a,b) => (b[1].in + b[1].out) - (a[1].in + a[1].out));
+  const maxVal = Math.max(...entries.map(e => e[1].in + e[1].out));
+  const colors = ['#f7931a','#3b82f6','#22c55e','#a78bfa','#ef4444','#fbbf24','#06b6d4','#f472b6'];
 
-  document.getElementById('exchange-map').innerHTML = sorted.map(([name, val], i) => `
-    <div class="exmap-row">
-      <div class="exmap-name">${name}</div>
-      <div class="exmap-bar-wrap">
-        <div class="exmap-bar" style="width:${(val/maxVal*100).toFixed(1)}%;background:${colors[i%colors.length]}"></div>
-      </div>
-      <div class="exmap-val">$${fmtUSD(val)}</div>
-    </div>
-  `).join('');
+  el.innerHTML = `<div class="ex-list">` + entries.slice(0,8).map(([name, v], i) => {
+    const total = v.in + v.out;
+    const pct = (total / maxVal * 100).toFixed(1);
+    const netDir = v.in > v.out ? '<span style="color:var(--red)">↓</span>' : '<span style="color:var(--green)">↑</span>';
+    return `<div class="ex-row">
+      <div class="ex-name">${name}</div>
+      <div class="ex-bar-wrap"><div class="ex-bar" style="width:${pct}%;background:${colors[i%colors.length]}"></div></div>
+      <div class="ex-dir">${netDir}</div>
+      <div class="ex-val">$${fmtUSD(total)}</div>
+    </div>`;
+  }).join('') + '</div>';
 }
 
-/* ═══════════════════════════════════════════
-   WATCHLIST  (Blockchain.info API — no key)
-═══════════════════════════════════════════ */
+/* ─── WATCHLIST ─── */
 function loadWatchlist() {
-  try {
-    watchlist = JSON.parse(localStorage.getItem(WATCH_KEY) || '[]');
-  } catch { watchlist = []; }
-  document.getElementById('stat-watched').textContent = watchlist.length;
+  try { watchlist = JSON.parse(localStorage.getItem('ww_wl') || '[]'); } catch { watchlist = []; }
+  document.getElementById('s-watch').textContent = watchlist.length;
+  renderWatchlist();
+  if (watchlist.length) refreshAll();
 }
 
 function saveWatchlist() {
-  localStorage.setItem(WATCH_KEY, JSON.stringify(watchlist));
-  document.getElementById('stat-watched').textContent = watchlist.length;
+  localStorage.setItem('ww_wl', JSON.stringify(watchlist.map(w => ({ addr: w.addr, label: w.label }))));
+  document.getElementById('s-watch').textContent = watchlist.length;
 }
 
-async function addAddress() {
-  const addr = document.getElementById('new-addr').value.trim();
-  const label = document.getElementById('new-label').value.trim() || shortAddr(addr);
-  if (!addr) { toast('Adres boş olamaz', 'err'); return; }
-  if (!isValidBTCAddr(addr)) { toast('Geçersiz BTC adresi', 'err'); return; }
-  if (watchlist.find(w => w.addr === addr)) { toast('Bu adres zaten listede', 'err'); return; }
-
-  document.getElementById('new-addr').value = '';
-  document.getElementById('new-label').value = '';
-
-  const entry = { addr, label, bal: null, txCount: null, lastChecked: null };
-  watchlist.push(entry);
+async function addWatch() {
+  const addr = document.getElementById('wl-addr').value.trim();
+  const label = document.getElementById('wl-lbl').value.trim() || shortAddr(addr);
+  if (!addr) { toast('Adres boş', 'err'); return; }
+  if (!isValidBTC(addr)) { toast('Geçersiz BTC adresi', 'err'); return; }
+  if (watchlist.find(w => w.addr === addr)) { toast('Zaten listede', 'err'); return; }
+  document.getElementById('wl-addr').value = '';
+  document.getElementById('wl-lbl').value = '';
+  watchlist.push({ addr, label, bal: null, txs: [], lastFetch: null });
   saveWatchlist();
   renderWatchlist();
-  toast('Adres eklendi, bakiye alınıyor…');
-  await fetchAddressBalance(entry);
+  await fetchWatchAddr(watchlist[watchlist.length - 1]);
   renderWatchlist();
-  renderWatchedTxns();
+  renderWatchTxs();
 }
 
-function removeAddress(addr) {
+function removeWatch(addr) {
   watchlist = watchlist.filter(w => w.addr !== addr);
   saveWatchlist();
   renderWatchlist();
-  renderWatchedTxns();
+  renderWatchTxs();
 }
 
-async function fetchAddressBalance(entry) {
+async function fetchWatchAddr(entry) {
   try {
-    // Blockchain.info multi-address (no CORS on client — use single)
-    const r = await fetch(
-      `https://blockchain.info/rawaddr/${entry.addr}?limit=5&cors=true`
-    );
+    const r = await fetch(`https://blockchain.info/rawaddr/${entry.addr}?limit=10&cors=true`);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
     entry.bal = d.final_balance / 1e8;
     entry.txCount = d.n_tx;
-    entry.lastTxs = (d.txs || []).map(tx => {
-      // Calculate net change for this address
+    entry.txs = (d.txs || []).map(tx => {
       let net = 0;
       tx.out.forEach(o => { if (o.addr === entry.addr) net += o.value; });
       tx.inputs.forEach(i => { if (i.prev_out?.addr === entry.addr) net -= i.prev_out.value; });
-      return {
-        hash: tx.hash,
-        time: tx.time * 1000,
-        net: net / 1e8,
-        block: tx.block_height,
-      };
+      return { hash: tx.hash, time: tx.time * 1000, net: net / 1e8 };
     });
-    entry.lastChecked = Date.now();
-  } catch (e) {
-    entry.balError = e.message;
+    entry.lastFetch = Date.now();
+  } catch(e) {
+    entry.balErr = e.message;
   }
 }
 
-async function refreshWatchlist() {
+async function refreshAll() {
   if (!watchlist.length) return;
-  await Promise.all(watchlist.map(e => fetchAddressBalance(e)));
+  await Promise.all(watchlist.map(e => fetchWatchAddr(e)));
   renderWatchlist();
-  renderWatchedTxns();
+  renderWatchTxs();
 }
 
 function renderWatchlist() {
-  const el = document.getElementById('watchlist-container');
+  const el = document.getElementById('wl-body');
   if (!watchlist.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">📋</div><div class="empty-msg">Henüz adres eklenmedi</div></div>';
+    el.innerHTML = '<div class="empty"><i>📋</i>Adres ekleyin</div>';
     return;
   }
-  const sorted = [...watchlist].sort((a, b) => (b.bal || 0) - (a.bal || 0));
-  el.innerHTML = sorted.map((w, i) => {
-    const balStr = w.bal != null ? w.bal.toLocaleString('tr-TR', { maximumFractionDigits: 4 }) + ' BTC' : '—';
+  el.innerHTML = watchlist.map(w => {
+    const balStr = w.bal != null ? w.bal.toFixed(4) + ' BTC' : '…';
     const usdStr = w.bal != null && btcPrice ? '$' + fmtUSD(w.bal * btcPrice) : '';
-    return `<div class="watch-item">
-      <div class="watch-rank">${i + 1}</div>
-      <div class="watch-info">
-        <div class="watch-label">${escHtml(w.label)}</div>
-        <div class="watch-addr">
-          <a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="addr-link mono">${shortAddr(w.addr)}</a>
+    return `<div class="wl-item">
+      <div class="wl-info">
+        <div class="wl-lbl">${esc(w.label)}</div>
+        <div class="wl-addr">
+          <a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>
           ${w.txCount != null ? `· ${w.txCount.toLocaleString('tr-TR')} tx` : ''}
-          ${w.balError ? `<span style="color:var(--red);font-size:10px"> · hata</span>` : ''}
         </div>
       </div>
-      <div class="watch-bal">
-        <div class="watch-btc">${balStr}</div>
-        <div class="watch-usd">${usdStr}</div>
+      <div class="wl-bal">
+        <div class="wl-btc">${balStr}</div>
+        <div class="wl-usd">${usdStr}</div>
       </div>
-      <button class="watch-btn-del" onclick="removeAddress('${w.addr}')">✕</button>
+      <button class="wl-del" onclick="removeWatch('${w.addr}')">✕</button>
     </div>`;
   }).join('');
 }
 
-function renderWatchedTxns() {
-  const el = document.getElementById('watched-txns-container');
-  const txns = [];
-  watchlist.forEach(w => {
-    (w.lastTxs || []).forEach(tx => {
-      txns.push({ ...tx, label: w.label, addr: w.addr });
-    });
-  });
-  if (!txns.length) {
-    el.innerHTML = '<div class="empty"><div class="empty-icon">🔍</div><div class="empty-msg">İzleme listesi boş veya işlem yok</div></div>';
-    return;
-  }
-  txns.sort((a, b) => b.time - a.time);
-  el.innerHTML = `<table class="tbl">
-    <thead><tr>
-      <th>Adres</th>
-      <th>Zaman</th>
-      <th>Net Değişim</th>
-      <th>Tx</th>
-    </tr></thead>
-    <tbody>${txns.slice(0, 30).map(tx => `
-      <tr>
-        <td><span class="mono" style="color:var(--text)">${escHtml(tx.label)}</span></td>
-        <td style="color:var(--muted)">${fmtTimeAgo(tx.time)}</td>
-        <td>
-          <span class="${tx.net >= 0 ? 'dir-in' : 'dir-out'} mono">
-            ${tx.net >= 0 ? '+' : ''}${tx.net.toFixed(6)} BTC
-          </span>
-          <div class="amount-usd">${btcPrice ? fmtUSD(Math.abs(tx.net) * btcPrice, true) : ''}</div>
-        </td>
-        <td><a href="https://blockchair.com/bitcoin/transaction/${tx.hash}" target="_blank" class="addr-link mono">${tx.hash.slice(0, 8)}… ↗</a></td>
-      </tr>`).join('')}
-    </tbody>
-  </table>`;
+function renderWatchTxs() {
+  const el = document.getElementById('wl-txs');
+  const all = [];
+  watchlist.forEach(w => (w.txs || []).forEach(tx => all.push({ ...tx, label: w.label })));
+  if (!all.length) { el.innerHTML = '<div class="empty"><i>🔍</i>İşlem yok</div>'; return; }
+  all.sort((a,b) => b.time - a.time);
+  el.innerHTML = all.slice(0,20).map(tx => {
+    const col = tx.net >= 0 ? 'var(--green)' : 'var(--red)';
+    return `<div class="rtx-row">
+      <div class="rtx-lbl">${esc(tx.label)}</div>
+      <div class="rtx-net" style="color:${col}">${tx.net >= 0 ? '+' : ''}${tx.net.toFixed(4)} BTC</div>
+      <div class="rtx-time">${timeAgo(tx.time)}</div>
+      <a class="mono al" href="https://blockchair.com/bitcoin/transaction/${tx.hash}" target="_blank" style="font-size:10px">↗</a>
+    </div>`;
+  }).join('');
 }
 
-/* ═══════════════════════════════════════════
-   AUTO REFRESH
-═══════════════════════════════════════════ */
-function startAutoRefresh() {
-  if (alertIntervalId) clearInterval(alertIntervalId);
-  const ms = (config.intervalMin || 5) * 60 * 1000;
-  alertIntervalId = setInterval(loadWhaleAlerts, ms);
+/* ─── FILTER ─── */
+function setFilter(btn, dir) {
+  filterDir = dir;
+  document.querySelectorAll('.fchip').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTxTable();
 }
 
-/* ═══════════════════════════════════════════
-   HELPERS
-═══════════════════════════════════════════ */
-function shortAddr(addr) {
-  if (!addr || addr.length < 12) return addr || '?';
-  return addr.slice(0, 6) + '…' + addr.slice(-4);
+function clearTxList() {
+  txList = [];
+  statsIn = 0; statsOut = 0; statsTotal = 0;
+  exFlows = {};
+  document.getElementById('s-in').textContent = '0';
+  document.getElementById('s-out').textContent = '0';
+  document.getElementById('s-total').textContent = '0';
+  renderTxTable();
+  renderExFlow();
 }
 
-function fmtUSD(v, withSign) {
-  if (v >= 1e9) return (v / 1e9).toFixed(2) + 'B';
-  if (v >= 1e6) return (v / 1e6).toFixed(2) + 'M';
-  if (v >= 1e3) return (v / 1e3).toFixed(1) + 'K';
-  return '$' + v.toFixed(0);
+function rerenderUSD() {
+  txList.forEach(t => { t.usd = t.btc * btcPrice; });
+  renderTxTable();
 }
 
-function fmtTimeAgo(ts) {
-  const s = Math.floor((Date.now() - ts) / 1000);
-  if (s < 60) return s + 'sn önce';
-  if (s < 3600) return Math.floor(s / 60) + 'dk önce';
-  if (s < 86400) return Math.floor(s / 3600) + 'sa önce';
-  return Math.floor(s / 86400) + 'g önce';
+/* ─── HELPERS ─── */
+function shortAddr(a) {
+  if (!a || a.length < 12) return a || '?';
+  return a.slice(0,6) + '…' + a.slice(-4);
 }
-
-function isValidBTCAddr(addr) {
-  return /^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(addr) ||
-         /^bc1[a-z0-9]{39,59}$/i.test(addr);
+function fmtUSD(v) {
+  if (v >= 1e9) return (v/1e9).toFixed(2) + 'B';
+  if (v >= 1e6) return (v/1e6).toFixed(2) + 'M';
+  if (v >= 1e3) return (v/1e3).toFixed(1) + 'K';
+  return v.toFixed(0);
 }
-
-function escHtml(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+function timeAgo(ts) {
+  const s = Math.floor((Date.now()-ts)/1000);
+  if (s < 60) return s + 'sn';
+  if (s < 3600) return Math.floor(s/60) + 'dk';
+  if (s < 86400) return Math.floor(s/3600) + 'sa';
+  return Math.floor(s/86400) + 'g';
 }
-
-function toast(msg, type = '') {
+function isValidBTC(a) {
+  return /^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a) || /^bc1[a-z0-9]{39,59}$/i.test(a);
+}
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function toast(msg, type='') {
   const t = document.createElement('div');
   t.className = 'toast ' + type;
   t.textContent = msg;
-  document.getElementById('toast-container').appendChild(t);
+  document.getElementById('toasts').appendChild(t);
   setTimeout(() => t.remove(), 4000);
 }
 
-/* ═══════════════════════════════════════════
-   KEYBOARD
-═══════════════════════════════════════════ */
-document.getElementById('new-addr').addEventListener('keydown', e => {
-  if (e.key === 'Enter') addAddress();
-});
+document.getElementById('wl-addr').addEventListener('keydown', e => { if(e.key==='Enter') addWatch(); });
 
-/* ═══════════════════════════════════════════
-   START
-═══════════════════════════════════════════ */
 init();
 </script>
-
 </body>
 </html>

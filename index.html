@@ -90,6 +90,21 @@
       border:1px solid var(--bd2);background:none;color:var(--mut);transition:all .15s}
     .fchip.on{background:rgba(247,147,26,.12);border-color:rgba(247,147,26,.35);color:var(--acc)}
 
+    /* Heuristic sub-badge */
+    .sub-badge{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:10px;
+      font-size:9px;font-weight:600;white-space:nowrap;margin-top:3px;border:1px solid}
+    .sb-consolidate{color:#94a3b8;border-color:rgba(148,163,184,.25);background:rgba(148,163,184,.07)}
+    .sb-batch{color:#fb923c;border-color:rgba(251,146,60,.25);background:rgba(251,146,60,.07)}
+    .sb-transit{color:#64748b;border-color:rgba(100,116,139,.25);background:rgba(100,116,139,.07)}
+    .sb-miner{color:#fbbf24;border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.07)}
+    .sb-inst{color:#60a5fa;border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.07)}
+    .sb-unknown{color:#5c6070;border-color:rgba(92,96,112,.2);background:rgba(92,96,112,.05)}
+
+    /* Confidence bar */
+    .conf-wrap{display:flex;align-items:center;gap:5px;margin-top:2px}
+    .conf-bar{height:2px;border-radius:1px;transition:width .4s}
+    .conf-label{font-size:9px;color:var(--mut)}
+
     .g2{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:14px}
     .panel{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
     .ph{padding:11px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
@@ -99,7 +114,7 @@
     .tbl{width:100%;border-collapse:collapse}
     .tbl th{padding:8px 12px;text-align:left;font-size:10px;text-transform:uppercase;
       letter-spacing:.5px;color:var(--mut);border-bottom:1px solid var(--bd);white-space:nowrap}
-    .tbl td{padding:8px 12px;border-bottom:1px solid var(--bd);vertical-align:middle}
+    .tbl td{padding:7px 12px;border-bottom:1px solid var(--bd);vertical-align:top}
     .tbl tr:last-child td{border-bottom:none}
     .tbl tr.new-tx td{animation:flash .6s ease}
     @keyframes flash{from{background:rgba(247,147,26,.1)}to{background:none}}
@@ -118,6 +133,7 @@
     .b-out{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.2)}
     .b-w2w{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
     .b-ex{background:rgba(247,147,26,.1);color:var(--acc);border:1px solid rgba(247,147,26,.2)}
+    .b-noise{background:rgba(92,96,112,.1);color:var(--mut);border:1px solid rgba(92,96,112,.18)}
     .amt-btc{font-family:var(--mono);font-weight:700;color:var(--acc);font-size:12px}
     .amt-usd{font-size:10px;color:var(--mut);margin-top:1px}
 
@@ -163,6 +179,21 @@
     .rtx-net{font-family:var(--mono);font-weight:700;white-space:nowrap}
     .rtx-time{color:var(--mut);white-space:nowrap;margin-left:auto}
 
+    /* Noise filter toggle */
+    .noise-toggle{display:flex;align-items:center;gap:7px;font-size:11px}
+    .toggle-track{width:34px;height:18px;border-radius:9px;background:var(--bg3);border:1px solid var(--bd2);
+      cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+    .toggle-track.on{background:rgba(247,147,26,.35);border-color:rgba(247,147,26,.5)}
+    .toggle-knob{position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;
+      background:var(--mut);transition:all .2s}
+    .toggle-track.on .toggle-knob{left:18px;background:var(--acc)}
+
+    /* Heuristic legend panel */
+    .legend-panel{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);
+      padding:12px 16px;margin-bottom:14px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+    .legend-panel .pt{margin-right:8px}
+    .legend-sep{width:1px;height:16px;background:var(--bd2)}
+
     @keyframes alertPulse{0%{box-shadow:0 0 0 0 rgba(247,147,26,.6)}70%{box-shadow:0 0 0 10px rgba(247,147,26,0)}100%{box-shadow:0 0 0 0 rgba(247,147,26,0)}}
     .alert-pulse{animation:alertPulse 1s ease}
 
@@ -199,8 +230,8 @@
     ℹ️&nbsp;<span>
       <strong>5 bağımsız veri kaynağı — API anahtarı gerekmez.</strong>
       WebSocket havuzu: <strong>blockchain.info</strong> · <strong>mempool.space</strong> · <strong>Blockstream</strong> · <strong>mempool.bisq</strong> · <strong>mempool.emzy</strong>.
-      Borsa tespiti: yerel önbellek + Blockchair batch API (günde 1400 istek, akıllı yönetim).
-      Fiyat: <strong>CoinGecko</strong> (60sn, otomatik fallback ile Binance API).
+      Borsa tespiti: yerel önbellek + Blockchair batch API. Fiyat: <strong>CoinGecko</strong> (otomatik fallback).
+      <strong>Heuristic motor:</strong> input konsolidasyon, toplu ödeme, transit, miner ve kurumsal pattern tespiti.
     </span>
   </div>
 
@@ -215,6 +246,24 @@
     <div class="budget-pill">💾 Önbellek: <span id="cache-lbl" style="color:var(--purple);margin-left:4px">0 adres</span></div>
     <div class="budget-pill">🔁 Dedup: <span id="dedup-lbl" style="color:var(--mut);margin-left:4px">0</span></div>
     <div class="budget-pill">📡 Aktif Kaynak: <span id="active-src-lbl" style="color:var(--green);margin-left:4px;font-weight:700">0/5</span></div>
+    <div class="budget-pill">🔍 Heuristic: <span id="h-classified" style="color:var(--yellow);margin-left:4px">0</span> sınıflandırıldı</div>
+  </div>
+
+  <!-- Heuristic legend -->
+  <div class="legend-panel">
+    <span class="pt" style="color:var(--mut)">TX Tipi:</span>
+    <span class="sub-badge sb-inst">🏛 Kurumsal</span>
+    <span class="sub-badge sb-miner">⛏ Miner/Pool</span>
+    <span class="sub-badge sb-batch">📦 Toplu Ödeme</span>
+    <span class="sub-badge sb-consolidate">🔗 Konsolidasyon</span>
+    <span class="sub-badge sb-transit">🔄 Transit</span>
+    <span class="sub-badge sb-unknown" style="color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)">🐋 Gerçek Whale</span>
+    <div class="legend-sep"></div>
+    <div class="noise-toggle">
+      <div class="toggle-track" id="noise-toggle" onclick="toggleNoise()"><div class="toggle-knob"></div></div>
+      <span>Gürültüyü Gizle</span>
+    </div>
+    <span style="font-size:10px;color:var(--mut);margin-left:4px">(transit, konsolidasyon, toplu ödeme)</span>
   </div>
 
   <div class="stats">
@@ -313,6 +362,9 @@
 <div id="chart-tip"></div>
 
 <script>
+// ═══════════════════════════════════════════════════════
+// KNOWN EXCHANGE ADDRESSES
+// ═══════════════════════════════════════════════════════
 const KNOWN_EX = {
   '34xp4vrocgjym3xr7ycvpfhocnxv4twseo':'Binance',
   '3m219kp7vlq0lbux7s0qfvxhsajfnbfqk2':'Binance',
@@ -332,6 +384,117 @@ const KNOWN_EX = {
   '1fsznjqy53p2uyy3jb1mtcvyqrb5gsmupbp':'KuCoin',
 };
 
+// ═══════════════════════════════════════════════════════
+// HEURISTIC ENGINE
+// Classifies TX type without exchange label, using:
+// - input count (consolidation)
+// - output count (batch payment / miner coinbase-style)
+// - address type patterns (SegWit institutional)
+// - output uniformity (round amounts)
+// - address reuse pattern
+// Returns: { type, label, emoji, confidence, cssClass, isNoise }
+// ═══════════════════════════════════════════════════════
+function classifyWhale(tx) {
+  const fromAddrs = tx.fromAll || [];
+  const toAddrs   = tx.toAll   || [];
+  const inputCount  = fromAddrs.length;
+  const outputCount = toAddrs.length;
+  const btc = tx.btc;
+
+  let score = {};
+
+  // ── 1. MINER / POOL DETECTION ──
+  // Coinbase-style: single input (coinbase), many outputs, round BTC amounts
+  // Mempool txs won't have coinbase marker but we can heuristic:
+  // Pool payouts: 1-3 inputs, 50-500 outputs, amounts often in uniform chunks
+  if (inputCount <= 3 && outputCount >= 30) {
+    score.miner = 60 + Math.min(outputCount, 200) / 5;
+  }
+
+  // ── 2. UTXO CONSOLIDATION ──
+  // Many inputs → 1-2 outputs: classic consolidation
+  // Exchanges and institutional players do this regularly
+  if (inputCount >= 8 && outputCount <= 3) {
+    const ratio = inputCount / Math.max(outputCount, 1);
+    score.consolidate = 50 + Math.min(ratio * 3, 45);
+  }
+  if (inputCount >= 20 && outputCount <= 2) {
+    score.consolidate = (score.consolidate || 0) + 25;
+  }
+
+  // ── 3. BATCH PAYMENT ──
+  // Exchange hot wallet payouts: 1-3 inputs, 10-50 outputs
+  if (inputCount <= 3 && outputCount >= 10 && outputCount < 30) {
+    score.batch = 55 + outputCount;
+  }
+  if (inputCount <= 5 && outputCount >= 5 && outputCount < 10) {
+    score.batch = (score.batch || 0) + 30;
+  }
+
+  // ── 4. TRANSIT / PASS-THROUGH ──
+  // 1 input → 1 output, large amount: typically exchange internal move
+  // or OTC settlement or custodian transfer
+  if (inputCount === 1 && outputCount === 1) {
+    score.transit = 60;
+    if (btc >= 500) score.transit = 80;
+    if (btc >= 1000) score.transit = 90;
+  }
+  // 2-3 inputs, 2 outputs (typical change tx but very large = likely institutional)
+  if (inputCount <= 3 && outputCount === 2 && btc >= 300) {
+    score.transit = (score.transit || 0) + 35;
+  }
+
+  // ── 5. INSTITUTIONAL SEGWIT ──
+  // bc1q... (P2WPKH) or bc1p... (Taproot) addresses: mostly institutional/custodial
+  const segwitInputs  = fromAddrs.filter(a => a && a.startsWith('bc1')).length;
+  const segwitOutputs = toAddrs.filter(a => a && a.startsWith('bc1')).length;
+  const segwitRatio   = (segwitInputs + segwitOutputs) / Math.max(inputCount + outputCount, 1);
+  if (segwitRatio >= 0.8 && btc >= 100) {
+    score.inst = 40 + segwitRatio * 30;
+    // boost if taproot
+    const taprootCount = [...fromAddrs, ...toAddrs].filter(a => a && a.startsWith('bc1p')).length;
+    if (taprootCount > 0) score.inst += 15;
+  }
+
+  // ── 6. ADDRESS PATTERN DIVERSITY ──
+  // Mix of legacy (1...) + SegWit: likely exchange sweep
+  const legacyCount = [...fromAddrs, ...toAddrs].filter(a => a && a.startsWith('1')).length;
+  const p2shCount   = [...fromAddrs, ...toAddrs].filter(a => a && a.startsWith('3')).length;
+  if (legacyCount > 0 && segwitInputs + segwitOutputs > 0 && inputCount + outputCount >= 5) {
+    score.batch = (score.batch || 0) + 15; // mixed type = likely exchange sweep
+  }
+
+  // ── WINNER ──
+  const winners = Object.entries(score).sort((a,b) => b[1]-a[1]);
+  if (!winners.length || winners[0][1] < 40) {
+    // No strong signal: genuine whale
+    return {
+      type: 'unknown',
+      label: 'Gerçek Whale?',
+      emoji: '🐋',
+      confidence: 0,
+      cssClass: 'sb-unknown',
+      confColor: '#a78bfa',
+      isNoise: false
+    };
+  }
+
+  const [winner, conf] = winners[0];
+  const capped = Math.min(conf, 99);
+  const map = {
+    miner:       { label:'Miner/Pool',       emoji:'⛏', cssClass:'sb-miner',       confColor:'#fbbf24', isNoise:true  },
+    consolidate: { label:'UTXO Konsolidasyon',emoji:'🔗', cssClass:'sb-consolidate', confColor:'#94a3b8', isNoise:true  },
+    batch:       { label:'Toplu Ödeme',       emoji:'📦', cssClass:'sb-batch',       confColor:'#fb923c', isNoise:true  },
+    transit:     { label:'Transit/OTC',       emoji:'🔄', cssClass:'sb-transit',     confColor:'#64748b', isNoise:true  },
+    inst:        { label:'Kurumsal SegWit',   emoji:'🏛', cssClass:'sb-inst',        confColor:'#60a5fa', isNoise:false },
+  };
+
+  return { type: winner, ...map[winner], confidence: capped };
+}
+
+// ═══════════════════════════════════════════════════════
+// WS SOURCES
+// ═══════════════════════════════════════════════════════
 const WS_SOURCES = [
   {
     id: 'bc', name: 'blockchain.info',
@@ -389,13 +552,19 @@ function handleMempoolMsg(data, srcId) {
         hash: tx.txid,
         inputs: (tx.vin||[]).map(i => ({prev_out:{addr:i.prevout?.scriptpubkey_address,value:i.prevout?.value||0}})),
         out:   (tx.vout||[]).map(o => ({addr:o.scriptpubkey_address})),
-        _sat:  totalIn
+        _sat:  totalIn,
+        // Preserve raw counts for heuristic
+        _inputCount:  (tx.vin||[]).length,
+        _outputCount: (tx.vout||[]).length,
       };
       handleTx(fakeX, srcId);
     });
   } catch {}
 }
 
+// ═══════════════════════════════════════════════════════
+// ADDRESS CACHE
+// ═══════════════════════════════════════════════════════
 const ADDR_CACHE = new Map();
 const CACHE_TTL  = 10 * 60 * 1000;
 
@@ -417,6 +586,9 @@ function cacheClean() {
 }
 setInterval(cacheClean, 5 * 60 * 1000);
 
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
 let btcPrice   = 0;
 let txList     = [];
 let seenHashes = new Set();
@@ -425,6 +597,8 @@ let exFlows    = {};
 let statsIn = 0, statsOut = 0, statsTotal = 0, inVol = 0, outVol = 0;
 let watchlist  = [];
 let filterDir  = 'all';
+let hideNoise  = false;
+let hClassified = 0;
 
 let batchQueue   = [];
 let batchBusy    = false;
@@ -442,6 +616,9 @@ let volumeHistory = [];
 let chartVolBucket = { btc: 0 };
 const CHART_MAX   = 60;
 
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
 function init() {
   renderSourceGrid();
   loadWatchlist();
@@ -452,6 +629,13 @@ function init() {
   setInterval(tickVolBucket,  60000);
   setInterval(updateActiveSrcLabel, 2000);
   initChart();
+}
+
+function toggleNoise() {
+  hideNoise = !hideNoise;
+  const t = document.getElementById('noise-toggle');
+  t.classList.toggle('on', hideNoise);
+  renderTxTable();
 }
 
 function renderSourceGrid() {
@@ -493,8 +677,7 @@ function connectSource(src) {
     const ws = new WebSocket(src.url);
     src.ws = ws;
     ws.onopen = () => {
-      src.status = 'ok';
-      src.retryDelay = 3000;
+      src.status = 'ok'; src.retryDelay = 3000;
       updateSourceCard(src);
       toast(src.name + ' bağlı', 'ok');
       try { src.onOpen(ws); } catch {}
@@ -505,21 +688,15 @@ function connectSource(src) {
       try { src.onMessage(e.data); } catch {}
     };
     ws.onclose = () => {
-      src.status = 'err';
-      src.ws = null;
+      src.status = 'err'; src.ws = null;
       updateSourceCard(src);
       const delay = Math.min(src.retryDelay, 60000);
       src.retryDelay = delay * 2;
       setTimeout(() => connectSource(src), delay);
     };
-    ws.onerror = () => {
-      src.status = 'err';
-      updateSourceCard(src);
-      ws.close();
-    };
+    ws.onerror = () => { src.status = 'err'; updateSourceCard(src); ws.close(); };
   } catch(e) {
-    src.status = 'err';
-    updateSourceCard(src);
+    src.status = 'err'; updateSourceCard(src);
     setTimeout(() => connectSource(src), src.retryDelay);
   }
 }
@@ -538,7 +715,7 @@ function toggleSound() {
 function playAlert(type) {
   if (!soundEnabled || !audioCtx) return;
   try {
-    const osc  = audioCtx.createOscillator();
+    const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain); gain.connect(audioCtx.destination);
     if (type === 'whale') {
@@ -565,15 +742,13 @@ async function fetchPrice() {
     const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
     const d = await r.json();
     if (!d.bitcoin?.usd) throw new Error('bad');
-    applyPrice(d.bitcoin.usd, d.bitcoin.usd_24h_change, 'CoinGecko');
-    return;
+    applyPrice(d.bitcoin.usd, d.bitcoin.usd_24h_change, 'CoinGecko'); return;
   } catch {}
   try {
     const r = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
     const d = await r.json();
     if (!d.lastPrice) throw new Error('bad');
-    applyPrice(parseFloat(d.lastPrice), parseFloat(d.priceChangePercent), 'Binance');
-    return;
+    applyPrice(parseFloat(d.lastPrice), parseFloat(d.priceChangePercent), 'Binance'); return;
   } catch {}
   try {
     const r = await fetch('https://api.coinpaprika.com/v1/tickers/btc-bitcoin');
@@ -634,11 +809,21 @@ function handleTx(tx, source) {
     usd: btc * btcPrice,
     from: fromAddrs[0]||'?', fromAll: fromAddrs,
     to:   toAddrs[0]||'?',   toAll:   toAddrs,
+    // preserve raw counts from mempool format
+    inputCount:  tx._inputCount  || fromAddrs.length,
+    outputCount: tx._outputCount || toAddrs.length,
     fromEx, toEx,
     dir: classifyDir(fromEx, toEx),
     isNew: true, source,
     lookupDone: !!(fromEx || toEx)
   };
+
+  // Run heuristic classification
+  entry.heuristic = classifyWhale(entry);
+  if (entry.heuristic.type !== 'unknown') {
+    hClassified++;
+    document.getElementById('h-classified').textContent = hClassified;
+  }
 
   txList.unshift(entry);
   if (txList.length > TX_MAX) txList.pop();
@@ -686,8 +871,8 @@ async function flushBatchQueue() {
       const inputs  = txData.inputs  || [];
       const outputs = txData.outputs || [];
       const labels  = d.context?.labels || {};
-      const fromEx = extractExLabel(inputs.map(i  => ({addr:i.recipient, label:labels[i.recipient]})));
-      const toEx   = extractExLabel(outputs.map(o => ({addr:o.recipient, label:labels[o.recipient]})));
+      const fromEx  = extractExLabel(inputs.map(i  => ({addr:i.recipient,label:labels[i.recipient]})));
+      const toEx    = extractExLabel(outputs.map(o => ({addr:o.recipient,label:labels[o.recipient]})));
       inputs.forEach(i  => { if(i.recipient) cacheSet(i.recipient,  fromEx||null); });
       outputs.forEach(o => { if(o.recipient) cacheSet(o.recipient,  toEx||null);   });
       const entry = txList.find(t => t.hash === item.hash);
@@ -695,6 +880,8 @@ async function flushBatchQueue() {
         entry.fromEx = fromEx || entry.fromEx;
         entry.toEx   = toEx   || entry.toEx;
         entry.dir    = classifyDir(entry.fromEx, entry.toEx);
+        // Re-run heuristic with updated exchange info
+        entry.heuristic = classifyWhale(entry);
         updateStats(entry);
         renderTxTable();
       }
@@ -752,7 +939,7 @@ function updateStats(entry) {
   }
   const ex = entry.toEx || entry.fromEx;
   if (ex) {
-    if (!exFlows[ex]) exFlows[ex] = {in:0, out:0};
+    if (!exFlows[ex]) exFlows[ex] = {in:0,out:0};
     if (entry.dir === 'in')  exFlows[ex].in  += entry.usd;
     if (entry.dir === 'out') exFlows[ex].out += entry.usd;
     renderExFlow();
@@ -760,15 +947,17 @@ function updateStats(entry) {
 }
 
 function triggerAlerts(entry) {
+  // Don't alert for noise TX
+  if (entry.heuristic?.isNoise && entry.dir === 'w2w') return;
   const panel = document.getElementById('tx-panel');
   panel.classList.remove('alert-pulse');
   void panel.offsetWidth;
   panel.classList.add('alert-pulse');
-  if (entry.dir === 'in')        playAlert('in');
-  else if (entry.dir === 'out')  playAlert('out');
-  else                           playAlert('whale');
+  if (entry.dir === 'in')       playAlert('in');
+  else if (entry.dir === 'out') playAlert('out');
+  else                          playAlert('whale');
   const minBtc = parseFloat(document.getElementById('f-min').value) || 100;
-  if (entry.btc >= minBtc * 2) {
+  if (entry.btc >= minBtc * 2 && !entry.heuristic?.isNoise) {
     toast(`🐋 ${entry.btc.toFixed(0)} BTC — ${dirLabel(entry.dir)}${entry.fromEx||entry.toEx?' · '+(entry.fromEx||entry.toEx):''}`, 'whale');
   }
 }
@@ -778,7 +967,11 @@ function dirLabel(d) {
 }
 
 function renderTxTable() {
-  let list = txList.filter(t => filterDir === 'all' || t.dir === filterDir);
+  let list = txList.filter(t => {
+    if (filterDir !== 'all' && t.dir !== filterDir) return false;
+    if (hideNoise && t.heuristic?.isNoise && t.dir === 'w2w') return false;
+    return true;
+  });
   if (document.getElementById('f-sort').value === 'amt') list = [...list].sort((a,b) => b.btc - a.btc);
   document.getElementById('tx-count').textContent = list.length;
   if (!list.length) {
@@ -796,23 +989,52 @@ function renderTxTable() {
       : `<a class="mono al" href="https://blockchair.com/bitcoin/address/${t.to}" target="_blank">${shortAddr(t.to)}</a>`;
     const cls = t.isNew ? 'new-tx' : '';
     t.isNew = false;
+
+    const h = t.heuristic;
+    const heuristicHtml = buildHeuristicHtml(t, h);
+
     return `<tr class="${cls}">
-      <td style="color:var(--mut);white-space:nowrap">${timeAgo(t.time)}</td>
-      <td><div class="amt-btc">${t.btc.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:4})} BTC</div>
-          <div class="amt-usd">${t.usd ? '$'+fmtUSD(t.usd) : '—'}</div></td>
-      <td>${dirBadgeHtml(t)}</td>
-      <td>${fromLabel}</td>
-      <td>${toLabel}</td>
-      <td><span class="${srcCls}">${t.source}</span></td>
-      <td><a class="mono al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,8)}… ↗</a></td>
+      <td style="color:var(--mut);white-space:nowrap;vertical-align:top;padding-top:10px">${timeAgo(t.time)}</td>
+      <td style="vertical-align:top;padding-top:9px">
+        <div class="amt-btc">${t.btc.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:4})} BTC</div>
+        <div class="amt-usd">${t.usd ? '$'+fmtUSD(t.usd) : '—'}</div>
+      </td>
+      <td style="vertical-align:top;padding-top:9px">${dirBadgeHtml(t)}${heuristicHtml}</td>
+      <td style="vertical-align:top;padding-top:9px">${fromLabel}</td>
+      <td style="vertical-align:top;padding-top:9px">${toLabel}</td>
+      <td style="vertical-align:top;padding-top:9px"><span class="${srcCls}">${t.source}</span></td>
+      <td style="vertical-align:top;padding-top:9px"><a class="mono al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,8)}… ↗</a></td>
     </tr>`;
   }).join('');
+}
+
+function buildHeuristicHtml(t, h) {
+  if (!h) return '';
+  // If exchange-identified, show transit warning only when w2w
+  if (t.dir !== 'w2w' && h.isNoise) {
+    // Still show the badge but smaller, as secondary info
+    return `<div class="sub-badge ${h.cssClass}" style="margin-top:3px">${h.emoji} ${h.label}</div>`;
+  }
+  const confPct = Math.round(h.confidence);
+  const confBar = h.confidence > 0
+    ? `<div class="conf-wrap">
+        <div class="conf-bar" style="width:${confPct}px;max-width:60px;background:${h.confColor}"></div>
+        <span class="conf-label">${confPct}%</span>
+       </div>`
+    : '';
+  // Show input/output count hint
+  const hint = t.inputCount && t.outputCount
+    ? `<div style="font-size:9px;color:var(--mut);margin-top:2px">${t.inputCount} giriş → ${t.outputCount} çıkış</div>`
+    : '';
+  return `<div class="sub-badge ${h.cssClass}" style="margin-top:3px;display:inline-flex">${h.emoji} ${h.label}</div>${confBar}${hint}`;
 }
 
 function dirBadgeHtml(t) {
   if (t.dir === 'in')    return `<span class="b b-in">↓ Borsa Girişi${t.toEx ? ' · '+t.toEx : ''}</span>`;
   if (t.dir === 'out')   return `<span class="b b-out">↑ Borsa Çıkışı${t.fromEx ? ' · '+t.fromEx : ''}</span>`;
   if (t.dir === 'ex2ex') return `<span class="b b-ex">⇄ Borsa→Borsa</span>`;
+  // w2w: if heuristic says noise, dim it
+  if (t.heuristic?.isNoise) return `<span class="b b-noise">🔄 ${t.heuristic.label}</span>`;
   return `<span class="b b-w2w">🐋 Whale→Whale</span>`;
 }
 
@@ -868,7 +1090,7 @@ function drawChart() {
   const c   = document.getElementById('price-canvas');
   const ctx = c.getContext('2d');
   const W = c.width, H = c.height, dpr = devicePixelRatio;
-  ctx.clearRect(0, 0, W, H);
+  ctx.clearRect(0,0,W,H);
   const P = { top:16*dpr, right:12*dpr, bottom:28*dpr, left:60*dpr };
   const pW = W - P.left - P.right, pH = H - P.top - P.bottom;
   ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 1;
@@ -881,7 +1103,7 @@ function drawChart() {
   if (showV && volumeHistory.length > 1) {
     const maxV = Math.max(...volumeHistory.map(d => d.btc), 1);
     const bW   = Math.max(3, (pW/CHART_MAX) - 1);
-    volumeHistory.forEach((d, i) => {
+    volumeHistory.forEach((d,i) => {
       const x  = P.left + (i/(CHART_MAX-1)) * pW;
       const bH = (d.btc/maxV) * pH * 0.4;
       ctx.fillStyle = 'rgba(59,130,246,0.35)';
@@ -890,11 +1112,11 @@ function drawChart() {
   }
   if (showP && priceHistory.length > 1) {
     const prices = priceHistory.map(d => d.price);
-    const minP   = Math.min(...prices) * .9995;
-    const maxP   = Math.max(...prices) * 1.0005;
-    const range  = maxP - minP || 1;
-    const toX    = i => P.left + (i/(priceHistory.length-1)) * pW;
-    const toY    = p => P.top + pH - ((p-minP)/range) * pH;
+    const minP = Math.min(...prices) * .9995;
+    const maxP = Math.max(...prices) * 1.0005;
+    const range = maxP - minP || 1;
+    const toX = i => P.left + (i/(priceHistory.length-1)) * pW;
+    const toY = p => P.top + pH - ((p-minP)/range) * pH;
     const grad = ctx.createLinearGradient(0, P.top, 0, P.top+pH);
     grad.addColorStop(0, 'rgba(247,147,26,.18)');
     grad.addColorStop(1, 'rgba(247,147,26,0)');
@@ -961,7 +1183,6 @@ function removeWatch(addr) {
   watchlist = watchlist.filter(w => w.addr !== addr);
   saveWatchlist(); renderWatchlist(); renderWatchTxs();
 }
-
 async function refreshAllWatchlist() {
   if (!watchlist.length) return;
   for (const entry of watchlist) {
@@ -972,7 +1193,6 @@ async function refreshAllWatchlist() {
   renderWatchTxs();
 }
 
-/* ── YENİ: Bakiye bazlı transit/hot wallet tespiti ── */
 function computeNetFlow(entry) {
   if (!entry.txs || !entry.txs.length) { entry.flow = null; return; }
   const totalIn  = entry.txs.reduce((s,t) => s + (t.net > 0 ? t.net : 0), 0);
@@ -982,25 +1202,16 @@ function computeNetFlow(entry) {
   const inPct    = (totalIn  / total * 100).toFixed(0);
   const outPct   = (totalOut / total * 100).toFixed(0);
   let status, cls, warning = null;
-
   const bal = entry.bal ?? 0;
-
   if (bal < 0.01) {
-    // Neredeyse sıfır bakiye → büyük ihtimalle transit veya hot wallet
-    status  = '🔄 Transit/Hot Wallet';
-    cls     = 'flow-neut';
-    warning = 'transit';
+    status = '🔄 Transit/Hot Wallet'; cls = 'flow-neut'; warning = 'transit';
   } else {
-    if (bal < 1) {
-      // Düşük bakiye: analiz yapılır ama uyarı gösterilir
-      warning = 'small';
-    }
+    if (bal < 1) warning = 'small';
     const ratio = totalIn / (totalOut || 0.0001);
-    if      (ratio > 1.5)  { status = '📈 Biriktiriyor';  cls = 'flow-acc';  }
-    else if (ratio < 0.67) { status = '📉 Boşaltıyor';    cls = 'flow-dist'; }
-    else                   { status = '↔ Nötr';            cls = 'flow-neut'; }
+    if (ratio > 1.5)      { status = '📈 Biriktiriyor'; cls = 'flow-acc';  }
+    else if (ratio < 0.67){ status = '📉 Boşaltıyor';   cls = 'flow-dist'; }
+    else                  { status = '↔ Nötr';           cls = 'flow-neut'; }
   }
-
   entry.flow = { net, totalIn, totalOut, inPct, outPct, status, cls, warning, bal };
 }
 
@@ -1013,8 +1224,8 @@ async function fetchWatchAddr(entry) {
     entry.txCount = d.n_tx;
     entry.txs = (d.txs||[]).map(tx => {
       let net = 0;
-      tx.out.forEach(o    => { if (o.addr === entry.addr)             net += o.value; });
-      tx.inputs.forEach(i => { if (i.prev_out?.addr === entry.addr)   net -= i.prev_out.value; });
+      tx.out.forEach(o    => { if (o.addr === entry.addr)           net += o.value; });
+      tx.inputs.forEach(i => { if (i.prev_out?.addr === entry.addr) net -= i.prev_out.value; });
       return { hash: tx.hash, time: tx.time * 1000, net: net / 1e8 };
     });
     entry.lastFetch = Date.now();
@@ -1022,7 +1233,6 @@ async function fetchWatchAddr(entry) {
     computeNetFlow(entry);
     return;
   } catch {}
-
   if (apiUsed < API_MAX) {
     try {
       const r = await fetch(`https://api.blockchair.com/bitcoin/dashboards/address/${entry.addr}?transaction_details=true&limit=10`);
@@ -1055,13 +1265,10 @@ function renderWatchlist() {
   el.innerHTML = watchlist.map(w => {
     const balStr = w.bal != null ? w.bal.toFixed(4) + ' BTC' : (w.balErr ? '⚠ '+w.balErr : '…');
     const usdStr = w.bal != null && btcPrice ? '$' + fmtUSD(w.bal * btcPrice) : '';
-
     let flowHtml = '';
     if (w.flow) {
       const f = w.flow;
       const netSign = f.net >= 0 ? '+' : '';
-
-      // Bakiyeye göre uyarı bandı
       const warningHtml = f.warning === 'transit'
         ? `<div style="font-size:9px;color:var(--mut);margin-top:4px;padding:3px 7px;
               background:rgba(92,96,112,.1);border-radius:4px;border-left:2px solid var(--mut)">
@@ -1073,7 +1280,6 @@ function renderWatchlist() {
               ⚡ Düşük bakiye (${f.bal.toFixed(4)} BTC) — analiz sınırlı güvenilirlikte.
              </div>`
           : '';
-
       flowHtml = `
         <div style="margin-top:6px">
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
@@ -1096,7 +1302,6 @@ function renderWatchlist() {
     } else if (w.lastFetch) {
       flowHtml = '<div style="font-size:10px;color:var(--mut);margin-top:4px">İşlem bulunamadı</div>';
     }
-
     return `<div class="wl-item" style="flex-direction:column;align-items:stretch;gap:0">
       <div style="display:flex;align-items:center;gap:10px">
         <div class="wl-info">
@@ -1143,11 +1348,12 @@ function setFilter(btn, dir) {
 function clearAll() {
   txList = []; seenHashes.clear(); dedupCount = 0;
   statsIn = 0; statsOut = 0; statsTotal = 0; inVol = 0; outVol = 0; exFlows = {};
-  batchQueue = []; ADDR_CACHE.clear();
+  batchQueue = []; ADDR_CACHE.clear(); hClassified = 0;
   ['s-in','s-out','s-total'].forEach(id => document.getElementById(id).textContent = '0');
   ['s-in-vol','s-out-vol'].forEach(id => document.getElementById(id).textContent = '—');
   document.getElementById('dedup-lbl').textContent = '0';
   document.getElementById('cache-lbl').textContent = '0 adres';
+  document.getElementById('h-classified').textContent = '0';
   renderTxTable(); renderExFlow();
 }
 function rerenderUSD() {

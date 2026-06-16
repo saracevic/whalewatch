@@ -43,14 +43,23 @@
       color: var(--acc); background: rgba(247,147,26,0.1);
       border: 1px solid rgba(247,147,26,0.22); padding: 4px 10px; border-radius: 20px;
     }
-    .live-dot {
-      display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--green);
-    }
+    .live-dot { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--green); }
     .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+    .dot.yellow { background: var(--yellow); }
+    .dot.red { background: var(--red); animation: none; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
+    /* SOUND TOGGLE */
+    .sound-btn {
+      background: none; border: 1px solid var(--bd2); color: var(--mut);
+      padding: 4px 10px; border-radius: 20px; cursor: pointer; font-size: 11px;
+      transition: all .15s;
+    }
+    .sound-btn.on { border-color: rgba(34,197,94,.35); color: var(--green); }
+    .sound-btn:hover { border-color: var(--acc); color: var(--acc); }
+
     /* LAYOUT */
-    .wrap { max-width: 1300px; margin: 0 auto; padding: 18px 20px 60px; }
+    .wrap { max-width: 1340px; margin: 0 auto; padding: 18px 20px 60px; }
 
     /* INFO BANNER */
     .info-banner {
@@ -61,19 +70,53 @@
     }
     .info-banner strong { color: var(--tx); }
 
+    /* SOURCE DOTS */
+    .src-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+    .src-pill {
+      display: flex; align-items: center; gap: 6px; font-size: 11px;
+      background: var(--bg2); border: 1px solid var(--bd); border-radius: 20px; padding: 4px 10px;
+    }
+    .src-pill .dot { width: 5px; height: 5px; }
+
     /* STATS */
     .stats { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; margin-bottom: 16px; }
     .stat { background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--r); padding: 13px 15px; }
     .stat-l { font-size: 10px; text-transform: uppercase; letter-spacing: .7px; color: var(--mut); margin-bottom: 5px; }
     .stat-v { font-size: 20px; font-weight: 700; font-family: var(--mono); letter-spacing: -.5px; }
     .stat-s { font-size: 10px; color: var(--mut); margin-top: 3px; }
-    .c-acc { color: var(--acc); } .c-red { color: var(--red); } .c-green { color: var(--green); }
-    .c-blue { color: var(--blue); } .c-yellow { color: var(--yellow); }
+    .c-acc{color:var(--acc)} .c-red{color:var(--red)} .c-green{color:var(--green)}
+    .c-blue{color:var(--blue)} .c-yellow{color:var(--yellow)}
+
+    /* CHART PANEL */
+    .chart-panel { background: var(--bg2); border: 1px solid var(--bd); border-radius: var(--r); margin-bottom: 14px; overflow: hidden; }
+    .chart-ph {
+      padding: 11px 14px; border-bottom: 1px solid var(--bd);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .chart-tabs { display: flex; gap: 6px; }
+    .ctab {
+      padding: 3px 9px; border-radius: 6px; font-size: 11px; cursor: pointer;
+      border: 1px solid var(--bd2); background: none; color: var(--mut); transition: all .15s;
+    }
+    .ctab.on { background: rgba(247,147,26,.12); border-color: rgba(247,147,26,.35); color: var(--acc); }
+    #price-canvas { width: 100%; height: 160px; display: block; cursor: crosshair; }
+    .chart-legend {
+      display: flex; gap: 14px; padding: 6px 14px 10px;
+      font-size: 10px; color: var(--mut);
+    }
+    .chart-legend span { display: flex; align-items: center; gap: 4px; }
+    .leg-dot { width: 8px; height: 3px; border-radius: 2px; display: inline-block; }
+
+    /* TOOLTIP */
+    #chart-tip {
+      position: fixed; pointer-events: none; display: none;
+      background: var(--bg3); border: 1px solid var(--bd2); border-radius: 7px;
+      padding: 7px 10px; font-size: 11px; z-index: 200;
+    }
+    #chart-tip strong { color: var(--acc); }
 
     /* FILTER BAR */
-    .fbar {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap;
-    }
+    .fbar { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
     .fbar label { font-size: 11px; color: var(--mut); }
     .fbar select, .fbar input[type=number] {
       background: var(--bg2); border: 1px solid var(--bd2); color: var(--tx);
@@ -97,17 +140,11 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .pt { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .6px; color: var(--mut); }
-    .pt-count {
-      background: var(--bg3); border: 1px solid var(--bd2);
-      padding: 2px 7px; border-radius: 10px; font-size: 10px; color: var(--tx); margin-left: 6px;
-    }
+    .pt-count { background: var(--bg3); border: 1px solid var(--bd2); padding: 2px 7px; border-radius: 10px; font-size: 10px; color: var(--tx); margin-left: 6px; }
 
     /* LIVE TX TABLE */
     .tbl { width: 100%; border-collapse: collapse; }
-    .tbl th {
-      padding: 8px 12px; text-align: left; font-size: 10px; text-transform: uppercase;
-      letter-spacing: .5px; color: var(--mut); border-bottom: 1px solid var(--bd); white-space: nowrap;
-    }
+    .tbl th { padding: 8px 12px; text-align: left; font-size: 10px; text-transform: uppercase; letter-spacing: .5px; color: var(--mut); border-bottom: 1px solid var(--bd); white-space: nowrap; }
     .tbl td { padding: 8px 12px; border-bottom: 1px solid var(--bd); vertical-align: middle; }
     .tbl tr:last-child td { border-bottom: none; }
     .tbl tr.new-tx td { animation: flash .6s ease; }
@@ -117,13 +154,17 @@
     .al { color: var(--blue); cursor: pointer; }
     .al:hover { text-decoration: underline; }
 
+    /* SOURCE TAG */
+    .src-tag { font-size: 9px; padding: 1px 5px; border-radius: 4px; border: 1px solid; margin-left: 4px; }
+    .src-bc  { color: #60a5fa; border-color: rgba(96,165,250,.25); background: rgba(96,165,250,.07); }
+    .src-mp  { color: #34d399; border-color: rgba(52,211,153,.25); background: rgba(52,211,153,.07); }
+
     /* BADGES */
     .b { display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 20px; font-size: 10px; font-weight: 700; white-space: nowrap; }
     .b-in  { background: rgba(34,197,94,.12); color: var(--green); border: 1px solid rgba(34,197,94,.2); }
     .b-out { background: rgba(239,68,68,.12); color: var(--red); border: 1px solid rgba(239,68,68,.2); }
     .b-w2w { background: rgba(167,139,250,.1); color: var(--purple); border: 1px solid rgba(167,139,250,.2); }
     .b-ex  { background: rgba(247,147,26,.1); color: var(--acc); border: 1px solid rgba(247,147,26,.2); }
-    .b-size { background: rgba(251,191,36,.1); color: var(--yellow); border: 1px solid rgba(251,191,36,.2); }
 
     /* AMOUNT CELL */
     .amt-btc { font-family: var(--mono); font-weight: 700; color: var(--acc); font-size: 12px; }
@@ -131,10 +172,7 @@
 
     /* SIDEBAR — EXCHANGE FLOW */
     .ex-list { padding: 4px 0; }
-    .ex-row {
-      display: flex; align-items: center; padding: 9px 14px;
-      border-bottom: 1px solid var(--bd);
-    }
+    .ex-row { display: flex; align-items: center; padding: 9px 14px; border-bottom: 1px solid var(--bd); }
     .ex-row:last-child { border-bottom: none; }
     .ex-name { font-size: 12px; font-weight: 600; width: 90px; flex-shrink: 0; }
     .ex-bar-wrap { flex: 1; height: 5px; background: var(--bg); border-radius: 3px; margin: 0 10px; overflow: hidden; }
@@ -143,9 +181,7 @@
     .ex-dir { font-size: 10px; width: 26px; text-align: center; }
 
     /* WATCHLIST */
-    .wl-add {
-      display: flex; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--bd);
-    }
+    .wl-add { display: flex; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--bd); }
     .wl-add input {
       flex: 1; background: var(--bg); border: 1px solid var(--bd2); color: var(--tx);
       padding: 6px 10px; border-radius: 7px; font-family: var(--mono); font-size: 11px; outline: none;
@@ -157,10 +193,7 @@
     .btn-acc:hover { background: #e88310; }
     .btn-ghost { background: none; border: 1px solid var(--bd2); color: var(--tx); }
     .btn-ghost:hover { border-color: var(--acc); color: var(--acc); }
-    .wl-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 14px; border-bottom: 1px solid var(--bd);
-    }
+    .wl-item { display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-bottom: 1px solid var(--bd); }
     .wl-item:last-child { border-bottom: none; }
     .wl-info { flex: 1; min-width: 0; }
     .wl-lbl { font-size: 12px; font-weight: 600; margin-bottom: 1px; }
@@ -168,19 +201,23 @@
     .wl-bal { text-align: right; }
     .wl-btc { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--acc); }
     .wl-usd { font-size: 10px; color: var(--mut); }
-    .wl-change { font-size: 10px; margin-top: 2px; }
     .wl-del { background: none; border: 1px solid var(--bd); color: var(--mut); padding: 3px 7px; border-radius: 6px; cursor: pointer; font-size: 11px; }
     .wl-del:hover { border-color: var(--red); color: var(--red); }
 
     /* RECENT TX for watchlist */
-    .rtx-row {
-      display: flex; align-items: center; gap: 8px;
-      padding: 8px 14px; border-bottom: 1px solid var(--bd); font-size: 11px;
-    }
+    .rtx-row { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--bd); font-size: 11px; }
     .rtx-row:last-child { border-bottom: none; }
     .rtx-lbl { width: 90px; flex-shrink: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .rtx-net { font-family: var(--mono); font-weight: 700; white-space: nowrap; }
     .rtx-time { color: var(--mut); white-space: nowrap; margin-left: auto; }
+
+    /* ALERT PULSE */
+    @keyframes alertPulse {
+      0%   { box-shadow: 0 0 0 0 rgba(247,147,26,.6); }
+      70%  { box-shadow: 0 0 0 10px rgba(247,147,26,0); }
+      100% { box-shadow: 0 0 0 0 rgba(247,147,26,0); }
+    }
+    .alert-pulse { animation: alertPulse 1s ease; }
 
     /* EMPTY / LOAD */
     .empty { text-align: center; padding: 2.5rem 1rem; color: var(--mut); }
@@ -191,13 +228,10 @@
 
     /* TOAST */
     #toasts { position: fixed; bottom: 18px; right: 18px; z-index: 9999; display: flex; flex-direction: column; gap: 7px; }
-    .toast {
-      background: var(--bg3); border: 1px solid var(--bd2); border-radius: 8px;
-      padding: 9px 14px; font-size: 12px; max-width: 300px;
-      animation: tin .2s ease;
-    }
-    .toast.ok { border-color: rgba(34,197,94,.35); }
+    .toast { background: var(--bg3); border: 1px solid var(--bd2); border-radius: 8px; padding: 9px 14px; font-size: 12px; max-width: 300px; animation: tin .2s ease; }
+    .toast.ok  { border-color: rgba(34,197,94,.35); }
     .toast.err { border-color: rgba(239,68,68,.35); color: var(--red); }
+    .toast.whale { border-color: rgba(247,147,26,.5); color: var(--acc); font-weight: 600; }
     @keyframes tin { from{transform:translateX(12px);opacity:0} to{transform:none;opacity:1} }
 
     /* RESPONSIVE */
@@ -211,8 +245,9 @@
 <div class="bar">
   <div class="logo">🐋 Whale<em>Watch</em> BTC</div>
   <div class="bar-right">
+    <button class="sound-btn" id="sound-btn" onclick="toggleSound()">🔕 Ses Kapalı</button>
     <div class="price-pill" id="price-pill">BTC yükleniyor…</div>
-    <div class="live-dot"><div class="dot"></div> WebSocket canlı</div>
+    <div class="live-dot"><div class="dot" id="ws-dot"></div> <span id="ws-label">Bağlanıyor</span></div>
   </div>
 </div>
 
@@ -223,20 +258,45 @@
     ℹ️&nbsp;
     <span>
       <strong>Ücretsiz, API anahtarı gerektirmez.</strong>
-      Canlı BTC işlemleri <strong>blockchain.info WebSocket</strong>'ten,
-      borsa etiketleri <strong>Blockchair API</strong>'den (günde 1440 ücretsiz istek),
-      fiyat <strong>CoinGecko</strong>'dan alınır.
-      Büyük işlemlerde (≥ belirlediğiniz BTC miktarı) borsa giriş/çıkış otomatik tespit edilir.
+      İki bağımsız kaynak: <strong>blockchain.info</strong> + <strong>mempool.space</strong> WebSocket.
+      Borsa etiketleri <strong>Blockchair</strong>'den (günde 1440 istek). Fiyat <strong>CoinGecko</strong>'dan.
+      Büyük işlemlerde ses uyarısı ve grafik güncellenir.
     </span>
+  </div>
+
+  <!-- SOURCE STATUS -->
+  <div class="src-row">
+    <div class="src-pill"><div class="dot yellow" id="dot-bc"></div><span>blockchain.info</span></div>
+    <div class="src-pill"><div class="dot yellow" id="dot-mp"></div><span>mempool.space</span></div>
+    <div class="src-pill"><div class="dot" id="dot-cg" style="background:var(--mut)"></div><span>CoinGecko</span></div>
+    <span style="font-size:10px;color:var(--mut);margin-left:4px" id="dedup-info">Tekrar TX: 0</span>
   </div>
 
   <!-- STATS -->
   <div class="stats">
     <div class="stat"><div class="stat-l">BTC Fiyat</div><div class="stat-v c-acc" id="s-price">—</div><div class="stat-s" id="s-change">—</div></div>
-    <div class="stat"><div class="stat-l">Canlı TX (bugün)</div><div class="stat-v c-blue" id="s-total">0</div><div class="stat-s">WebSocket</div></div>
-    <div class="stat"><div class="stat-l">Borsa Girişi (↓)</div><div class="stat-v c-red" id="s-in">0</div><div class="stat-s" id="s-in-usd">sat. baskısı izle</div></div>
-    <div class="stat"><div class="stat-l">Borsa Çıkışı (↑)</div><div class="stat-v c-green" id="s-out">0</div><div class="stat-s" id="s-out-usd">birikim sinyali</div></div>
+    <div class="stat"><div class="stat-l">Canlı TX (toplam)</div><div class="stat-v c-blue" id="s-total">0</div><div class="stat-s">iki kaynaktan</div></div>
+    <div class="stat"><div class="stat-l">Borsa Girişi (↓)</div><div class="stat-v c-red" id="s-in">0</div><div class="stat-s" id="s-in-vol">—</div></div>
+    <div class="stat"><div class="stat-l">Borsa Çıkışı (↑)</div><div class="stat-v c-green" id="s-out">0</div><div class="stat-s" id="s-out-vol">—</div></div>
     <div class="stat"><div class="stat-l">İzlenen Adres</div><div class="stat-v c-yellow" id="s-watch">0</div><div class="stat-s">kayıtlı</div></div>
+  </div>
+
+  <!-- PRICE CHART PANEL -->
+  <div class="chart-panel">
+    <div class="chart-ph">
+      <span class="pt">📈 Fiyat &amp; Büyük TX Hacmi</span>
+      <div class="chart-tabs">
+        <button class="ctab on" onclick="setChartMode('price',this)">Fiyat</button>
+        <button class="ctab" onclick="setChartMode('volume',this)">Hacim</button>
+        <button class="ctab" onclick="setChartMode('both',this)">İkisi</button>
+      </div>
+    </div>
+    <canvas id="price-canvas"></canvas>
+    <div class="chart-legend">
+      <span><span class="leg-dot" style="background:var(--acc)"></span> BTC Fiyat</span>
+      <span><span class="leg-dot" style="background:var(--blue)"></span> TX Hacmi (BTC)</span>
+      <span style="margin-left:auto;color:var(--mut)" id="chart-range">Son 60 nokta</span>
+    </div>
   </div>
 
   <!-- FILTER -->
@@ -245,10 +305,10 @@
     <input type="number" id="f-min" value="100" min="1" style="width:80px" />
     <div class="fbar-sep"></div>
     <label>Göster:</label>
-    <button class="fchip on" data-f="all" onclick="setFilter(this,'all')">Tümü</button>
-    <button class="fchip" data-f="in"  onclick="setFilter(this,'in')">↓ Borsa Girişi</button>
-    <button class="fchip" data-f="out" onclick="setFilter(this,'out')">↑ Borsa Çıkışı</button>
-    <button class="fchip" data-f="w2w" onclick="setFilter(this,'w2w')">🐋 Whale→Whale</button>
+    <button class="fchip on" onclick="setFilter(this,'all')">Tümü</button>
+    <button class="fchip" onclick="setFilter(this,'in')">↓ Borsa Girişi</button>
+    <button class="fchip" onclick="setFilter(this,'out')">↑ Borsa Çıkışı</button>
+    <button class="fchip" onclick="setFilter(this,'w2w')">🐋 Whale→Whale</button>
     <div class="fbar-sep"></div>
     <label>Sırala:</label>
     <select id="f-sort" onchange="renderTxTable()">
@@ -262,7 +322,7 @@
   <div class="g2">
 
     <!-- LEFT: LIVE TX -->
-    <div class="panel">
+    <div class="panel" id="tx-panel">
       <div class="ph">
         <span class="pt">🔴 Canlı Büyük BTC Transferleri <span class="pt-count" id="tx-count">0</span></span>
         <span style="font-size:10px;color:var(--mut)" id="ws-status">Bağlanıyor…</span>
@@ -276,17 +336,18 @@
               <th>Yön / Tip</th>
               <th>Gönderen</th>
               <th>Alıcı</th>
+              <th>Kaynak</th>
               <th>TX</th>
             </tr>
           </thead>
           <tbody id="tx-body">
-            <tr><td colspan="6" class="loading"><div class="spin"></div> WebSocket bağlanıyor…</td></tr>
+            <tr><td colspan="7" class="loading"><div class="spin"></div> WebSocket bağlanıyor…</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- RIGHT: Exchange Flow + Watchlist mini -->
+    <!-- RIGHT -->
     <div style="display:flex;flex-direction:column;gap:14px">
 
       <!-- EXCHANGE FLOW -->
@@ -300,7 +361,7 @@
         </div>
       </div>
 
-      <!-- WATCHLIST QUICK -->
+      <!-- WATCHLIST -->
       <div class="panel">
         <div class="ph">
           <span class="pt">👁 İzleme Listesi</span>
@@ -311,9 +372,7 @@
           <input id="wl-lbl" placeholder="Etiket" style="width:90px;flex:none" />
           <button class="btn btn-acc" onclick="addWatch()">+</button>
         </div>
-        <div id="wl-body">
-          <div class="empty"><i>📋</i>Adres ekleyin</div>
-        </div>
+        <div id="wl-body"><div class="empty"><i>📋</i>Adres ekleyin</div></div>
       </div>
 
       <!-- WATCHLIST TX -->
@@ -328,59 +387,134 @@
 </div>
 
 <div id="toasts"></div>
+<div id="chart-tip"></div>
 
 <script>
-/* ─── KNOWN EXCHANGES (Blockchair etiketleri + ek bilinen adresler) ─── */
+/* ═══════════════════════════════════════════════
+   KNOWN EXCHANGES
+═══════════════════════════════════════════════ */
 const KNOWN_EX = {
-  /* Binance */
   '34xp4vrocgjym3xr7ycvpfhocnxv4twseo': 'Binance',
   '3m219kp7vlq0lbux7s0qfvxhsajfnbfqk2': 'Binance',
   'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h': 'Binance',
-  /* Coinbase */
   '3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr': 'Coinbase',
   'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh': 'Coinbase',
-  /* Kraken */
   'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3': 'Kraken',
   '3fupgkiw5fwwgic5jal9mzu7wwsqhq7vu9': 'Kraken',
-  /* OKX */
   '3lqtfzmqq7xqmz7gc8fq84pvzxqj3xfxp7': 'OKX',
-  /* Bybit */
   'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz': 'Bybit',
-  /* Bitfinex */
   '1kr1ue4462cqu9s4h1f27oa89gqpfz7lm': 'Bitfinex',
-  /* Huobi */
-  '1abcdefg': 'Huobi', /* placeholder */
 };
 
-/* ─── STATE ─── */
+/* ═══════════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════════ */
 let btcPrice = 0;
-let txList = [];        // {hash,time,btc,usd,from,to,fromEx,toEx,dir,isNew}
-let exFlows = {};       // {ExName: {in:usd, out:usd}}
+let txList = [];
+let seenHashes = new Set();   // dedup between two WS sources
+let dedupCount = 0;
+let exFlows = {};
 let statsIn = 0, statsOut = 0, statsTotal = 0;
-let watchlist = [];     // {addr,label,bal,txs,lastFetch}
+let inVol = 0, outVol = 0;
+let watchlist = [];
 let filterDir = 'all';
-let ws = null;
-let lookupQueue = [];   // hashes waiting Blockchair lookup
+let wsBC = null, wsMP = null;
+let lookupQueue = [];
 let lookupBusy = false;
 let apiCallsToday = 0;
-const MAX_API = 1400;   // Blockchair günlük limit güvenli eşiği
-const TX_MAX = 200;     // bellekte tutulacak max tx
+const MAX_API = 1400;
+const TX_MAX = 200;
+let soundEnabled = false;
+let audioCtx = null;
 
-/* ─── INIT ─── */
+/* CHART STATE */
+let chartMode = 'both';
+let priceHistory = [];   // {t, price}
+let volumeHistory = [];  // {t, btc}  — one bucket per minute
+let chartVolBucket = { t: 0, btc: 0 };
+const CHART_MAX = 60;
+
+/* ═══════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════ */
 function init() {
   loadWatchlist();
   fetchPrice();
   setInterval(fetchPrice, 60000);
-  connectWS();
-  setInterval(processLookupQueue, 4000); // Blockchair rate limit: ~6/dk güvenli
+  connectBC();
+  connectMP();
+  setInterval(processLookupQueue, 4500);
+  setInterval(tickVolumeBucket, 60000);
+  initChart();
   renderExFlow();
 }
 
-/* ─── BTC PRICE ─── */
+/* ═══════════════════════════════════════════════
+   SOUND
+═══════════════════════════════════════════════ */
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const btn = document.getElementById('sound-btn');
+  if (soundEnabled) {
+    btn.textContent = '🔔 Ses Açık';
+    btn.classList.add('on');
+    // Unlock AudioContext on user gesture
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    toast('Ses bildirimleri açık — büyük TX gelince çalar', 'ok');
+  } else {
+    btn.textContent = '🔕 Ses Kapalı';
+    btn.classList.remove('on');
+  }
+}
+
+function playAlert(type) {
+  if (!soundEnabled || !audioCtx) return;
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === 'whale') {
+      // Deep whale sound: two descending tones
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(520, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(220, audioCtx.currentTime + 0.4);
+      gain.gain.setValueAtTime(0.28, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.5);
+    } else if (type === 'exchange_in') {
+      // Short sharp descending ping
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(440, audioCtx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.25);
+    } else if (type === 'exchange_out') {
+      // Short ascending ping
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.25);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+      osc.start(audioCtx.currentTime);
+      osc.stop(audioCtx.currentTime + 0.25);
+    }
+  } catch(e) { console.warn('audio err', e); }
+}
+
+/* ═══════════════════════════════════════════════
+   BTC PRICE
+═══════════════════════════════════════════════ */
 async function fetchPrice() {
   try {
     const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
+    if (!d.bitcoin || typeof d.bitcoin.usd !== 'number') throw new Error('bad data');
     btcPrice = d.bitcoin.usd;
     const ch = d.bitcoin.usd_24h_change;
     document.getElementById('price-pill').textContent = '$' + btcPrice.toLocaleString('en-US');
@@ -388,65 +522,130 @@ async function fetchPrice() {
     const cs = document.getElementById('s-change');
     cs.textContent = (ch >= 0 ? '▲ +' : '▼ ') + ch.toFixed(2) + '% (24s)';
     cs.style.color = ch >= 0 ? 'var(--green)' : 'var(--red)';
+    // Feed chart
+    priceHistory.push({ t: Date.now(), price: btcPrice });
+    if (priceHistory.length > CHART_MAX) priceHistory.shift();
+    drawChart();
     rerenderUSD();
-  } catch(e) { console.warn('price err', e); }
+    setDot('dot-cg', 'green');
+  } catch(e) {
+    console.warn('price err', e);
+    setDot('dot-cg', 'red');
+  }
 }
 
-/* ─── WEBSOCKET (blockchain.info) ─── */
-function connectWS() {
-  setWsStatus('Bağlanıyor…', '#fbbf24');
-  ws = new WebSocket('wss://ws.blockchain.info/inv');
-
-  ws.onopen = () => {
-    ws.send(JSON.stringify({op: 'unconfirmed_sub'}));
-    setWsStatus('Bağlı ✓', 'var(--green)');
-    toast('WebSocket bağlı — canlı BTC işlemleri geliyor', 'ok');
+/* ═══════════════════════════════════════════════
+   WEBSOCKET 1 — blockchain.info
+═══════════════════════════════════════════════ */
+function connectBC() {
+  setDot('dot-bc', 'yellow');
+  wsBC = new WebSocket('wss://ws.blockchain.info/inv');
+  wsBC.onopen = () => {
+    wsBC.send(JSON.stringify({op: 'unconfirmed_sub'}));
+    setDot('dot-bc', 'green');
+    updateWsLabel();
+    toast('blockchain.info WebSocket bağlı', 'ok');
   };
-
-  ws.onmessage = e => {
+  wsBC.onmessage = e => {
     try {
       const msg = JSON.parse(e.data);
-      if (msg.op === 'utx') handleTx(msg.x);
+      if (msg.op === 'utx') handleTx(msg.x, 'bc');
     } catch {}
   };
-
-  ws.onclose = () => {
-    setWsStatus('Bağlantı kesildi — yeniden bağlanıyor…', 'var(--red)');
-    setTimeout(connectWS, 5000);
+  wsBC.onclose = () => {
+    setDot('dot-bc', 'red');
+    updateWsLabel();
+    setTimeout(connectBC, 6000);
   };
-
-  ws.onerror = () => {
-    setWsStatus('Hata', 'var(--red)');
-    ws.close();
-  };
+  wsBC.onerror = () => { setDot('dot-bc', 'red'); wsBC.close(); };
 }
 
-function setWsStatus(msg, color) {
-  const el = document.getElementById('ws-status');
-  el.textContent = msg;
-  el.style.color = color;
+/* ═══════════════════════════════════════════════
+   WEBSOCKET 2 — mempool.space
+═══════════════════════════════════════════════ */
+function connectMP() {
+  setDot('dot-mp', 'yellow');
+  wsMP = new WebSocket('wss://mempool.space/api/v1/ws');
+  wsMP.onopen = () => {
+    wsMP.send(JSON.stringify({ action: 'want', data: ['mempool-blocks', 'live-2h-chart'] }));
+    // Subscribe to all new transactions
+    wsMP.send(JSON.stringify({ action: 'want', data: ['stats'] }));
+    // For individual large tx we track via 'track-mempool-block-transactions'
+    // mempool.space pushes new txs with 'mempool-transactions' after subscribing
+    wsMP.send(JSON.stringify({ action: 'want', data: ['transactions'] }));
+    setDot('dot-mp', 'green');
+    updateWsLabel();
+    toast('mempool.space WebSocket bağlı', 'ok');
+  };
+  wsMP.onmessage = e => {
+    try {
+      const msg = JSON.parse(e.data);
+      // mempool.space sends transactions as array
+      if (msg.transactions && Array.isArray(msg.transactions)) {
+        msg.transactions.forEach(tx => handleMempoolTx(tx));
+      }
+      // Also handle 'mempool-transactions'
+      if (msg['mempool-transactions'] && Array.isArray(msg['mempool-transactions'])) {
+        msg['mempool-transactions'].forEach(tx => handleMempoolTx(tx));
+      }
+    } catch {}
+  };
+  wsMP.onclose = () => {
+    setDot('dot-mp', 'red');
+    updateWsLabel();
+    setTimeout(connectMP, 6000);
+  };
+  wsMP.onerror = () => { setDot('dot-mp', 'red'); wsMP.close(); };
 }
 
-/* ─── HANDLE INCOMING TX ─── */
-function handleTx(tx) {
-  // Toplam input value (satoshi)
+/* normalise mempool.space tx format → same as blockchain.info handler */
+function handleMempoolTx(tx) {
+  if (!tx || !tx.txid) return;
   let totalIn = 0;
-  tx.inputs.forEach(i => { totalIn += i.prev_out?.value || 0; });
+  (tx.vin || []).forEach(i => { totalIn += i.prevout?.value || 0; });
+  const btc = totalIn / 1e8;
+
+  const fromAddrs = (tx.vin || []).map(i => i.prevout?.scriptpubkey_address).filter(Boolean);
+  const toAddrs   = (tx.vout || []).map(o => o.scriptpubkey_address).filter(Boolean);
+
+  const fakeX = {
+    hash: tx.txid,
+    inputs: fromAddrs.map((a,i) => ({ prev_out: { addr: a, value: tx.vin?.[i]?.prevout?.value || 0 }})),
+    out:    toAddrs.map(a => ({ addr: a })),
+    _totalSat: totalIn,
+  };
+  handleTx(fakeX, 'mp');
+}
+
+/* ═══════════════════════════════════════════════
+   HANDLE TX (unified)
+═══════════════════════════════════════════════ */
+function handleTx(tx, source) {
+  // Dedup
+  if (seenHashes.has(tx.hash)) {
+    dedupCount++;
+    document.getElementById('dedup-info').textContent = 'Tekrar TX: ' + dedupCount;
+    return;
+  }
+  seenHashes.add(tx.hash);
+
+  let totalIn = tx._totalSat != null ? tx._totalSat : 0;
+  if (!totalIn) tx.inputs.forEach(i => { totalIn += i.prev_out?.value || 0; });
   const btc = totalIn / 1e8;
   const minBtc = parseFloat(document.getElementById('f-min').value) || 100;
 
-  // Her tx sayıya ekle
   statsTotal++;
   document.getElementById('s-total').textContent = statsTotal.toLocaleString('tr-TR');
 
-  if (btc < minBtc) return; // eşik altı → gösterme
+  // Volume bucket (all tx regardless of threshold for accurate volume)
+  chartVolBucket.btc += btc;
+
+  if (btc < minBtc) return;
 
   const fromAddrs = tx.inputs.map(i => i.prev_out?.addr).filter(Boolean);
-  const toAddrs = tx.out.map(o => o.addr).filter(Boolean);
-
-  // Hızlı yerel kontrol
-  const fromEx = findKnownEx(fromAddrs);
-  const toEx = findKnownEx(toAddrs);
+  const toAddrs   = tx.out.map(o => o.addr).filter(Boolean);
+  const fromEx    = findKnownEx(fromAddrs);
+  const toEx      = findKnownEx(toAddrs);
 
   const entry = {
     hash: tx.hash,
@@ -461,6 +660,7 @@ function handleTx(tx) {
     toEx,
     dir: classifyDir(fromEx, toEx),
     isNew: true,
+    source,   // 'bc' or 'mp'
   };
 
   txList.unshift(entry);
@@ -468,11 +668,38 @@ function handleTx(tx) {
 
   updateStats(entry);
   renderTxTable();
+  triggerAlerts(entry);
 
-  // Blockchair'e sorgu kuyruğu (API bütçesi varsa)
+  // Blockchair lookup
   if (!fromEx && !toEx && apiCallsToday < MAX_API) {
     lookupQueue.push(entry.hash);
   }
+}
+
+function triggerAlerts(entry) {
+  // Visual pulse on panel
+  const panel = document.getElementById('tx-panel');
+  panel.classList.remove('alert-pulse');
+  void panel.offsetWidth;
+  panel.classList.add('alert-pulse');
+
+  // Sound
+  if (entry.dir === 'in')  playAlert('exchange_in');
+  else if (entry.dir === 'out') playAlert('exchange_out');
+  else playAlert('whale');
+
+  // Toast for very large amounts
+  const minBtc = parseFloat(document.getElementById('f-min').value) || 100;
+  if (entry.btc >= minBtc * 2) {
+    toast(`🐋 ${entry.btc.toFixed(0)} BTC — ${dirLabel(entry.dir)}${entry.fromEx||entry.toEx ? ' · '+(entry.fromEx||entry.toEx) : ''}`, 'whale');
+  }
+}
+
+function dirLabel(dir) {
+  if (dir === 'in') return '↓ Borsa Girişi';
+  if (dir === 'out') return '↑ Borsa Çıkışı';
+  if (dir === 'ex2ex') return '⇄ Borsa→Borsa';
+  return '🐋 Whale→Whale';
 }
 
 function findKnownEx(addrs) {
@@ -486,60 +713,196 @@ function findKnownEx(addrs) {
 function classifyDir(fromEx, toEx) {
   if (toEx && !fromEx) return 'in';
   if (fromEx && !toEx) return 'out';
-  if (fromEx && toEx) return 'ex2ex';
+  if (fromEx && toEx)  return 'ex2ex';
   return 'w2w';
 }
 
 function updateStats(entry) {
   if (entry.dir === 'in') {
     statsIn++;
+    inVol += entry.usd;
     document.getElementById('s-in').textContent = statsIn;
-    document.getElementById('s-in-usd').textContent = '≈ $' + fmtUSD(statsIn * entry.usd / statsIn); // avg placeholder
+    document.getElementById('s-in-vol').textContent = '$' + fmtUSD(inVol) + ' toplam';
   }
   if (entry.dir === 'out') {
     statsOut++;
+    outVol += entry.usd;
     document.getElementById('s-out').textContent = statsOut;
+    document.getElementById('s-out-vol').textContent = '$' + fmtUSD(outVol) + ' toplam';
   }
-  // Exchange flow
   const ex = entry.toEx || entry.fromEx;
   if (ex) {
     if (!exFlows[ex]) exFlows[ex] = { in: 0, out: 0 };
-    if (entry.dir === 'in') exFlows[ex].in += entry.usd;
+    if (entry.dir === 'in')  exFlows[ex].in  += entry.usd;
     if (entry.dir === 'out') exFlows[ex].out += entry.usd;
     renderExFlow();
   }
 }
 
-/* ─── BLOCKCHAIR LOOKUP (kuyruğu eriyen tek tek işle) ─── */
+/* ═══════════════════════════════════════════════
+   CHART
+═══════════════════════════════════════════════ */
+function initChart() {
+  const canvas = document.getElementById('price-canvas');
+  canvas.addEventListener('mousemove', onChartHover);
+  canvas.addEventListener('mouseleave', () => { document.getElementById('chart-tip').style.display = 'none'; });
+  // Seed one price point immediately
+  if (btcPrice) {
+    priceHistory.push({ t: Date.now(), price: btcPrice });
+  }
+  // Resize
+  resizeCanvas();
+  window.addEventListener('resize', () => { resizeCanvas(); drawChart(); });
+}
+
+function resizeCanvas() {
+  const canvas = document.getElementById('price-canvas');
+  canvas.width = canvas.offsetWidth * devicePixelRatio;
+  canvas.height = 160 * devicePixelRatio;
+  canvas.style.height = '160px';
+}
+
+function tickVolumeBucket() {
+  if (chartVolBucket.btc > 0) {
+    volumeHistory.push({ t: Date.now(), btc: chartVolBucket.btc });
+    if (volumeHistory.length > CHART_MAX) volumeHistory.shift();
+    chartVolBucket = { t: Date.now(), btc: 0 };
+    drawChart();
+  }
+}
+
+function setChartMode(mode, btn) {
+  chartMode = mode;
+  document.querySelectorAll('.ctab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  drawChart();
+}
+
+function drawChart() {
+  const canvas = document.getElementById('price-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const dpr = devicePixelRatio;
+  ctx.clearRect(0, 0, W, H);
+
+  const PAD = { top: 16*dpr, right: 12*dpr, bottom: 28*dpr, left: 60*dpr };
+  const plotW = W - PAD.left - PAD.right;
+  const plotH = H - PAD.top - PAD.bottom;
+
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = PAD.top + (plotH / 4) * i;
+    ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(W - PAD.right, y); ctx.stroke();
+  }
+
+  const showPrice  = chartMode === 'price'  || chartMode === 'both';
+  const showVolume = chartMode === 'volume' || chartMode === 'both';
+
+  /* ── VOLUME bars ── */
+  if (showVolume && volumeHistory.length > 1) {
+    const maxVol = Math.max(...volumeHistory.map(d => d.btc), 1);
+    const barW = Math.max(2, plotW / CHART_MAX - 1) * dpr / dpr;
+    volumeHistory.forEach((d, i) => {
+      const x = PAD.left + (i / (CHART_MAX - 1)) * plotW;
+      const barH = (d.btc / maxVol) * plotH * 0.4;
+      ctx.fillStyle = 'rgba(59,130,246,0.35)';
+      ctx.fillRect(x - barW/2, PAD.top + plotH - barH, barW, barH);
+    });
+  }
+
+  /* ── PRICE line ── */
+  if (showPrice && priceHistory.length > 1) {
+    const prices = priceHistory.map(d => d.price);
+    const minP = Math.min(...prices) * 0.9995;
+    const maxP = Math.max(...prices) * 1.0005;
+    const range = maxP - minP || 1;
+
+    const toX = i => PAD.left + (i / (priceHistory.length - 1)) * plotW;
+    const toY = p => PAD.top + plotH - ((p - minP) / range) * plotH;
+
+    // Gradient fill
+    const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + plotH);
+    grad.addColorStop(0, 'rgba(247,147,26,0.18)');
+    grad.addColorStop(1, 'rgba(247,147,26,0)');
+    ctx.beginPath();
+    priceHistory.forEach((d, i) => {
+      i === 0 ? ctx.moveTo(toX(i), toY(d.price)) : ctx.lineTo(toX(i), toY(d.price));
+    });
+    ctx.lineTo(toX(priceHistory.length - 1), PAD.top + plotH);
+    ctx.lineTo(PAD.left, PAD.top + plotH);
+    ctx.closePath();
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // Line
+    ctx.beginPath();
+    priceHistory.forEach((d, i) => {
+      i === 0 ? ctx.moveTo(toX(i), toY(d.price)) : ctx.lineTo(toX(i), toY(d.price));
+    });
+    ctx.strokeStyle = '#f7931a';
+    ctx.lineWidth = 1.5 * dpr;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    // Y labels
+    ctx.fillStyle = 'rgba(92,96,112,0.9)';
+    ctx.font = `${9*dpr}px monospace`;
+    ctx.textAlign = 'right';
+    [minP, (minP+maxP)/2, maxP].forEach(p => {
+      ctx.fillText('$'+p.toLocaleString('en-US',{maximumFractionDigits:0}), PAD.left - 4, toY(p) + 3*dpr);
+    });
+  }
+
+  /* ── No data ── */
+  if (priceHistory.length < 2 && volumeHistory.length < 2) {
+    ctx.fillStyle = 'rgba(92,96,112,0.6)';
+    ctx.font = `${11*dpr}px sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText('Veri birikmesi bekleniyor…', W/2, H/2);
+  }
+}
+
+function onChartHover(e) {
+  const canvas = document.getElementById('price-canvas');
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const dpr = devicePixelRatio;
+  const PAD_LEFT = 60 * dpr;
+  const plotW = canvas.width - PAD_LEFT - 12 * dpr;
+  const frac = (x * dpr - PAD_LEFT) / plotW;
+  if (frac < 0 || frac > 1) { document.getElementById('chart-tip').style.display='none'; return; }
+
+  const idx = Math.round(frac * (priceHistory.length - 1));
+  const pt = priceHistory[idx];
+  if (!pt) { document.getElementById('chart-tip').style.display='none'; return; }
+
+  const tip = document.getElementById('chart-tip');
+  tip.style.display = 'block';
+  tip.style.left = (e.clientX + 12) + 'px';
+  tip.style.top  = (e.clientY - 30) + 'px';
+  tip.innerHTML = `<strong>$${pt.price.toLocaleString('en-US')}</strong><br><span style="color:var(--mut)">${timeAgo(pt.t)}</span>`;
+}
+
+/* ═══════════════════════════════════════════════
+   BLOCKCHAIR LOOKUP
+═══════════════════════════════════════════════ */
 async function processLookupQueue() {
   if (lookupBusy || !lookupQueue.length || apiCallsToday >= MAX_API) return;
   lookupBusy = true;
   const hash = lookupQueue.shift();
   try {
-    // Blockchair transaction endpoint — borsa etiketleri var
     const r = await fetch(`https://api.blockchair.com/bitcoin/dashboards/transaction/${hash}?transaction_details=true`);
     if (!r.ok) { lookupBusy = false; return; }
     apiCallsToday++;
     const d = await r.json();
     const txData = d.data?.[hash];
     if (!txData) { lookupBusy = false; return; }
-
-    // inputs / outputs
-    const inputs = txData.inputs || [];
+    const inputs  = txData.inputs  || [];
     const outputs = txData.outputs || [];
-
-    // Blockchair context.label = borsa adı (ör: "binance.com")
-    const fromLabels = inputs.map(i => i.recipient).filter(Boolean);
-    const toLabels = outputs.map(o => {
-      // Blockchair'in label alanı
-      return o.label || null;
-    }).filter(Boolean);
-
-    // Adresleri context ile eşleştir
-    const fromEx = extractExLabel(inputs.map(i => ({ addr: i.recipient, label: d.context?.labels?.[i.recipient] })));
-    const toEx   = extractExLabel(outputs.map(o => ({ addr: o.recipient, label: d.context?.labels?.[o.recipient] })));
-
-    // txList'i güncelle
+    const fromEx  = extractExLabel(inputs.map(i => ({ addr: i.recipient, label: d.context?.labels?.[i.recipient] })));
+    const toEx    = extractExLabel(outputs.map(o => ({ addr: o.recipient, label: d.context?.labels?.[o.recipient] })));
     const entry = txList.find(t => t.hash === hash);
     if (entry && (fromEx || toEx)) {
       entry.fromEx = fromEx || entry.fromEx;
@@ -548,7 +911,7 @@ async function processLookupQueue() {
       updateStats(entry);
       renderTxTable();
     }
-  } catch(e) { console.warn('blockchair lookup err', e); }
+  } catch(e) { console.warn('blockchair err', e); }
   lookupBusy = false;
 }
 
@@ -556,70 +919,72 @@ function extractExLabel(list) {
   for (const item of list) {
     if (!item.label) continue;
     const l = item.label.toLowerCase();
-    if (l.includes('binance')) return 'Binance';
-    if (l.includes('coinbase')) return 'Coinbase';
-    if (l.includes('kraken')) return 'Kraken';
+    if (l.includes('binance'))               return 'Binance';
+    if (l.includes('coinbase'))              return 'Coinbase';
+    if (l.includes('kraken'))               return 'Kraken';
     if (l.includes('okx') || l.includes('okex')) return 'OKX';
-    if (l.includes('bybit')) return 'Bybit';
-    if (l.includes('bitfinex')) return 'Bitfinex';
+    if (l.includes('bybit'))                return 'Bybit';
+    if (l.includes('bitfinex'))             return 'Bitfinex';
     if (l.includes('huobi') || l.includes('htx')) return 'Huobi/HTX';
-    if (l.includes('kucoin')) return 'KuCoin';
-    if (l.includes('gate')) return 'Gate.io';
-    if (l.includes('gemini')) return 'Gemini';
-    if (l.includes('bitmex')) return 'BitMEX';
-    if (l.includes('bitstamp')) return 'Bitstamp';
+    if (l.includes('kucoin'))               return 'KuCoin';
+    if (l.includes('gate'))                 return 'Gate.io';
+    if (l.includes('gemini'))               return 'Gemini';
+    if (l.includes('bitmex'))               return 'BitMEX';
+    if (l.includes('bitstamp'))             return 'Bitstamp';
   }
   return null;
 }
 
-/* ─── RENDER TX TABLE ─── */
+/* ═══════════════════════════════════════════════
+   RENDER TX TABLE
+═══════════════════════════════════════════════ */
 function renderTxTable() {
   const fDir = filterDir;
   const sort = document.getElementById('f-sort').value;
 
-  let list = txList.filter(t => {
-    if (fDir === 'all') return true;
-    return t.dir === fDir;
-  });
-
+  let list = txList.filter(t => fDir === 'all' || t.dir === fDir);
   if (sort === 'amt') list = [...list].sort((a,b) => b.btc - a.btc);
 
   document.getElementById('tx-count').textContent = list.length;
 
   if (!list.length) {
     document.getElementById('tx-body').innerHTML =
-      '<tr><td colspan="6" class="loading" style="color:var(--mut)">Eşik üzeri işlem bekleniyor…</td></tr>';
+      '<tr><td colspan="7" class="loading" style="color:var(--mut)">Eşik üzeri işlem bekleniyor…</td></tr>';
     return;
   }
 
-  document.getElementById('tx-body').innerHTML = list.slice(0, 80).map((t,i) => {
-    const dirBadge = dirBadgeHtml(t);
+  document.getElementById('tx-body').innerHTML = list.slice(0, 80).map(t => {
+    const dirBadge  = dirBadgeHtml(t);
     const fromLabel = t.fromEx ? `<span class="b b-ex">${t.fromEx}</span>` : `<a class="mono al" href="https://blockchair.com/bitcoin/address/${t.from}" target="_blank">${shortAddr(t.from)}</a>`;
     const toLabel   = t.toEx   ? `<span class="b b-ex">${t.toEx}</span>`   : `<a class="mono al" href="https://blockchair.com/bitcoin/address/${t.to}" target="_blank">${shortAddr(t.to)}</a>`;
+    const srcTag    = t.source === 'mp' ? '<span class="src-tag src-mp">mp</span>' : '<span class="src-tag src-bc">bc</span>';
     const cls = t.isNew ? 'new-tx' : '';
     t.isNew = false;
     return `<tr class="${cls}">
       <td style="color:var(--mut);white-space:nowrap">${timeAgo(t.time)}</td>
       <td>
         <div class="amt-btc">${t.btc.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:4})} BTC</div>
-        <div class="amt-usd">${t.usd ? '$' + fmtUSD(t.usd) : '—'}</div>
+        <div class="amt-usd">${t.usd ? '$'+fmtUSD(t.usd) : '—'}</div>
       </td>
       <td>${dirBadge}</td>
       <td>${fromLabel}</td>
       <td>${toLabel}</td>
+      <td>${srcTag}</td>
       <td><a class="mono al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,8)}… ↗</a></td>
     </tr>`;
   }).join('');
 }
 
 function dirBadgeHtml(t) {
-  if (t.dir === 'in')    return `<span class="b b-in">↓ Borsa Girişi${t.toEx ? ' · ' + t.toEx : ''}</span>`;
-  if (t.dir === 'out')   return `<span class="b b-out">↑ Borsa Çıkışı${t.fromEx ? ' · ' + t.fromEx : ''}</span>`;
+  if (t.dir === 'in')    return `<span class="b b-in">↓ Borsa Girişi${t.toEx?' · '+t.toEx:''}</span>`;
+  if (t.dir === 'out')   return `<span class="b b-out">↑ Borsa Çıkışı${t.fromEx?' · '+t.fromEx:''}</span>`;
   if (t.dir === 'ex2ex') return `<span class="b b-ex">⇄ Borsa→Borsa</span>`;
   return `<span class="b b-w2w">🐋 Whale→Whale</span>`;
 }
 
-/* ─── EXCHANGE FLOW PANEL ─── */
+/* ═══════════════════════════════════════════════
+   EXCHANGE FLOW PANEL
+═══════════════════════════════════════════════ */
 function renderExFlow() {
   const el = document.getElementById('ex-flow');
   const entries = Object.entries(exFlows);
@@ -627,12 +992,10 @@ function renderExFlow() {
     el.innerHTML = '<div class="empty"><i>📊</i>İşlem bekleniyor…</div>';
     return;
   }
-  // Sort by total flow
-  entries.sort((a,b) => (b[1].in + b[1].out) - (a[1].in + a[1].out));
-  const maxVal = Math.max(...entries.map(e => e[1].in + e[1].out));
+  entries.sort((a,b) => (b[1].in+b[1].out) - (a[1].in+a[1].out));
+  const maxVal = Math.max(...entries.map(e => e[1].in+e[1].out));
   const colors = ['#f7931a','#3b82f6','#22c55e','#a78bfa','#ef4444','#fbbf24','#06b6d4','#f472b6'];
-
-  el.innerHTML = `<div class="ex-list">` + entries.slice(0,8).map(([name, v], i) => {
+  el.innerHTML = `<div class="ex-list">` + entries.slice(0,8).map(([name,v],i) => {
     const total = v.in + v.out;
     const pct = (total / maxVal * 100).toFixed(1);
     const netDir = v.in > v.out ? '<span style="color:var(--red)">↓</span>' : '<span style="color:var(--green)">↑</span>';
@@ -645,7 +1008,9 @@ function renderExFlow() {
   }).join('') + '</div>';
 }
 
-/* ─── WATCHLIST ─── */
+/* ═══════════════════════════════════════════════
+   WATCHLIST
+═══════════════════════════════════════════════ */
 function loadWatchlist() {
   try { watchlist = JSON.parse(localStorage.getItem('ww_wl') || '[]'); } catch { watchlist = []; }
   document.getElementById('s-watch').textContent = watchlist.length;
@@ -659,7 +1024,7 @@ function saveWatchlist() {
 }
 
 async function addWatch() {
-  const addr = document.getElementById('wl-addr').value.trim();
+  const addr  = document.getElementById('wl-addr').value.trim();
   const label = document.getElementById('wl-lbl').value.trim() || shortAddr(addr);
   if (!addr) { toast('Adres boş', 'err'); return; }
   if (!isValidBTC(addr)) { toast('Geçersiz BTC adresi', 'err'); return; }
@@ -686,7 +1051,7 @@ async function fetchWatchAddr(entry) {
     const r = await fetch(`https://blockchain.info/rawaddr/${entry.addr}?limit=10&cors=true`);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
-    entry.bal = d.final_balance / 1e8;
+    entry.bal     = d.final_balance / 1e8;
     entry.txCount = d.n_tx;
     entry.txs = (d.txs || []).map(tx => {
       let net = 0;
@@ -695,9 +1060,7 @@ async function fetchWatchAddr(entry) {
       return { hash: tx.hash, time: tx.time * 1000, net: net / 1e8 };
     });
     entry.lastFetch = Date.now();
-  } catch(e) {
-    entry.balErr = e.message;
-  }
+  } catch(e) { entry.balErr = e.message; }
 }
 
 async function refreshAll() {
@@ -709,20 +1072,14 @@ async function refreshAll() {
 
 function renderWatchlist() {
   const el = document.getElementById('wl-body');
-  if (!watchlist.length) {
-    el.innerHTML = '<div class="empty"><i>📋</i>Adres ekleyin</div>';
-    return;
-  }
+  if (!watchlist.length) { el.innerHTML = '<div class="empty"><i>📋</i>Adres ekleyin</div>'; return; }
   el.innerHTML = watchlist.map(w => {
     const balStr = w.bal != null ? w.bal.toFixed(4) + ' BTC' : '…';
     const usdStr = w.bal != null && btcPrice ? '$' + fmtUSD(w.bal * btcPrice) : '';
     return `<div class="wl-item">
       <div class="wl-info">
         <div class="wl-lbl">${esc(w.label)}</div>
-        <div class="wl-addr">
-          <a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>
-          ${w.txCount != null ? `· ${w.txCount.toLocaleString('tr-TR')} tx` : ''}
-        </div>
+        <div class="wl-addr"><a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>${w.txCount != null ? ` · ${w.txCount.toLocaleString('tr-TR')} tx` : ''}</div>
       </div>
       <div class="wl-bal">
         <div class="wl-btc">${balStr}</div>
@@ -750,7 +1107,9 @@ function renderWatchTxs() {
   }).join('');
 }
 
-/* ─── FILTER ─── */
+/* ═══════════════════════════════════════════════
+   FILTER / CLEAR
+═══════════════════════════════════════════════ */
 function setFilter(btn, dir) {
   filterDir = dir;
   document.querySelectorAll('.fchip').forEach(b => b.classList.remove('on'));
@@ -759,14 +1118,15 @@ function setFilter(btn, dir) {
 }
 
 function clearTxList() {
-  txList = [];
-  statsIn = 0; statsOut = 0; statsTotal = 0;
-  exFlows = {};
+  txList = []; seenHashes.clear(); dedupCount = 0;
+  statsIn = 0; statsOut = 0; statsTotal = 0; inVol = 0; outVol = 0; exFlows = {};
   document.getElementById('s-in').textContent = '0';
   document.getElementById('s-out').textContent = '0';
   document.getElementById('s-total').textContent = '0';
-  renderTxTable();
-  renderExFlow();
+  document.getElementById('s-in-vol').textContent = '—';
+  document.getElementById('s-out-vol').textContent = '—';
+  document.getElementById('dedup-info').textContent = 'Tekrar TX: 0';
+  renderTxTable(); renderExFlow();
 }
 
 function rerenderUSD() {
@@ -774,7 +1134,26 @@ function rerenderUSD() {
   renderTxTable();
 }
 
-/* ─── HELPERS ─── */
+/* ═══════════════════════════════════════════════
+   UI HELPERS
+═══════════════════════════════════════════════ */
+function setDot(id, color) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.background = color === 'green' ? 'var(--green)' : color === 'red' ? 'var(--red)' : 'var(--yellow)';
+  el.style.animation  = color === 'green' ? 'blink 2s infinite' : 'none';
+}
+
+function updateWsLabel() {
+  const bcOk = wsBC?.readyState === 1;
+  const mpOk = wsMP?.readyState === 1;
+  const count = (bcOk ? 1 : 0) + (mpOk ? 1 : 0);
+  document.getElementById('ws-label').textContent =
+    count === 2 ? '2 kaynak canlı' : count === 1 ? '1 kaynak canlı' : 'Bağlanıyor';
+  document.getElementById('ws-status').textContent =
+    count === 2 ? '✓ blockchain.info + mempool.space' : count === 1 ? '⚡ 1 kaynak aktif' : 'Yeniden bağlanıyor…';
+}
+
 function shortAddr(a) {
   if (!a || a.length < 12) return a || '?';
   return a.slice(0,6) + '…' + a.slice(-4);
@@ -787,8 +1166,8 @@ function fmtUSD(v) {
 }
 function timeAgo(ts) {
   const s = Math.floor((Date.now()-ts)/1000);
-  if (s < 60) return s + 'sn';
-  if (s < 3600) return Math.floor(s/60) + 'dk';
+  if (s < 60)    return s + 'sn';
+  if (s < 3600)  return Math.floor(s/60) + 'dk';
   if (s < 86400) return Math.floor(s/3600) + 'sa';
   return Math.floor(s/86400) + 'g';
 }
@@ -801,7 +1180,7 @@ function toast(msg, type='') {
   t.className = 'toast ' + type;
   t.textContent = msg;
   document.getElementById('toasts').appendChild(t);
-  setTimeout(() => t.remove(), 4000);
+  setTimeout(() => t.remove(), type === 'whale' ? 6000 : 4000);
 }
 
 document.getElementById('wl-addr').addEventListener('keydown', e => { if(e.key==='Enter') addWatch(); });

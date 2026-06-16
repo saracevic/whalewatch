@@ -162,6 +162,15 @@
     .wl-usd{font-size:10px;color:var(--mut)}
     .wl-del{background:none;border:1px solid var(--bd);color:var(--mut);padding:3px 7px;border-radius:6px;cursor:pointer;font-size:11px}
     .wl-del:hover{border-color:var(--red);color:var(--red)}
+
+    /* NET FLOW BADGE */
+    .flow-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:20px;
+      font-size:10px;font-weight:700;white-space:nowrap;margin-top:4px}
+    .flow-acc{background:rgba(34,197,94,.12);color:var(--green);border:1px solid rgba(34,197,94,.22)}
+    .flow-dist{background:rgba(239,68,68,.12);color:var(--red);border:1px solid rgba(239,68,68,.22)}
+    .flow-neut{background:rgba(92,96,112,.12);color:var(--mut);border:1px solid rgba(92,96,112,.22)}
+    .flow-bar-wrap{width:100%;height:3px;background:var(--bg3);border-radius:2px;margin-top:5px;overflow:hidden}
+    .flow-bar{height:100%;border-radius:2px;transition:width .5s}
     .rtx-row{display:flex;align-items:center;gap:8px;padding:8px 14px;border-bottom:1px solid var(--bd);font-size:11px}
     .rtx-row:last-child{border-bottom:none}
     .rtx-lbl{width:90px;flex-shrink:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -1079,6 +1088,23 @@ async function refreshAllWatchlist() {
   renderWatchTxs();
 }
 
+/* Net akış hesabı: son 10 TX üzerinden */
+function computeNetFlow(entry) {
+  if (!entry.txs || !entry.txs.length) { entry.flow = null; return; }
+  const totalIn  = entry.txs.reduce((s,t) => s + (t.net > 0 ? t.net : 0), 0);
+  const totalOut = entry.txs.reduce((s,t) => s + (t.net < 0 ? Math.abs(t.net) : 0), 0);
+  const net      = totalIn - totalOut;
+  const total    = totalIn + totalOut || 1;
+  const inPct    = (totalIn  / total * 100).toFixed(0);
+  const outPct   = (totalOut / total * 100).toFixed(0);
+  let status, cls;
+  const ratio = totalIn / (totalOut || 0.0001);
+  if      (ratio > 1.5)  { status = '📈 Biriktiriyor';  cls = 'flow-acc';  }
+  else if (ratio < 0.67) { status = '📉 Boşaltıyor';    cls = 'flow-dist'; }
+  else                   { status = '↔ Nötr';            cls = 'flow-neut'; }
+  entry.flow = { net, totalIn, totalOut, inPct, outPct, status, cls };
+}
+
 async function fetchWatchAddr(entry) {
   // Birincil: blockchain.info
   try {
@@ -1095,6 +1121,7 @@ async function fetchWatchAddr(entry) {
     });
     entry.lastFetch = Date.now();
     delete entry.balErr;
+    computeNetFlow(entry);
     return;
   } catch {}
 
@@ -1118,6 +1145,7 @@ async function fetchWatchAddr(entry) {
       }));
       entry.lastFetch = Date.now();
       delete entry.balErr;
+      computeNetFlow(entry);
     } catch(e) { entry.balErr = e.message; }
   } else {
     entry.balErr = 'API limiti';
@@ -1130,16 +1158,51 @@ function renderWatchlist() {
   el.innerHTML = watchlist.map(w => {
     const balStr = w.bal != null ? w.bal.toFixed(4) + ' BTC' : (w.balErr ? '⚠ '+w.balErr : '…');
     const usdStr = w.bal != null && btcPrice ? '$' + fmtUSD(w.bal * btcPrice) : '';
-    return `<div class="wl-item">
-      <div class="wl-info">
-        <div class="wl-lbl">${esc(w.label)}</div>
-        <div class="wl-addr">
-          <a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>
-          ${w.txCount != null ? ` · ${w.txCount.toLocaleString('tr-TR')} tx` : ''}
+
+    // Net akış göstergesi
+    let flowHtml = '';
+    if (w.flow) {
+      const f = w.flow;
+      const netSign = f.net >= 0 ? '+' : '';
+      const barColor = f.cls === 'flow-acc' ? 'var(--green)' : f.cls === 'flow-dist' ? 'var(--red)' : 'var(--mut)';
+      flowHtml = `
+        <div style="margin-top:6px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:3px">
+            <span class="flow-badge ${f.cls}">${f.status}</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--mut)">${netSign}${f.net.toFixed(4)} BTC</span>
+          </div>
+          <div class="flow-bar-wrap">
+            <div style="display:flex;height:100%">
+              <div style="width:${f.inPct}%;background:var(--green);border-radius:2px 0 0 2px;transition:width .5s"></div>
+              <div style="width:${f.outPct}%;background:var(--red);border-radius:0 2px 2px 0;transition:width .5s"></div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:3px;font-size:9px;color:var(--mut)">
+            <span>↓ Giren ${f.inPct}%</span>
+            <span>son 10 tx</span>
+            <span>Çıkan ${f.outPct}% ↑</span>
+          </div>
+        </div>`;
+    } else if (w.lastFetch) {
+      flowHtml = '<div style="font-size:10px;color:var(--mut);margin-top:4px">İşlem bulunamadı</div>';
+    }
+
+    return `<div class="wl-item" style="flex-direction:column;align-items:stretch;gap:0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="wl-info">
+          <div class="wl-lbl">${esc(w.label)}</div>
+          <div class="wl-addr">
+            <a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>
+            ${w.txCount != null ? ` · ${w.txCount.toLocaleString('tr-TR')} tx` : ''}
+          </div>
         </div>
+        <div class="wl-bal" style="flex-shrink:0">
+          <div class="wl-btc">${balStr}</div>
+          <div class="wl-usd">${usdStr}</div>
+        </div>
+        <button class="wl-del" onclick="removeWatch('${w.addr}')">✕</button>
       </div>
-      <div class="wl-bal"><div class="wl-btc">${balStr}</div><div class="wl-usd">${usdStr}</div></div>
-      <button class="wl-del" onclick="removeWatch('${w.addr}')">✕</button>
+      ${flowHtml}
     </div>`;
   }).join('');
 }

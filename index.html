@@ -47,15 +47,20 @@
       font-size:12px;color:#93c5fd;line-height:1.6}
     .info-banner strong{color:var(--tx)}
 
+    /* SOURCE STATUS GRID */
+    .src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;margin-bottom:14px}
+    .src-card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;
+      padding:8px 12px;display:flex;align-items:center;gap:8px;font-size:11px}
+    .src-card-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background .3s}
+    .src-card-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .src-card-count{margin-left:auto;font-family:var(--mono);color:var(--mut);font-size:10px}
+
     /* API BUDGET BAR */
     .budget-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
     .budget-pill{display:flex;align-items:center;gap:8px;
       background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:6px 12px;font-size:11px}
     .budget-bar-wrap{width:90px;height:4px;background:var(--bg3);border-radius:2px;overflow:hidden}
     .budget-bar{height:100%;border-radius:2px;transition:width .4s}
-    .src-pill{display:flex;align-items:center;gap:6px;font-size:11px;
-      background:var(--bg2);border:1px solid var(--bd);border-radius:20px;padding:4px 10px}
-    .src-dot{width:5px;height:5px;border-radius:50%}
 
     /* STATS */
     .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
@@ -114,7 +119,9 @@
     .src-tag{font-size:9px;padding:1px 5px;border-radius:4px;border:1px solid;margin-left:4px}
     .src-bc{color:#60a5fa;border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.07)}
     .src-mp{color:#34d399;border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.07)}
-    .src-cache{color:#a78bfa;border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.07)}
+    .src-bs{color:#f472b6;border-color:rgba(244,114,182,.25);background:rgba(244,114,182,.07)}
+    .src-m2{color:#a78bfa;border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.07)}
+    .src-m3{color:#fb923c;border-color:rgba(251,146,60,.25);background:rgba(251,146,60,.07)}
 
     /* BADGES */
     .b{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
@@ -195,18 +202,20 @@
 
   <div class="info-banner">
     ℹ️&nbsp;<span>
-      <strong>Tamamen ücretsiz, API anahtarı yok.</strong>
-      İki bağımsız WebSocket: <strong>blockchain.info</strong> + <strong>mempool.space</strong>.
-      Borsa tespiti: adres önbelleği + Blockchair batch API (günde 1440 istek, akıllı yönetim).
-      Fiyat: <strong>CoinGecko</strong> (60sn). Watchlist: sıralı tarama, 2sn aralık.
+      <strong>5 bağımsız veri kaynağı — API anahtarı gerekmez.</strong>
+      WebSocket havuzu: <strong>blockchain.info</strong> · <strong>mempool.space</strong> · <strong>Blockstream</strong> · <strong>mempool.bisq</strong> · <strong>mempool.emzy</strong>.
+      Borsa tespiti: yerel önbellek + Blockchair batch API (günde 1400 istek, akıllı yönetim).
+      Fiyat: <strong>CoinGecko</strong> (60sn, otomatik fallback ile Binance API).
     </span>
   </div>
 
-  <!-- API BUDGET -->
+  <!-- SOURCE STATUS GRID -->
+  <div class="src-grid" id="src-grid">
+    <!-- JS tarafından doldurulur -->
+  </div>
+
+  <!-- API BUDGET BAR -->
   <div class="budget-row">
-    <div class="src-pill"><div class="src-dot" id="dot-bc" style="background:var(--yellow);animation:blink 2s infinite"></div><span id="lbl-bc">blockchain.info</span></div>
-    <div class="src-pill"><div class="src-dot" id="dot-mp" style="background:var(--yellow);animation:blink 2s infinite"></div><span id="lbl-mp">mempool.space</span></div>
-    <div class="src-pill"><div class="src-dot" id="dot-cg" style="background:var(--mut)"></div><span>CoinGecko</span></div>
     <div class="budget-pill">
       🔑 Blockchair:
       <div class="budget-bar-wrap"><div class="budget-bar" id="budget-bar" style="width:0%;background:var(--green)"></div></div>
@@ -214,12 +223,13 @@
     </div>
     <div class="budget-pill">💾 Önbellek: <span id="cache-lbl" style="color:var(--purple);margin-left:4px">0 adres</span></div>
     <div class="budget-pill">🔁 Dedup: <span id="dedup-lbl" style="color:var(--mut);margin-left:4px">0</span></div>
+    <div class="budget-pill">📡 Aktif Kaynak: <span id="active-src-lbl" style="color:var(--green);margin-left:4px;font-weight:700">0/5</span></div>
   </div>
 
   <!-- STATS -->
   <div class="stats">
     <div class="stat"><div class="stat-l">BTC Fiyat</div><div class="stat-v c-acc" id="s-price">—</div><div class="stat-s" id="s-change">—</div></div>
-    <div class="stat"><div class="stat-l">Canlı TX</div><div class="stat-v c-blue" id="s-total">0</div><div class="stat-s">iki kaynaktan</div></div>
+    <div class="stat"><div class="stat-l">Canlı TX</div><div class="stat-v c-blue" id="s-total">0</div><div class="stat-s">tüm kaynaklardan</div></div>
     <div class="stat"><div class="stat-l">Borsa Girişi ↓</div><div class="stat-v c-red" id="s-in">0</div><div class="stat-s" id="s-in-vol">—</div></div>
     <div class="stat"><div class="stat-l">Borsa Çıkışı ↑</div><div class="stat-v c-green" id="s-out">0</div><div class="stat-s" id="s-out-vol">—</div></div>
     <div class="stat"><div class="stat-l">İzlenen Adres</div><div class="stat-v c-yellow" id="s-watch">0</div><div class="stat-s">kayıtlı</div></div>
@@ -330,20 +340,108 @@ const KNOWN_EX = {
   '3lqtfzmqq7xqmz7gc8fq84pvzxqj3xfxp7':'OKX',
   'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz':'Bybit',
   '1kr1ue4462cqu9s4h1f27oa89gqpfz7lm':'Bitfinex',
+  // Ek bilinen adresler
+  '1feg9rp2rrqijacv5t1lrnlvpqqzx2wppt':'Gemini',
+  '3aa9b9jnk16ey3km7g7dzewmjfwghgiqm5':'Gate.io',
+  'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2':'Huobi/HTX',
+  '14ykvjxdmu8jbhg8bfwh6t8q2c2aqbzsgb':'Bittrex',
+  '3nmiyhzjdfzjmycfzv7nvr6lkgaqyghbgkc':'Crypto.com',
+  '1fsznjqy53p2uyy3jb1mtcvyqrb5gsmupbp':'KuCoin',
 };
 
 /* ════════════════════════════════════════════
-   ADRES ÖNBELLEĞİ  (10 dakika TTL)
-   Aynı adres tekrar sorgulanmaz → API tasarrufu
+   WEBSOCKET KAYNAK HAVUZU
+   5 bağımsız kaynak — dedup ile güvenli
 ════════════════════════════════════════════ */
-const ADDR_CACHE = new Map();   // addr → {ex, ts}
+const WS_SOURCES = [
+  {
+    id: 'bc',
+    name: 'blockchain.info',
+    url: 'wss://ws.blockchain.info/inv',
+    type: 'bc',
+    color: '#60a5fa',
+    ws: null, status: 'off', rxCount: 0, retryDelay: 3000,
+    onOpen(ws) { ws.send(JSON.stringify({op:'unconfirmed_sub'})); },
+    onMessage(data) {
+      try {
+        const m = JSON.parse(data);
+        if (m.op === 'utx') handleTx(m.x, 'bc');
+      } catch {}
+    }
+  },
+  {
+    id: 'mp',
+    name: 'mempool.space',
+    url: 'wss://mempool.space/api/v1/ws',
+    type: 'mp',
+    color: '#34d399',
+    ws: null, status: 'off', rxCount: 0, retryDelay: 3000,
+    onOpen(ws) { ws.send(JSON.stringify({action:'want',data:['transactions']})); },
+    onMessage(data) { handleMempoolMsg(data, 'mp'); }
+  },
+  {
+    id: 'bs',
+    name: 'Blockstream',
+    url: 'wss://blockstream.info/api/ws',
+    type: 'mp',
+    color: '#f472b6',
+    ws: null, status: 'off', rxCount: 0, retryDelay: 4000,
+    onOpen(ws) { ws.send(JSON.stringify({action:'want',data:['transactions']})); },
+    onMessage(data) { handleMempoolMsg(data, 'bs'); }
+  },
+  {
+    id: 'm2',
+    name: 'mempool.bisq',
+    url: 'wss://mempool.bisq.services/api/v1/ws',
+    type: 'mp',
+    color: '#a78bfa',
+    ws: null, status: 'off', rxCount: 0, retryDelay: 5000,
+    onOpen(ws) { ws.send(JSON.stringify({action:'want',data:['transactions']})); },
+    onMessage(data) { handleMempoolMsg(data, 'm2'); }
+  },
+  {
+    id: 'm3',
+    name: 'mempool.emzy',
+    url: 'wss://mempool.emzy.de/api/v1/ws',
+    type: 'mp',
+    color: '#fb923c',
+    ws: null, status: 'off', rxCount: 0, retryDelay: 5000,
+    onOpen(ws) { ws.send(JSON.stringify({action:'want',data:['transactions']})); },
+    onMessage(data) { handleMempoolMsg(data, 'm3'); }
+  }
+];
+
+/* mempool formatı işleyici (mp, bs, m2, m3 ortak kullanır) */
+function handleMempoolMsg(data, srcId) {
+  try {
+    const m = JSON.parse(data);
+    const txs = m.transactions || m['mempool-transactions'] || [];
+    txs.forEach(tx => {
+      if (!tx?.txid) return;
+      let totalIn = 0;
+      (tx.vin||[]).forEach(i => { totalIn += i.prevout?.value||0; });
+      const fakeX = {
+        hash: tx.txid,
+        inputs: (tx.vin||[]).map(i => ({prev_out:{addr:i.prevout?.scriptpubkey_address,value:i.prevout?.value||0}})),
+        out:   (tx.vout||[]).map(o => ({addr:o.scriptpubkey_address})),
+        _sat:  totalIn
+      };
+      handleTx(fakeX, srcId);
+    });
+  } catch {}
+}
+
+/* ════════════════════════════════════════════
+   ADRES ÖNBELLEĞİ  (10 dakika TTL)
+════════════════════════════════════════════ */
+const ADDR_CACHE = new Map();
 const CACHE_TTL  = 10 * 60 * 1000;
 
 function cacheGet(addr) {
   const e = ADDR_CACHE.get(addr);
   if (!e) return undefined;
   if (Date.now() - e.ts > CACHE_TTL) { ADDR_CACHE.delete(addr); return undefined; }
-  return e.ex;   // null = bilinen değil, string = borsa adı
+  return e.ex;
 }
 function cacheSet(addr, ex) {
   ADDR_CACHE.set(addr, { ex, ts: Date.now() });
@@ -360,29 +458,25 @@ setInterval(cacheClean, 5 * 60 * 1000);
 /* ════════════════════════════════════════════
    STATE
 ════════════════════════════════════════════ */
-let btcPrice  = 0;
-let txList    = [];
+let btcPrice   = 0;
+let txList     = [];
 let seenHashes = new Set();
 let dedupCount = 0;
-let exFlows   = {};
+let exFlows    = {};
 let statsIn = 0, statsOut = 0, statsTotal = 0, inVol = 0, outVol = 0;
-let watchlist = [];
-let filterDir = 'all';
-let wsBC = null, wsMP = null;
+let watchlist  = [];
+let filterDir  = 'all';
 
-// Batch lookup queue
-let batchQueue   = [];   // {hash, fromAddrs, toAddrs}
+let batchQueue   = [];
 let batchBusy    = false;
 let apiUsed      = 0;
 const API_MAX    = 1400;
-const BATCH_SIZE = 5;    // Blockchair batch: 5 TX tek çağrıda
+const BATCH_SIZE = 5;
 const TX_MAX     = 200;
 
-// Sound
 let soundEnabled = false;
 let audioCtx     = null;
 
-// Chart
 let chartMode     = 'price';
 let priceHistory  = [];
 let volumeHistory = [];
@@ -393,14 +487,98 @@ const CHART_MAX   = 60;
    INIT
 ════════════════════════════════════════════ */
 function init() {
+  renderSourceGrid();
   loadWatchlist();
   fetchPrice();
   setInterval(fetchPrice, 60000);
-  connectBC();
-  connectMP();
-  setInterval(flushBatchQueue, 5000);   // 5sn'de bir batch gönder
+  // Tüm WebSocket kaynaklarını başlat
+  WS_SOURCES.forEach(src => connectSource(src));
+  setInterval(flushBatchQueue, 5000);
   setInterval(tickVolBucket,  60000);
+  setInterval(updateActiveSrcLabel, 2000);
   initChart();
+}
+
+/* ════════════════════════════════════════════
+   KAYNAK GRID
+════════════════════════════════════════════ */
+function renderSourceGrid() {
+  const el = document.getElementById('src-grid');
+  el.innerHTML = WS_SOURCES.map(src =>
+    `<div class="src-card" id="card-${src.id}">
+      <div class="src-card-dot" id="cdot-${src.id}" style="background:var(--mut)"></div>
+      <div class="src-card-name">${src.name}</div>
+      <div class="src-card-count" id="crx-${src.id}">0</div>
+    </div>`
+  ).join('');
+}
+
+function updateSourceCard(src) {
+  const dot = document.getElementById('cdot-' + src.id);
+  const rxEl = document.getElementById('crx-' + src.id);
+  if (!dot) return;
+  const colors = { connecting:'var(--yellow)', ok:'var(--green)', err:'var(--red)', off:'var(--mut)' };
+  dot.style.background = colors[src.status] || 'var(--mut)';
+  dot.style.animation  = src.status === 'ok' ? 'blink 2s infinite' : 'none';
+  if (rxEl) rxEl.textContent = src.rxCount > 999 ? Math.floor(src.rxCount/1000)+'K' : src.rxCount;
+}
+
+function updateActiveSrcLabel() {
+  const active = WS_SOURCES.filter(s => s.status === 'ok').length;
+  const el = document.getElementById('active-src-lbl');
+  el.textContent = active + '/5';
+  el.style.color = active >= 3 ? 'var(--green)' : active >= 1 ? 'var(--yellow)' : 'var(--red)';
+  // ws-label güncelle
+  document.getElementById('ws-label').textContent = active + ' kaynak canlı';
+  document.getElementById('ws-status').textContent =
+    active >= 3 ? '✓ ' + active + ' kaynak aktif' :
+    active >= 1 ? '⚡ ' + active + ' kaynak aktif' : 'Yeniden bağlanıyor…';
+}
+
+/* ════════════════════════════════════════════
+   GENEL WEBSOCKET BAĞLAYICI
+════════════════════════════════════════════ */
+function connectSource(src) {
+  src.status = 'connecting';
+  updateSourceCard(src);
+  try {
+    const ws = new WebSocket(src.url);
+    src.ws = ws;
+
+    ws.onopen = () => {
+      src.status = 'ok';
+      src.retryDelay = 3000; // başarı → sıfırla
+      updateSourceCard(src);
+      toast(src.name + ' bağlı', 'ok');
+      try { src.onOpen(ws); } catch {}
+    };
+
+    ws.onmessage = e => {
+      src.rxCount++;
+      updateSourceCard(src);
+      try { src.onMessage(e.data); } catch {}
+    };
+
+    ws.onclose = () => {
+      src.status = 'err';
+      src.ws = null;
+      updateSourceCard(src);
+      // Üstel geri çekilme: 3s → 6s → 12s → max 60s
+      const delay = Math.min(src.retryDelay, 60000);
+      src.retryDelay = delay * 2;
+      setTimeout(() => connectSource(src), delay);
+    };
+
+    ws.onerror = () => {
+      src.status = 'err';
+      updateSourceCard(src);
+      ws.close();
+    };
+  } catch(e) {
+    src.status = 'err';
+    updateSourceCard(src);
+    setTimeout(() => connectSource(src), src.retryDelay);
+  }
 }
 
 /* ════════════════════════════════════════════
@@ -420,7 +598,7 @@ function toggleSound() {
 function playAlert(type) {
   if (!soundEnabled || !audioCtx) return;
   try {
-    const osc = audioCtx.createOscillator();
+    const osc  = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.connect(gain); gain.connect(audioCtx.destination);
     if (type === 'whale') {
@@ -443,94 +621,68 @@ function playAlert(type) {
 }
 
 /* ════════════════════════════════════════════
-   BTC PRICE
+   BTC PRICE — CoinGecko + Binance fallback
 ════════════════════════════════════════════ */
 async function fetchPrice() {
+  // Birincil: CoinGecko
   try {
     const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');
     const d = await r.json();
     if (!d.bitcoin?.usd) throw new Error('bad');
-    btcPrice = d.bitcoin.usd;
-    const ch = d.bitcoin.usd_24h_change;
-    document.getElementById('price-pill').textContent = '$' + btcPrice.toLocaleString('en-US');
-    document.getElementById('s-price').textContent    = '$' + btcPrice.toLocaleString('en-US');
-    const cs = document.getElementById('s-change');
-    cs.textContent = (ch >= 0 ? '▲ +' : '▼ ') + ch.toFixed(2) + '% (24s)';
-    cs.style.color = ch >= 0 ? 'var(--green)' : 'var(--red)';
-    priceHistory.push({ t: Date.now(), price: btcPrice });
-    if (priceHistory.length > CHART_MAX) priceHistory.shift();
-    drawChart();
-    rerenderUSD();
-    setDot('dot-cg', 'green');
-  } catch(e) { setDot('dot-cg', 'red'); }
+    applyPrice(d.bitcoin.usd, d.bitcoin.usd_24h_change, 'CoinGecko');
+    return;
+  } catch {}
+
+  // Fallback 1: Binance (API anahtarı yok, public)
+  try {
+    const r = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');
+    const d = await r.json();
+    if (!d.lastPrice) throw new Error('bad');
+    const price = parseFloat(d.lastPrice);
+    const ch    = parseFloat(d.priceChangePercent);
+    applyPrice(price, ch, 'Binance');
+    return;
+  } catch {}
+
+  // Fallback 2: CoinPaprika (tamamen ücretsiz)
+  try {
+    const r = await fetch('https://api.coinpaprika.com/v1/tickers/btc-bitcoin');
+    const d = await r.json();
+    if (!d.quotes?.USD?.price) throw new Error('bad');
+    applyPrice(d.quotes.USD.price, d.quotes.USD.percent_change_24h, 'CoinPaprika');
+  } catch {
+    document.getElementById('price-pill').textContent = 'Fiyat alınamadı';
+  }
 }
 
-/* ════════════════════════════════════════════
-   WEBSOCKET — blockchain.info
-════════════════════════════════════════════ */
-function connectBC() {
-  setDot('dot-bc','yellow');
-  wsBC = new WebSocket('wss://ws.blockchain.info/inv');
-  wsBC.onopen = () => {
-    wsBC.send(JSON.stringify({op:'unconfirmed_sub'}));
-    setDot('dot-bc','green');
-    document.getElementById('lbl-bc').textContent = 'blockchain.info ✓';
-    updateWsLabel();
-    toast('blockchain.info bağlı','ok');
-  };
-  wsBC.onmessage = e => {
-    try { const m = JSON.parse(e.data); if (m.op==='utx') handleTx(m.x,'bc'); } catch {}
-  };
-  wsBC.onclose = () => { setDot('dot-bc','red'); updateWsLabel(); setTimeout(connectBC,6000); };
-  wsBC.onerror = () => { setDot('dot-bc','red'); wsBC.close(); };
-}
-
-/* ════════════════════════════════════════════
-   WEBSOCKET — mempool.space
-════════════════════════════════════════════ */
-function connectMP() {
-  setDot('dot-mp','yellow');
-  wsMP = new WebSocket('wss://mempool.space/api/v1/ws');
-  wsMP.onopen = () => {
-    wsMP.send(JSON.stringify({action:'want',data:['transactions']}));
-    setDot('dot-mp','green');
-    document.getElementById('lbl-mp').textContent = 'mempool.space ✓';
-    updateWsLabel();
-    toast('mempool.space bağlı','ok');
-  };
-  wsMP.onmessage = e => {
-    try {
-      const m = JSON.parse(e.data);
-      const txs = m.transactions || m['mempool-transactions'] || [];
-      txs.forEach(tx => {
-        if (!tx?.txid) return;
-        let totalIn = 0;
-        (tx.vin||[]).forEach(i => { totalIn += i.prevout?.value||0; });
-        const fakeX = {
-          hash: tx.txid,
-          inputs: (tx.vin||[]).map(i => ({prev_out:{addr:i.prevout?.scriptpubkey_address,value:i.prevout?.value||0}})),
-          out:   (tx.vout||[]).map(o => ({addr:o.scriptpubkey_address})),
-          _sat:  totalIn
-        };
-        handleTx(fakeX,'mp');
-      });
-    } catch {}
-  };
-  wsMP.onclose = () => { setDot('dot-mp','red'); updateWsLabel(); setTimeout(connectMP,6000); };
-  wsMP.onerror = () => { setDot('dot-mp','red'); wsMP.close(); };
+function applyPrice(price, change, source) {
+  btcPrice = price;
+  document.getElementById('price-pill').textContent = '$' + price.toLocaleString('en-US');
+  document.getElementById('s-price').textContent    = '$' + price.toLocaleString('en-US');
+  const cs = document.getElementById('s-change');
+  cs.textContent = (change >= 0 ? '▲ +' : '▼ ') + change.toFixed(2) + '% (24s) · ' + source;
+  cs.style.color = change >= 0 ? 'var(--green)' : 'var(--red)';
+  priceHistory.push({ t: Date.now(), price });
+  if (priceHistory.length > CHART_MAX) priceHistory.shift();
+  drawChart();
+  rerenderUSD();
 }
 
 /* ════════════════════════════════════════════
    HANDLE TX
 ════════════════════════════════════════════ */
 function handleTx(tx, source) {
-  // Dedup
   if (seenHashes.has(tx.hash)) {
     dedupCount++;
     document.getElementById('dedup-lbl').textContent = dedupCount;
     return;
   }
   seenHashes.add(tx.hash);
+  // Bellek yönetimi: hash seti çok büyümesin
+  if (seenHashes.size > 50000) {
+    const toDelete = [...seenHashes].slice(0, 10000);
+    toDelete.forEach(h => seenHashes.delete(h));
+  }
 
   let sat = tx._sat || 0;
   if (!sat) tx.inputs.forEach(i => { sat += i.prev_out?.value||0; });
@@ -546,11 +698,8 @@ function handleTx(tx, source) {
   const fromAddrs = tx.inputs.map(i => i.prev_out?.addr).filter(Boolean);
   const toAddrs   = tx.out.map(o => o.addr).filter(Boolean);
 
-  // 1) Yerel bilinen borsa kontrolü
   let fromEx = findKnownEx(fromAddrs);
   let toEx   = findKnownEx(toAddrs);
-
-  // 2) Adres önbelleği kontrolü (API sıfır harcamaz)
   if (!fromEx) fromEx = findCached(fromAddrs);
   if (!toEx)   toEx   = findCached(toAddrs);
 
@@ -572,22 +721,18 @@ function handleTx(tx, source) {
   renderTxTable();
   triggerAlerts(entry);
 
-  // 3) Blockchair batch kuyruğu — sadece bilinmeyenler, API bütçesi varsa
   if (!entry.lookupDone && apiUsed < API_MAX) {
     batchQueue.push({ hash: tx.hash, fromAddrs, toAddrs });
   }
 }
 
-/* Önbellekten borsa bul */
 function findCached(addrs) {
   for (const a of addrs) {
     const v = cacheGet(a);
-    if (v) return v;         // string → borsa adı
-    // v===null → bilinmiyor ama önbellekte → tekrar sorma
+    if (v) return v;
   }
   return null;
 }
-
 function findKnownEx(addrs) {
   for (const a of addrs) {
     const k = a?.toLowerCase();
@@ -604,44 +749,30 @@ function classifyDir(fromEx, toEx) {
 
 /* ════════════════════════════════════════════
    BLOCKCHAIR BATCH API
-   Tek çağrıda BATCH_SIZE kadar TX sorgulanır
-   → API harcaması dramatik azalır
 ════════════════════════════════════════════ */
 async function flushBatchQueue() {
   if (batchBusy || !batchQueue.length || apiUsed >= API_MAX) return;
   batchBusy = true;
-
-  // Batch al (en fazla BATCH_SIZE)
   const batch = batchQueue.splice(0, BATCH_SIZE);
   const hashes = batch.map(b => b.hash);
-
   try {
-    // Tek API çağrısı — 5 TX birden
     const url = `https://api.blockchair.com/bitcoin/dashboards/transactions/${hashes.join(',')}?transaction_details=true`;
     const r = await fetch(url);
     if (!r.ok) throw new Error('HTTP ' + r.status);
     apiUsed++;
     updateBudgetUI();
-
     const d = await r.json();
     if (!d.data) throw new Error('no data');
-
     for (const item of batch) {
       const txData = d.data[item.hash];
       if (!txData) continue;
-
       const inputs  = txData.inputs  || [];
       const outputs = txData.outputs || [];
       const labels  = d.context?.labels || {};
-
-      const fromEx = extractExLabel(inputs.map(i => ({addr:i.recipient, label:labels[i.recipient]})));
-      const toEx   = extractExLabel(outputs.map(o => ({addr:o.recipient,label:labels[o.recipient]})));
-
-      // Önbelleğe yaz — hem bulunanlar hem bulunamayanlar (null)
+      const fromEx = extractExLabel(inputs.map(i  => ({addr:i.recipient, label:labels[i.recipient]})));
+      const toEx   = extractExLabel(outputs.map(o => ({addr:o.recipient, label:labels[o.recipient]})));
       inputs.forEach(i  => { if(i.recipient) cacheSet(i.recipient,  fromEx||null); });
       outputs.forEach(o => { if(o.recipient) cacheSet(o.recipient,  toEx||null);   });
-
-      // txList'i güncelle
       const entry = txList.find(t => t.hash === item.hash);
       if (entry && (fromEx || toEx)) {
         entry.fromEx = fromEx || entry.fromEx;
@@ -653,7 +784,6 @@ async function flushBatchQueue() {
     }
   } catch(e) {
     console.warn('batch err', e);
-    // Başarısız olursa kuyruğa geri koy (en fazla 1 kez tekrar)
     if (batch[0] && !batch[0]._retry) {
       batch.forEach(b => { b._retry = true; batchQueue.unshift(b); });
     }
@@ -677,6 +807,8 @@ function extractExLabel(list) {
     if (l.includes('gemini'))   return 'Gemini';
     if (l.includes('bitmex'))   return 'BitMEX';
     if (l.includes('bitstamp')) return 'Bitstamp';
+    if (l.includes('crypto.com')||l.includes('cryptocom')) return 'Crypto.com';
+    if (l.includes('bittrex'))  return 'Bittrex';
   }
   return null;
 }
@@ -694,21 +826,21 @@ function updateBudgetUI() {
    STATS & ALERTS
 ════════════════════════════════════════════ */
 function updateStats(entry) {
-  if (entry.dir==='in') {
+  if (entry.dir === 'in') {
     statsIn++; inVol += entry.usd;
-    document.getElementById('s-in').textContent   = statsIn;
+    document.getElementById('s-in').textContent     = statsIn;
     document.getElementById('s-in-vol').textContent = '$' + fmtUSD(inVol) + ' toplam';
   }
-  if (entry.dir==='out') {
+  if (entry.dir === 'out') {
     statsOut++; outVol += entry.usd;
-    document.getElementById('s-out').textContent   = statsOut;
+    document.getElementById('s-out').textContent     = statsOut;
     document.getElementById('s-out-vol').textContent = '$' + fmtUSD(outVol) + ' toplam';
   }
   const ex = entry.toEx || entry.fromEx;
   if (ex) {
-    if (!exFlows[ex]) exFlows[ex] = {in:0,out:0};
-    if (entry.dir==='in')  exFlows[ex].in  += entry.usd;
-    if (entry.dir==='out') exFlows[ex].out += entry.usd;
+    if (!exFlows[ex]) exFlows[ex] = {in:0, out:0};
+    if (entry.dir === 'in')  exFlows[ex].in  += entry.usd;
+    if (entry.dir === 'out') exFlows[ex].out += entry.usd;
     renderExFlow();
   }
 }
@@ -718,10 +850,10 @@ function triggerAlerts(entry) {
   panel.classList.remove('alert-pulse');
   void panel.offsetWidth;
   panel.classList.add('alert-pulse');
-  if (entry.dir==='in')  playAlert('in');
-  else if (entry.dir==='out') playAlert('out');
-  else playAlert('whale');
-  const minBtc = parseFloat(document.getElementById('f-min').value)||100;
+  if (entry.dir === 'in')        playAlert('in');
+  else if (entry.dir === 'out')  playAlert('out');
+  else                           playAlert('whale');
+  const minBtc = parseFloat(document.getElementById('f-min').value) || 100;
   if (entry.btc >= minBtc * 2) {
     toast(`🐋 ${entry.btc.toFixed(0)} BTC — ${dirLabel(entry.dir)}${entry.fromEx||entry.toEx?' · '+(entry.fromEx||entry.toEx):''}`, 'whale');
   }
@@ -735,17 +867,17 @@ function dirLabel(d) {
    RENDER TX TABLE
 ════════════════════════════════════════════ */
 function renderTxTable() {
-  let list = txList.filter(t => filterDir==='all' || t.dir===filterDir);
-  if (document.getElementById('f-sort').value==='amt') list = [...list].sort((a,b)=>b.btc-a.btc);
+  let list = txList.filter(t => filterDir === 'all' || t.dir === filterDir);
+  if (document.getElementById('f-sort').value === 'amt') list = [...list].sort((a,b) => b.btc - a.btc);
   document.getElementById('tx-count').textContent = list.length;
   if (!list.length) {
-    document.getElementById('tx-body').innerHTML = '<tr><td colspan="7" class="loading" style="color:var(--mut)">Eşik üzeri işlem bekleniyor…</td></tr>';
+    document.getElementById('tx-body').innerHTML =
+      '<tr><td colspan="7" class="loading" style="color:var(--mut)">Eşik üzeri işlem bekleniyor…</td></tr>';
     return;
   }
   document.getElementById('tx-body').innerHTML = list.slice(0,80).map(t => {
-    const srcTag = t.source==='mp'
-      ? '<span class="src-tag src-mp">mp</span>'
-      : '<span class="src-tag src-bc">bc</span>';
+    const srcCls = 'src-tag src-' + t.source;
+    const srcLbl = t.source;
     const fromLabel = t.fromEx
       ? `<span class="b b-ex">${t.fromEx}</span>`
       : `<a class="mono al" href="https://blockchair.com/bitcoin/address/${t.from}" target="_blank">${shortAddr(t.from)}</a>`;
@@ -757,19 +889,20 @@ function renderTxTable() {
     return `<tr class="${cls}">
       <td style="color:var(--mut);white-space:nowrap">${timeAgo(t.time)}</td>
       <td><div class="amt-btc">${t.btc.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:4})} BTC</div>
-          <div class="amt-usd">${t.usd?'$'+fmtUSD(t.usd):'—'}</div></td>
+          <div class="amt-usd">${t.usd ? '$'+fmtUSD(t.usd) : '—'}</div></td>
       <td>${dirBadgeHtml(t)}</td>
-      <td>${fromLabel}</td><td>${toLabel}</td>
-      <td>${srcTag}</td>
+      <td>${fromLabel}</td>
+      <td>${toLabel}</td>
+      <td><span class="${srcCls}">${srcLbl}</span></td>
       <td><a class="mono al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,8)}… ↗</a></td>
     </tr>`;
   }).join('');
 }
 
 function dirBadgeHtml(t) {
-  if (t.dir==='in')    return `<span class="b b-in">↓ Borsa Girişi${t.toEx?' · '+t.toEx:''}</span>`;
-  if (t.dir==='out')   return `<span class="b b-out">↑ Borsa Çıkışı${t.fromEx?' · '+t.fromEx:''}</span>`;
-  if (t.dir==='ex2ex') return `<span class="b b-ex">⇄ Borsa→Borsa</span>`;
+  if (t.dir === 'in')    return `<span class="b b-in">↓ Borsa Girişi${t.toEx ? ' · '+t.toEx : ''}</span>`;
+  if (t.dir === 'out')   return `<span class="b b-out">↑ Borsa Çıkışı${t.fromEx ? ' · '+t.fromEx : ''}</span>`;
+  if (t.dir === 'ex2ex') return `<span class="b b-ex">⇄ Borsa→Borsa</span>`;
   return `<span class="b b-w2w">🐋 Whale→Whale</span>`;
 }
 
@@ -780,12 +913,14 @@ function renderExFlow() {
   const el = document.getElementById('ex-flow');
   const entries = Object.entries(exFlows);
   if (!entries.length) { el.innerHTML = '<div class="empty"><i>📊</i>İşlem bekleniyor…</div>'; return; }
-  entries.sort((a,b)=>(b[1].in+b[1].out)-(a[1].in+a[1].out));
-  const maxVal = Math.max(...entries.map(e=>e[1].in+e[1].out));
+  entries.sort((a,b) => (b[1].in+b[1].out) - (a[1].in+a[1].out));
+  const maxVal = Math.max(...entries.map(e => e[1].in+e[1].out));
   const colors = ['#f7931a','#3b82f6','#22c55e','#a78bfa','#ef4444','#fbbf24','#06b6d4','#f472b6'];
-  el.innerHTML = '<div class="ex-list">' + entries.slice(0,8).map(([name,v],i)=>{
-    const total=v.in+v.out, pct=(total/maxVal*100).toFixed(1);
-    const netDir=v.in>v.out?'<span style="color:var(--red)">↓</span>':'<span style="color:var(--green)">↑</span>';
+  el.innerHTML = '<div class="ex-list">' + entries.slice(0,8).map(([name,v],i) => {
+    const total = v.in + v.out, pct = (total/maxVal*100).toFixed(1);
+    const netDir = v.in > v.out
+      ? '<span style="color:var(--red)">↓</span>'
+      : '<span style="color:var(--green)">↑</span>';
     return `<div class="ex-row">
       <div class="ex-name">${name}</div>
       <div class="ex-bar-wrap"><div class="ex-bar" style="width:${pct}%;background:${colors[i%colors.length]}"></div></div>
@@ -801,8 +936,9 @@ function renderExFlow() {
 function initChart() {
   const c = document.getElementById('price-canvas');
   c.addEventListener('mousemove', onChartHover);
-  c.addEventListener('mouseleave', ()=>{ document.getElementById('chart-tip').style.display='none'; });
-  resizeCanvas(); window.addEventListener('resize',()=>{ resizeCanvas(); drawChart(); });
+  c.addEventListener('mouseleave', () => { document.getElementById('chart-tip').style.display = 'none'; });
+  resizeCanvas();
+  window.addEventListener('resize', () => { resizeCanvas(); drawChart(); });
 }
 function resizeCanvas() {
   const c = document.getElementById('price-canvas');
@@ -820,150 +956,187 @@ function tickVolBucket() {
 }
 function setChartMode(m, btn) {
   chartMode = m;
-  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.ctab').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   drawChart();
 }
 function drawChart() {
-  const c = document.getElementById('price-canvas');
+  const c   = document.getElementById('price-canvas');
   const ctx = c.getContext('2d');
-  const W=c.width, H=c.height, dpr=devicePixelRatio;
-  ctx.clearRect(0,0,W,H);
-  const P={top:16*dpr,right:12*dpr,bottom:28*dpr,left:60*dpr};
-  const pW=W-P.left-P.right, pH=H-P.top-P.bottom;
+  const W = c.width, H = c.height, dpr = devicePixelRatio;
+  ctx.clearRect(0, 0, W, H);
+  const P = { top:16*dpr, right:12*dpr, bottom:28*dpr, left:60*dpr };
+  const pW = W - P.left - P.right, pH = H - P.top - P.bottom;
 
-  ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1;
-  for(let i=0;i<=4;i++){const y=P.top+(pH/4)*i;ctx.beginPath();ctx.moveTo(P.left,y);ctx.lineTo(W-P.right,y);ctx.stroke();}
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)'; ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = P.top + (pH/4)*i;
+    ctx.beginPath(); ctx.moveTo(P.left, y); ctx.lineTo(W-P.right, y); ctx.stroke();
+  }
 
-  const showP = chartMode!=='volume';
-  const showV = chartMode!=='price';
+  const showP = chartMode !== 'volume';
+  const showV = chartMode !== 'price';
 
-  if (showV && volumeHistory.length>1) {
-    const maxV=Math.max(...volumeHistory.map(d=>d.btc),1);
-    const bW=Math.max(3,(pW/CHART_MAX)-1);
-    volumeHistory.forEach((d,i)=>{
-      const x=P.left+(i/(CHART_MAX-1))*pW;
-      const bH=(d.btc/maxV)*pH*0.4;
-      ctx.fillStyle='rgba(59,130,246,0.35)';
-      ctx.fillRect(x-bW/2,P.top+pH-bH,bW,bH);
+  if (showV && volumeHistory.length > 1) {
+    const maxV = Math.max(...volumeHistory.map(d => d.btc), 1);
+    const bW   = Math.max(3, (pW/CHART_MAX) - 1);
+    volumeHistory.forEach((d, i) => {
+      const x  = P.left + (i/(CHART_MAX-1)) * pW;
+      const bH = (d.btc/maxV) * pH * 0.4;
+      ctx.fillStyle = 'rgba(59,130,246,0.35)';
+      ctx.fillRect(x - bW/2, P.top + pH - bH, bW, bH);
     });
   }
 
-  if (showP && priceHistory.length>1) {
-    const prices=priceHistory.map(d=>d.price);
-    const minP=Math.min(...prices)*.9995, maxP=Math.max(...prices)*1.0005;
-    const range=maxP-minP||1;
-    const toX=i=>P.left+(i/(priceHistory.length-1))*pW;
-    const toY=p=>P.top+pH-((p-minP)/range)*pH;
+  if (showP && priceHistory.length > 1) {
+    const prices = priceHistory.map(d => d.price);
+    const minP   = Math.min(...prices) * .9995;
+    const maxP   = Math.max(...prices) * 1.0005;
+    const range  = maxP - minP || 1;
+    const toX    = i => P.left + (i/(priceHistory.length-1)) * pW;
+    const toY    = p => P.top + pH - ((p-minP)/range) * pH;
 
-    const grad=ctx.createLinearGradient(0,P.top,0,P.top+pH);
-    grad.addColorStop(0,'rgba(247,147,26,.18)'); grad.addColorStop(1,'rgba(247,147,26,0)');
+    const grad = ctx.createLinearGradient(0, P.top, 0, P.top+pH);
+    grad.addColorStop(0, 'rgba(247,147,26,.18)');
+    grad.addColorStop(1, 'rgba(247,147,26,0)');
     ctx.beginPath();
-    priceHistory.forEach((d,i)=>{ i===0?ctx.moveTo(toX(i),toY(d.price)):ctx.lineTo(toX(i),toY(d.price)); });
-    ctx.lineTo(toX(priceHistory.length-1),P.top+pH); ctx.lineTo(P.left,P.top+pH); ctx.closePath();
-    ctx.fillStyle=grad; ctx.fill();
+    priceHistory.forEach((d,i) => { i===0 ? ctx.moveTo(toX(i),toY(d.price)) : ctx.lineTo(toX(i),toY(d.price)); });
+    ctx.lineTo(toX(priceHistory.length-1), P.top+pH);
+    ctx.lineTo(P.left, P.top+pH);
+    ctx.closePath();
+    ctx.fillStyle = grad; ctx.fill();
 
     ctx.beginPath();
-    priceHistory.forEach((d,i)=>{ i===0?ctx.moveTo(toX(i),toY(d.price)):ctx.lineTo(toX(i),toY(d.price)); });
-    ctx.strokeStyle='#f7931a'; ctx.lineWidth=1.5*dpr; ctx.lineJoin='round'; ctx.stroke();
+    priceHistory.forEach((d,i) => { i===0 ? ctx.moveTo(toX(i),toY(d.price)) : ctx.lineTo(toX(i),toY(d.price)); });
+    ctx.strokeStyle = '#f7931a'; ctx.lineWidth = 1.5*dpr; ctx.lineJoin = 'round'; ctx.stroke();
 
-    ctx.fillStyle='rgba(92,96,112,.9)'; ctx.font=`${9*dpr}px monospace`; ctx.textAlign='right';
-    [minP,(minP+maxP)/2,maxP].forEach(p=>{
-      ctx.fillText('$'+p.toLocaleString('en-US',{maximumFractionDigits:0}),P.left-4,toY(p)+3*dpr);
+    ctx.fillStyle = 'rgba(92,96,112,.9)'; ctx.font = `${9*dpr}px monospace`; ctx.textAlign = 'right';
+    [minP, (minP+maxP)/2, maxP].forEach(p => {
+      ctx.fillText('$'+p.toLocaleString('en-US',{maximumFractionDigits:0}), P.left-4, toY(p)+3*dpr);
     });
   }
 
-  if (priceHistory.length<2&&volumeHistory.length<2) {
-    ctx.fillStyle='rgba(92,96,112,.6)'; ctx.font=`${11*dpr}px sans-serif`; ctx.textAlign='center';
-    ctx.fillText('Veri birikmesi bekleniyor…',W/2,H/2);
+  if (priceHistory.length < 2 && volumeHistory.length < 2) {
+    ctx.fillStyle = 'rgba(92,96,112,.6)'; ctx.font = `${11*dpr}px sans-serif`; ctx.textAlign = 'center';
+    ctx.fillText('Veri birikmesi bekleniyor…', W/2, H/2);
   }
 }
 function onChartHover(e) {
-  const c=document.getElementById('price-canvas');
-  const rect=c.getBoundingClientRect();
-  const dpr=devicePixelRatio;
-  const PL=60*dpr, pW=c.width-PL-12*dpr;
-  const frac=(e.clientX-rect.left)*dpr-PL;
-  if(frac<0||frac>pW){document.getElementById('chart-tip').style.display='none';return;}
-  const idx=Math.round((frac/pW)*(priceHistory.length-1));
-  const pt=priceHistory[idx];
-  if(!pt){document.getElementById('chart-tip').style.display='none';return;}
-  const tip=document.getElementById('chart-tip');
-  tip.style.display='block';
-  tip.style.left=(e.clientX+12)+'px'; tip.style.top=(e.clientY-30)+'px';
-  tip.innerHTML=`<strong>$${pt.price.toLocaleString('en-US')}</strong><br><span style="color:var(--mut)">${timeAgo(pt.t)}</span>`;
+  const c    = document.getElementById('price-canvas');
+  const rect = c.getBoundingClientRect();
+  const dpr  = devicePixelRatio;
+  const PL   = 60*dpr, pW = c.width - PL - 12*dpr;
+  const frac = (e.clientX - rect.left) * dpr - PL;
+  if (frac < 0 || frac > pW) { document.getElementById('chart-tip').style.display='none'; return; }
+  const idx = Math.round((frac/pW) * (priceHistory.length-1));
+  const pt  = priceHistory[idx];
+  if (!pt) { document.getElementById('chart-tip').style.display='none'; return; }
+  const tip = document.getElementById('chart-tip');
+  tip.style.display = 'block';
+  tip.style.left = (e.clientX + 12) + 'px'; tip.style.top = (e.clientY - 30) + 'px';
+  tip.innerHTML = `<strong>$${pt.price.toLocaleString('en-US')}</strong><br><span style="color:var(--mut)">${timeAgo(pt.t)}</span>`;
 }
 
 /* ════════════════════════════════════════════
    WATCHLIST — sıralı tarama (2sn aralık)
 ════════════════════════════════════════════ */
 function loadWatchlist() {
-  try { watchlist=JSON.parse(localStorage.getItem('ww_wl')||'[]'); } catch { watchlist=[]; }
+  try { watchlist = JSON.parse(localStorage.getItem('ww_wl') || '[]'); } catch { watchlist = []; }
   document.getElementById('s-watch').textContent = watchlist.length;
   renderWatchlist();
   if (watchlist.length) refreshAllWatchlist();
 }
 function saveWatchlist() {
-  localStorage.setItem('ww_wl', JSON.stringify(watchlist.map(w=>({addr:w.addr,label:w.label}))));
+  localStorage.setItem('ww_wl', JSON.stringify(watchlist.map(w => ({addr:w.addr,label:w.label}))));
   document.getElementById('s-watch').textContent = watchlist.length;
 }
 
 async function addWatch() {
   const addr  = document.getElementById('wl-addr').value.trim();
   const label = document.getElementById('wl-lbl').value.trim() || shortAddr(addr);
-  if (!addr) { toast('Adres boş','err'); return; }
-  if (!isValidBTC(addr)) { toast('Geçersiz BTC adresi','err'); return; }
-  if (watchlist.find(w=>w.addr===addr)) { toast('Zaten listede','err'); return; }
+  if (!addr) { toast('Adres boş', 'err'); return; }
+  if (!isValidBTC(addr)) { toast('Geçersiz BTC adresi', 'err'); return; }
+  if (watchlist.find(w => w.addr === addr)) { toast('Zaten listede', 'err'); return; }
   document.getElementById('wl-addr').value = '';
   document.getElementById('wl-lbl').value  = '';
-  watchlist.push({addr,label,bal:null,txs:[],lastFetch:null});
+  watchlist.push({addr, label, bal:null, txs:[], lastFetch:null});
   saveWatchlist(); renderWatchlist();
   await fetchWatchAddr(watchlist[watchlist.length-1]);
   renderWatchlist(); renderWatchTxs();
 }
 function removeWatch(addr) {
-  watchlist=watchlist.filter(w=>w.addr!==addr);
+  watchlist = watchlist.filter(w => w.addr !== addr);
   saveWatchlist(); renderWatchlist(); renderWatchTxs();
 }
 
-/* Sıralı tarama: Promise.all yerine for...of + 2sn bekleme */
 async function refreshAllWatchlist() {
   if (!watchlist.length) return;
   for (const entry of watchlist) {
     await fetchWatchAddr(entry);
     renderWatchlist();
-    await sleep(2000);   // 2sn aralık — blockchain.info'ya nazik
+    await sleep(2000);
   }
   renderWatchTxs();
 }
 
 async function fetchWatchAddr(entry) {
+  // Birincil: blockchain.info
   try {
     const r = await fetch(`https://blockchain.info/rawaddr/${entry.addr}?limit=10&cors=true`);
-    if (!r.ok) throw new Error('HTTP '+r.status);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     const d = await r.json();
-    entry.bal      = d.final_balance / 1e8;
-    entry.txCount  = d.n_tx;
+    entry.bal     = d.final_balance / 1e8;
+    entry.txCount = d.n_tx;
     entry.txs = (d.txs||[]).map(tx => {
-      let net=0;
-      tx.out.forEach(o=>{ if(o.addr===entry.addr) net+=o.value; });
-      tx.inputs.forEach(i=>{ if(i.prev_out?.addr===entry.addr) net-=i.prev_out.value; });
-      return {hash:tx.hash, time:tx.time*1000, net:net/1e8};
+      let net = 0;
+      tx.out.forEach(o    => { if (o.addr === entry.addr)             net += o.value; });
+      tx.inputs.forEach(i => { if (i.prev_out?.addr === entry.addr)   net -= i.prev_out.value; });
+      return { hash: tx.hash, time: tx.time * 1000, net: net / 1e8 };
     });
     entry.lastFetch = Date.now();
-  } catch(e) { entry.balErr=e.message; }
+    delete entry.balErr;
+    return;
+  } catch {}
+
+  // Fallback: blockchair (API bütçesinden düşer)
+  if (apiUsed < API_MAX) {
+    try {
+      const r = await fetch(`https://api.blockchair.com/bitcoin/dashboards/address/${entry.addr}?transaction_details=true&limit=10`);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      apiUsed++;
+      updateBudgetUI();
+      const d = await r.json();
+      const ad = d.data?.[entry.addr]?.address;
+      if (!ad) throw new Error('no data');
+      entry.bal     = ad.balance / 1e8;
+      entry.txCount = ad.transaction_count;
+      const txRows  = d.data?.[entry.addr]?.transactions || [];
+      entry.txs = txRows.slice(0,10).map(tx => ({
+        hash: tx.hash,
+        time: new Date(tx.time).getTime(),
+        net: (tx.balance_change || 0) / 1e8
+      }));
+      entry.lastFetch = Date.now();
+      delete entry.balErr;
+    } catch(e) { entry.balErr = e.message; }
+  } else {
+    entry.balErr = 'API limiti';
+  }
 }
 
 function renderWatchlist() {
-  const el=document.getElementById('wl-body');
-  if (!watchlist.length) { el.innerHTML='<div class="empty"><i>📋</i>Adres ekleyin</div>'; return; }
-  el.innerHTML=watchlist.map(w=>{
-    const balStr=w.bal!=null?w.bal.toFixed(4)+' BTC':'…';
-    const usdStr=w.bal!=null&&btcPrice?'$'+fmtUSD(w.bal*btcPrice):'';
+  const el = document.getElementById('wl-body');
+  if (!watchlist.length) { el.innerHTML = '<div class="empty"><i>📋</i>Adres ekleyin</div>'; return; }
+  el.innerHTML = watchlist.map(w => {
+    const balStr = w.bal != null ? w.bal.toFixed(4) + ' BTC' : (w.balErr ? '⚠ '+w.balErr : '…');
+    const usdStr = w.bal != null && btcPrice ? '$' + fmtUSD(w.bal * btcPrice) : '';
     return `<div class="wl-item">
       <div class="wl-info">
         <div class="wl-lbl">${esc(w.label)}</div>
-        <div class="wl-addr"><a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>${w.txCount!=null?` · ${w.txCount.toLocaleString('tr-TR')} tx`:''}</div>
+        <div class="wl-addr">
+          <a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>
+          ${w.txCount != null ? ` · ${w.txCount.toLocaleString('tr-TR')} tx` : ''}
+        </div>
       </div>
       <div class="wl-bal"><div class="wl-btc">${balStr}</div><div class="wl-usd">${usdStr}</div></div>
       <button class="wl-del" onclick="removeWatch('${w.addr}')">✕</button>
@@ -971,16 +1144,16 @@ function renderWatchlist() {
   }).join('');
 }
 function renderWatchTxs() {
-  const el=document.getElementById('wl-txs');
-  const all=[];
-  watchlist.forEach(w=>(w.txs||[]).forEach(tx=>all.push({...tx,label:w.label})));
-  if (!all.length) { el.innerHTML='<div class="empty"><i>🔍</i>İşlem yok</div>'; return; }
-  all.sort((a,b)=>b.time-a.time);
-  el.innerHTML=all.slice(0,20).map(tx=>{
-    const col=tx.net>=0?'var(--green)':'var(--red)';
+  const el  = document.getElementById('wl-txs');
+  const all = [];
+  watchlist.forEach(w => (w.txs||[]).forEach(tx => all.push({...tx, label:w.label})));
+  if (!all.length) { el.innerHTML = '<div class="empty"><i>🔍</i>İşlem yok</div>'; return; }
+  all.sort((a,b) => b.time - a.time);
+  el.innerHTML = all.slice(0,20).map(tx => {
+    const col = tx.net >= 0 ? 'var(--green)' : 'var(--red)';
     return `<div class="rtx-row">
       <div class="rtx-lbl">${esc(tx.label)}</div>
-      <div class="rtx-net" style="color:${col}">${tx.net>=0?'+':''}${tx.net.toFixed(4)} BTC</div>
+      <div class="rtx-net" style="color:${col}">${tx.net >= 0 ? '+' : ''}${tx.net.toFixed(4)} BTC</div>
       <div class="rtx-time">${timeAgo(tx.time)}</div>
       <a class="mono al" href="https://blockchair.com/bitcoin/transaction/${tx.hash}" target="_blank" style="font-size:10px">↗</a>
     </div>`;
@@ -990,67 +1163,55 @@ function renderWatchTxs() {
 /* ════════════════════════════════════════════
    FILTER / CLEAR
 ════════════════════════════════════════════ */
-function setFilter(btn,dir) {
-  filterDir=dir;
-  document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); renderTxTable();
+function setFilter(btn, dir) {
+  filterDir = dir;
+  document.querySelectorAll('.fchip').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTxTable();
 }
 function clearAll() {
-  txList=[]; seenHashes.clear(); dedupCount=0;
-  statsIn=0; statsOut=0; statsTotal=0; inVol=0; outVol=0; exFlows={};
-  batchQueue=[]; ADDR_CACHE.clear();
-  document.getElementById('s-in').textContent='0';
-  document.getElementById('s-out').textContent='0';
-  document.getElementById('s-total').textContent='0';
-  document.getElementById('s-in-vol').textContent='—';
-  document.getElementById('s-out-vol').textContent='—';
-  document.getElementById('dedup-lbl').textContent='0';
-  document.getElementById('cache-lbl').textContent='0 adres';
+  txList = []; seenHashes.clear(); dedupCount = 0;
+  statsIn = 0; statsOut = 0; statsTotal = 0; inVol = 0; outVol = 0; exFlows = {};
+  batchQueue = []; ADDR_CACHE.clear();
+  ['s-in','s-out','s-total'].forEach(id => document.getElementById(id).textContent = '0');
+  ['s-in-vol','s-out-vol'].forEach(id => document.getElementById(id).textContent = '—');
+  document.getElementById('dedup-lbl').textContent = '0';
+  document.getElementById('cache-lbl').textContent = '0 adres';
   renderTxTable(); renderExFlow();
 }
 function rerenderUSD() {
-  txList.forEach(t=>{ t.usd=t.btc*btcPrice; }); renderTxTable();
+  txList.forEach(t => { t.usd = t.btc * btcPrice; });
+  renderTxTable();
 }
 
 /* ════════════════════════════════════════════
    UI HELPERS
 ════════════════════════════════════════════ */
-function setDot(id, color) {
-  const el=document.getElementById(id); if(!el) return;
-  el.style.background = color==='green'?'var(--green)':color==='red'?'var(--red)':'var(--yellow)';
-  el.style.animation  = color==='green'?'blink 2s infinite':'none';
-}
-function updateWsLabel() {
-  const bcOk=wsBC?.readyState===1, mpOk=wsMP?.readyState===1;
-  const n=(bcOk?1:0)+(mpOk?1:0);
-  document.getElementById('ws-label').textContent  = n===2?'2 kaynak canlı':n===1?'1 kaynak canlı':'Bağlanıyor';
-  document.getElementById('ws-status').textContent = n===2?'✓ bc.info + mempool.space':n===1?'⚡ 1 kaynak aktif':'Yeniden bağlanıyor…';
-}
-function shortAddr(a) { if(!a||a.length<12) return a||'?'; return a.slice(0,6)+'…'+a.slice(-4); }
+function shortAddr(a) { if (!a || a.length < 12) return a||'?'; return a.slice(0,6)+'…'+a.slice(-4); }
 function fmtUSD(v) {
-  if(v>=1e9) return (v/1e9).toFixed(2)+'B';
-  if(v>=1e6) return (v/1e6).toFixed(2)+'M';
-  if(v>=1e3) return (v/1e3).toFixed(1)+'K';
+  if (v >= 1e9) return (v/1e9).toFixed(2)+'B';
+  if (v >= 1e6) return (v/1e6).toFixed(2)+'M';
+  if (v >= 1e3) return (v/1e3).toFixed(1)+'K';
   return v.toFixed(0);
 }
 function timeAgo(ts) {
-  const s=Math.floor((Date.now()-ts)/1000);
-  if(s<60) return s+'sn'; if(s<3600) return Math.floor(s/60)+'dk';
-  if(s<86400) return Math.floor(s/3600)+'sa'; return Math.floor(s/86400)+'g';
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return s+'sn'; if (s < 3600) return Math.floor(s/60)+'dk';
+  if (s < 86400) return Math.floor(s/3600)+'sa'; return Math.floor(s/86400)+'g';
 }
 function isValidBTC(a) {
-  return /^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a)||/^bc1[a-z0-9]{39,59}$/i.test(a);
+  return /^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a) || /^bc1[a-z0-9]{39,59}$/i.test(a);
 }
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
-function toast(msg,type='') {
-  const t=document.createElement('div');
-  t.className='toast '+type; t.textContent=msg;
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function toast(msg, type='') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + type; t.textContent = msg;
   document.getElementById('toasts').appendChild(t);
-  setTimeout(()=>t.remove(), type==='whale'?6000:4000);
+  setTimeout(() => t.remove(), type === 'whale' ? 6000 : 4000);
 }
 
-document.getElementById('wl-addr').addEventListener('keydown',e=>{ if(e.key==='Enter') addWatch(); });
+document.getElementById('wl-addr').addEventListener('keydown', e => { if (e.key === 'Enter') addWatch(); });
 init();
 </script>
 </body>

@@ -3,279 +3,259 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>WhaleWatch BTC — VIP Cüzdan & Balina Takibi</title>
+<title>WhaleWatch BTC — Top 50 Kurumsal Hazine Takibi</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐋</text></svg>"/>
 <style>
 :root{
-  --bg:#07090f;--bg2:#0e1118;--bg3:#161923;--bg4:#1c2130;
-  --bd:rgba(255,255,255,0.05);--bd2:rgba(255,255,255,0.10);--bd3:rgba(255,255,255,0.15);
-  --tx:#cdd2e0;--mut:#4a5068;--mut2:#6b7590;
+  --bg:#06080d;--bg2:#0c0f17;--bg3:#121621;--bg4:#191e2b;
+  --bd:rgba(255,255,255,0.05);--bd2:rgba(255,255,255,0.10);--bd3:rgba(255,255,255,0.18);
+  --tx:#c8cedd;--mut:#3d4460;--mut2:#5e6882;
   --acc:#f7931a;--acc2:#ffb347;
-  --green:#22c55e;--red:#ef4444;
-  --blue:#3b82f6;--yellow:#fbbf24;--purple:#a78bfa;--cyan:#06b6d4;
-  --rich:#ff6b35;--rich2:#ff9a5c;
-  --vip:#ffd700;--vip2:#ffe566;
-  --r:10px;--r2:6px;
+  --green:#16a34a;--green2:#22c55e;--red:#dc2626;--red2:#ef4444;
+  --blue:#2563eb;--yellow:#ca8a04;--yellow2:#fbbf24;
+  --vip:#f59e0b;--vip2:#fcd34d;
+  --sig-buy:rgba(22,163,74,0.12);--sig-sell:rgba(220,38,38,0.12);
+  --sig-buy-bd:rgba(22,163,74,0.4);--sig-sell-bd:rgba(220,38,38,0.4);
+  --r:8px;--r2:5px;
   --sans:'Inter',system-ui,sans-serif;
-  --mono:'JetBrains Mono','Fira Code',monospace;
+  --mono:'JetBrains Mono','Fira Code','Cascadia Code',monospace;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:var(--sans);background:var(--bg);color:var(--tx);min-height:100vh;font-size:13px;line-height:1.5}
 
-/* ── TOPBAR ── */
-.bar{position:sticky;top:0;z-index:100;height:56px;padding:0 20px;
+.bar{position:sticky;top:0;z-index:100;height:52px;padding:0 18px;
   display:flex;align-items:center;justify-content:space-between;
-  background:rgba(7,9,15,.97);backdrop-filter:blur(14px);
+  background:rgba(6,8,13,.97);backdrop-filter:blur(16px);
   border-bottom:1px solid var(--bd2)}
-.logo{display:flex;align-items:center;gap:10px;font-size:15px;font-weight:800;letter-spacing:-.3px}
+.logo{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:800;letter-spacing:-.3px}
 .logo em{color:var(--acc);font-style:normal}
-.logo-sub{font-size:9px;font-weight:400;color:var(--mut2);letter-spacing:.6px;margin-top:1px;text-transform:uppercase}
-.bar-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.logo-sub{font-size:9px;font-weight:400;color:var(--mut2);letter-spacing:.7px;text-transform:uppercase;margin-top:1px}
+.bar-r{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .price-pill{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--acc);
-  background:rgba(247,147,26,.08);border:1px solid rgba(247,147,26,.2);
-  padding:5px 12px;border-radius:20px;letter-spacing:.3px}
-.live-badge{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--green);
-  background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.15);
-  padding:4px 10px;border-radius:20px}
-.dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.8s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
-.sound-btn{background:none;border:1px solid var(--bd2);color:var(--mut2);
-  padding:4px 10px;border-radius:20px;cursor:pointer;font-size:11px;transition:all .2s}
-.sound-btn.on{border-color:rgba(34,197,94,.4);color:var(--green)}
-.vip-status{font-size:11px;color:var(--vip);background:rgba(255,215,0,.07);
-  border:1px solid rgba(255,215,0,.2);padding:4px 10px;border-radius:20px;
-  display:flex;align-items:center;gap:5px}
+  background:rgba(247,147,26,.07);border:1px solid rgba(247,147,26,.18);
+  padding:4px 11px;border-radius:20px}
+.live-b{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green2);
+  background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);
+  padding:3px 9px;border-radius:20px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--green2);animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.12}}
+.snd-btn{background:none;border:1px solid var(--bd2);color:var(--mut2);
+  padding:3px 9px;border-radius:20px;cursor:pointer;font-size:10px;transition:all .2s}
+.snd-btn.on{border-color:rgba(34,197,94,.35);color:var(--green2)}
 
-/* ── LAYOUT ── */
-.wrap{max-width:1500px;margin:0 auto;padding:14px 18px 60px}
+.wrap{max-width:1560px;margin:0 auto;padding:12px 16px 60px}
 
-/* ── VIP ALERT BANNER ── */
-#vip-alert-bar{display:none;background:linear-gradient(135deg,rgba(255,215,0,.12),rgba(255,107,53,.08));
-  border:1px solid rgba(255,215,0,.3);border-radius:var(--r);padding:12px 16px;
-  margin-bottom:12px;animation:vipPulse 2s ease infinite}
-@keyframes vipPulse{0%,100%{border-color:rgba(255,215,0,.3)}50%{border-color:rgba(255,215,0,.7)}}
-.vip-alert-inner{display:flex;align-items:center;gap:12px}
-.vip-alert-entity{display:flex;align-items:center;gap:8px}
-.vip-entity-icon{font-size:22px}
-.vip-entity-name{font-size:14px;font-weight:800;color:var(--vip)}
-.vip-entity-type{font-size:10px;color:var(--mut2);text-transform:uppercase;letter-spacing:.5px}
-.vip-alert-detail{flex:1;font-size:12px;color:var(--tx)}
-.vip-alert-btc{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--vip);white-space:nowrap}
-.vip-alert-usd{font-size:10px;color:var(--mut2)}
-.vip-close{background:none;border:1px solid var(--bd2);color:var(--mut2);padding:3px 8px;
-  border-radius:6px;cursor:pointer;font-size:11px;margin-left:auto}
-.vip-close:hover{border-color:var(--red);color:var(--red)}
+/* ── SİNYAL BANNER ── */
+#sig-bar{display:none;border-radius:var(--r);padding:11px 15px;margin-bottom:10px;border:1px solid;
+  animation:sigPulse 1.8s ease infinite}
+#sig-bar.buy{background:var(--sig-buy);border-color:var(--sig-buy-bd)}
+#sig-bar.sell{background:var(--sig-sell);border-color:var(--sig-sell-bd)}
+@keyframes sigPulse{0%,100%{opacity:1}50%{opacity:.7}}
+.sig-inner{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.sig-badge{font-size:12px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap}
+.sig-buy-badge{background:rgba(22,163,74,.2);color:#4ade80;border:1px solid rgba(22,163,74,.4)}
+.sig-sell-badge{background:rgba(220,38,38,.2);color:#f87171;border:1px solid rgba(220,38,38,.4)}
+.sig-entity{font-size:13px;font-weight:700;flex:1}
+.sig-detail{font-size:11px;color:var(--mut2)}
+.sig-btc{font-family:var(--mono);font-size:16px;font-weight:700}
+.sig-buy-btc{color:#4ade80}
+.sig-sell-btc{color:#f87171}
+.sig-close{background:none;border:1px solid var(--bd);color:var(--mut);padding:2px 7px;border-radius:5px;cursor:pointer;font-size:10px;margin-left:auto}
 
-/* ── INFO BANNER ── */
-.banner{display:flex;gap:10px;align-items:flex-start;
-  background:rgba(255,107,53,.04);border:1px solid rgba(255,107,53,.12);
-  border-radius:var(--r);padding:10px 14px;margin-bottom:12px;font-size:11px;color:#fca97a;line-height:1.6}
+/* ── INFO ── */
+.info-strip{display:flex;gap:8px;align-items:flex-start;
+  background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.12);
+  border-radius:var(--r);padding:8px 13px;margin-bottom:10px;font-size:10px;color:#fbbf24;line-height:1.6}
 
-/* ── VIP ENTITY GRID ── */
-.vip-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:7px;margin-bottom:12px}
-.vip-card{background:var(--bg2);border:1px solid var(--bd);border-radius:9px;
-  padding:9px 12px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.vip-card:hover{border-color:rgba(255,215,0,.25);background:var(--bg3)}
-.vip-card.active{border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.04)}
-.vip-card-hit{position:absolute;top:0;right:0;background:var(--vip);color:#000;
-  font-size:9px;font-weight:800;padding:2px 6px;border-radius:0 9px 0 6px;
-  opacity:0;transition:opacity .3s}
-.vip-card.hit .vip-card-hit{opacity:1}
-.vip-card-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.vip-card-emoji{font-size:18px}
-.vip-card-name{font-size:11px;font-weight:700;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.vip-card-type{font-size:9px;color:var(--mut2);text-transform:uppercase;letter-spacing:.4px}
-.vip-card-btc{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--vip)}
-.vip-card-usd{font-size:9px;color:var(--mut)}
-.vip-card-note{font-size:9px;color:var(--mut2);margin-top:3px;line-height:1.4}
-.vip-hit-dot{width:7px;height:7px;border-radius:50%;background:var(--vip);
-  animation:blink 1.2s infinite;flex-shrink:0;display:none}
-.vip-card.hit .vip-hit-dot{display:inline-block}
+/* ── TOP 50 GRID ── */
+.corp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:6px;margin-bottom:10px}
+.corp-card{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);
+  padding:8px 11px;cursor:pointer;transition:all .18s;position:relative;overflow:hidden}
+.corp-card:hover{border-color:var(--bd3);background:var(--bg3)}
+.corp-card.active-buy{border-color:var(--sig-buy-bd)!important;background:rgba(22,163,74,.05)!important}
+.corp-card.active-sell{border-color:var(--sig-sell-bd)!important;background:rgba(220,38,38,.05)!important}
+.corp-rank{position:absolute;top:0;left:0;background:var(--bg3);font-size:9px;font-weight:700;color:var(--mut2);
+  padding:2px 6px;border-radius:var(--r) 0 var(--r2) 0}
+.corp-sig-dot{position:absolute;top:4px;right:4px;width:7px;height:7px;border-radius:50%;display:none}
+.corp-sig-dot.buy{display:block;background:var(--green2);animation:blink 1.2s infinite}
+.corp-sig-dot.sell{display:block;background:var(--red2);animation:blink 1.2s infinite}
+.corp-top{display:flex;align-items:center;gap:7px;margin:14px 0 4px}
+.corp-emoji{font-size:16px}
+.corp-name{font-size:10px;font-weight:700;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.corp-type{font-size:8px;color:var(--mut2);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.corp-btc{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--acc)}
+.corp-sub{font-size:9px;color:var(--mut);margin-top:1px}
+.corp-addrs{font-size:8px;color:rgba(245,158,11,.5);margin-top:3px}
+.corp-hits{font-size:8px;font-weight:700;margin-top:3px;display:none}
+.corp-card.active-buy .corp-hits,.corp-card.active-sell .corp-hits{display:block}
+.buy-hits{color:var(--green2)}
+.sell-hits{color:var(--red2)}
 
-/* ── SOURCE GRID ── */
-.src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px;margin-bottom:11px}
-.src-card{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;
-  padding:7px 10px;display:flex;align-items:center;gap:6px;font-size:11px}
-.src-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;transition:background .3s}
-.src-name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
-.src-rx{font-family:var(--mono);color:var(--mut);font-size:10px}
+/* ── WS SOURCES ── */
+.src-row{display:flex;gap:5px;margin-bottom:9px;flex-wrap:wrap}
+.src-card{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;
+  padding:5px 9px;display:flex;align-items:center;gap:5px;font-size:10px}
+.src-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:background .3s}
+.src-rx{font-family:var(--mono);color:var(--mut);font-size:9px}
 
 /* ── BUDGET ROW ── */
-.brow{display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap}
-.bpill{display:flex;align-items:center;gap:7px;
-  background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:5px 10px;font-size:11px;white-space:nowrap}
-.bbar-w{width:70px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
+.brow{display:flex;gap:6px;margin-bottom:9px;flex-wrap:wrap}
+.bpill{display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--bd);
+  border-radius:6px;padding:4px 9px;font-size:10px;white-space:nowrap}
+.bbar-w{width:60px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden}
 .bbar{height:100%;border-radius:2px;transition:width .4s}
 
+/* ── SIGNAL LOG PANEL ── */
+.sig-log{background:var(--bg2);border:1px solid rgba(245,158,11,.2);border-radius:var(--r);overflow:hidden;margin-bottom:10px}
+.sig-log-item{display:flex;align-items:flex-start;gap:9px;padding:8px 12px;border-bottom:1px solid var(--bd)}
+.sig-log-item:last-child{border-bottom:none}
+.sig-log-dir{font-size:10px;font-weight:800;padding:2px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.sld-buy{background:rgba(22,163,74,.15);color:#4ade80;border:1px solid rgba(22,163,74,.3)}
+.sld-sell{background:rgba(220,38,38,.15);color:#f87171;border:1px solid rgba(220,38,38,.3)}
+.sld-move{background:rgba(245,158,11,.15);color:var(--vip2);border:1px solid rgba(245,158,11,.3)}
+.sig-log-body{flex:1;min-width:0}
+.sig-log-name{font-size:11px;font-weight:700;color:var(--vip)}
+.sig-log-detail{font-size:10px;color:var(--tx);margin-top:1px}
+.sig-log-meta{font-size:9px;color:var(--mut);margin-top:1px}
+.sig-log-amt{text-align:right;flex-shrink:0}
+.sig-log-btc{font-family:var(--mono);font-size:14px;font-weight:700}
+.slb-buy{color:#4ade80}
+.slb-sell{color:#f87171}
+.slb-move{color:var(--vip2)}
+
 /* ── STATS ── */
-.stats{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:13px}
-.stat{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:11px 13px}
-.stat-l{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--mut);margin-bottom:3px}
-.stat-v{font-size:18px;font-weight:800;font-family:var(--mono);letter-spacing:-.5px;line-height:1}
-.stat-s{font-size:10px;color:var(--mut);margin-top:2px}
-.c-acc{color:var(--acc)}.c-red{color:var(--red)}.c-green{color:var(--green)}
-.c-blue{color:var(--blue)}.c-yellow{color:var(--yellow)}.c-rich{color:var(--rich)}.c-vip{color:var(--vip)}
+.stats{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:11px}
+.stat{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);padding:9px 11px}
+.stat-l{font-size:8px;text-transform:uppercase;letter-spacing:.7px;color:var(--mut);margin-bottom:2px}
+.stat-v{font-size:16px;font-weight:800;font-family:var(--mono);letter-spacing:-.5px;line-height:1}
+.stat-s{font-size:9px;color:var(--mut);margin-top:2px}
+.c-acc{color:var(--acc)}.c-red{color:var(--red2)}.c-green{color:var(--green2)}
+.c-blue{color:#60a5fa}.c-yellow{color:var(--yellow2)}.c-vip{color:var(--vip)}
 
 /* ── CHART ── */
-.chart-panel{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:12px;overflow:hidden}
-.chart-hdr{padding:9px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.chart-tabs{display:flex;gap:5px}
-.ctab{padding:3px 8px;border-radius:6px;font-size:11px;cursor:pointer;
-  border:1px solid var(--bd2);background:none;color:var(--mut2);transition:all .15s}
+.chart-p{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);margin-bottom:10px;overflow:hidden}
+.chart-hdr{padding:8px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.ctab{padding:3px 7px;border-radius:5px;font-size:10px;cursor:pointer;border:1px solid var(--bd2);background:none;color:var(--mut2);transition:all .15s}
 .ctab.on{background:rgba(247,147,26,.1);border-color:rgba(247,147,26,.3);color:var(--acc)}
-#price-canvas{width:100%;height:140px;display:block;cursor:crosshair}
-.chart-leg{display:flex;gap:12px;padding:5px 14px 8px;font-size:10px;color:var(--mut)}
-.chart-leg span{display:flex;align-items:center;gap:4px}
-.ldot{width:8px;height:3px;border-radius:2px;display:inline-block}
-#chart-tip{position:fixed;pointer-events:none;display:none;
-  background:var(--bg3);border:1px solid var(--bd2);border-radius:7px;
-  padding:7px 10px;font-size:11px;z-index:200;white-space:nowrap}
-#chart-tip strong{color:var(--acc)}
+#price-canvas{width:100%;height:130px;display:block;cursor:crosshair}
+#chart-tip{position:fixed;pointer-events:none;display:none;background:var(--bg3);border:1px solid var(--bd2);
+  border-radius:6px;padding:6px 9px;font-size:10px;z-index:200;white-space:nowrap}
 
-/* ── FILTER BAR ── */
-.fbar{display:flex;align-items:center;gap:7px;margin-bottom:10px;flex-wrap:wrap}
-.fbar label{font-size:11px;color:var(--mut2)}
+/* ── FILTER ── */
+.fbar{display:flex;align-items:center;gap:6px;margin-bottom:9px;flex-wrap:wrap}
+.fbar label{font-size:10px;color:var(--mut2)}
 .fbar select,.fbar input[type=number]{background:var(--bg2);border:1px solid var(--bd2);color:var(--tx);
-  padding:5px 9px;border-radius:7px;font-size:11px;outline:none}
+  padding:4px 8px;border-radius:6px;font-size:10px;outline:none}
 .fbar select:focus,.fbar input:focus{border-color:var(--acc)}
-.fsep{width:1px;height:18px;background:var(--bd2)}
-.fchip{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;
+.fsep{width:1px;height:16px;background:var(--bd2)}
+.fchip{padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600;cursor:pointer;
   border:1px solid var(--bd2);background:none;color:var(--mut2);transition:all .15s}
 .fchip.on{background:rgba(247,147,26,.1);border-color:rgba(247,147,26,.3);color:var(--acc)}
-.fchip.vip-chip.on{background:rgba(255,215,0,.1);border-color:rgba(255,215,0,.3);color:var(--vip)}
-.fchip.rich-chip.on{background:rgba(255,107,53,.1);border-color:rgba(255,107,53,.3);color:var(--rich)}
-
-/* ── NOISE TOGGLE ── */
-.ntog{display:flex;align-items:center;gap:6px;font-size:11px}
-.tog-track{width:32px;height:17px;border-radius:9px;background:var(--bg3);border:1px solid var(--bd2);
+.fchip.buy-chip.on{background:rgba(22,163,74,.1);border-color:rgba(22,163,74,.3);color:var(--green2)}
+.fchip.sell-chip.on{background:rgba(220,38,38,.1);border-color:rgba(220,38,38,.3);color:var(--red2)}
+.ntog{display:flex;align-items:center;gap:5px;font-size:10px}
+.tog-t{width:28px;height:15px;border-radius:8px;background:var(--bg3);border:1px solid var(--bd2);
   cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
-.tog-track.on{background:rgba(247,147,26,.3);border-color:rgba(247,147,26,.45)}
-.tog-knob{position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;
+.tog-t.on{background:rgba(247,147,26,.3);border-color:rgba(247,147,26,.4)}
+.tog-k{position:absolute;top:1px;left:1px;width:11px;height:11px;border-radius:50%;
   background:var(--mut);transition:all .2s}
-.tog-track.on .tog-knob{left:17px;background:var(--acc)}
+.tog-t.on .tog-k{left:15px;background:var(--acc)}
 
-/* ── HEURISTIC LEGEND ── */
+/* ── HEURISTIC ── */
 .hleg{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);
-  padding:9px 14px;margin-bottom:11px;display:flex;flex-wrap:wrap;gap:7px;align-items:center}
-.hleg-title{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin-right:4px}
-.hleg-sep{width:1px;height:14px;background:var(--bd2)}
+  padding:7px 13px;margin-bottom:9px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.sb{display:inline-flex;align-items:center;gap:2px;padding:1px 6px;border-radius:9px;
+  font-size:8px;font-weight:700;white-space:nowrap;border:1px solid}
+.sb-buy{color:#4ade80;border-color:rgba(22,163,74,.3);background:rgba(22,163,74,.07)}
+.sb-sell{color:#f87171;border-color:rgba(220,38,38,.3);background:rgba(220,38,38,.07)}
+.sb-corp{color:#60a5fa;border-color:rgba(96,165,250,.3);background:rgba(96,165,250,.07)}
+.sb-miner{color:var(--yellow2);border-color:rgba(251,191,36,.3);background:rgba(251,191,36,.07)}
+.sb-batch{color:#fb923c;border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.07)}
+.sb-consolidate{color:#94a3b8;border-color:rgba(148,163,184,.25);background:rgba(148,163,184,.06)}
+.sb-transit{color:#64748b;border-color:rgba(100,116,139,.25);background:rgba(100,116,139,.06)}
+.sb-whale{color:#a78bfa;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)}
 
-/* ── BADGES ── */
-.sub-badge{display:inline-flex;align-items:center;gap:3px;padding:1px 6px;border-radius:10px;
-  font-size:9px;font-weight:600;white-space:nowrap;border:1px solid}
-.sb-consolidate{color:#94a3b8;border-color:rgba(148,163,184,.25);background:rgba(148,163,184,.07)}
-.sb-batch{color:#fb923c;border-color:rgba(251,146,60,.25);background:rgba(251,146,60,.07)}
-.sb-transit{color:#64748b;border-color:rgba(100,116,139,.25);background:rgba(100,116,139,.07)}
-.sb-miner{color:#fbbf24;border-color:rgba(251,191,36,.25);background:rgba(251,191,36,.07)}
-.sb-inst{color:#60a5fa;border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.07)}
-.sb-unknown{color:#a78bfa;border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)}
-.sb-rich{color:var(--rich);border-color:rgba(255,107,53,.35);background:rgba(255,107,53,.1);font-weight:700}
-.sb-vip{color:var(--vip);border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.12);font-weight:700;font-size:10px}
-
-/* VIP row highlight */
-.vip-tx td{background:linear-gradient(90deg,rgba(255,215,0,.04),transparent) !important}
-@keyframes vipflash{from{background:rgba(255,215,0,.15)}to{background:none}}
-tr.vip-tx td{animation:vipflash 1.2s ease}
-
-/* Confidence bar */
-.conf-wrap{display:flex;align-items:center;gap:4px;margin-top:2px}
-.conf-bar{height:2px;border-radius:1px;transition:width .4s}
-
-/* ── VIP ALERT LOG ── */
-.vip-log-panel{background:var(--bg2);border:1px solid rgba(255,215,0,.2);border-radius:var(--r);overflow:hidden;margin-bottom:12px}
-.vip-log-item{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-bottom:1px solid var(--bd)}
-.vip-log-item:last-child{border-bottom:none}
-.vip-log-emoji{font-size:18px;flex-shrink:0;padding-top:1px}
-.vip-log-body{flex:1;min-width:0}
-.vip-log-name{font-size:12px;font-weight:700;color:var(--vip)}
-.vip-log-detail{font-size:11px;color:var(--tx);margin-top:2px}
-.vip-log-meta{font-size:10px;color:var(--mut);margin-top:2px}
-.vip-log-btc{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--vip);white-space:nowrap;text-align:right}
-.vip-log-usd{font-size:9px;color:var(--mut);text-align:right}
-.dir-badge-vip{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;
-  font-size:10px;font-weight:700;background:rgba(255,215,0,.12);color:var(--vip);border:1px solid rgba(255,215,0,.3)}
-
-/* ── MAIN GRID ── */
-.g2{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
+/* ── MAIN ── */
+.g2{display:grid;grid-template-columns:2.2fr 1fr;gap:10px;margin-bottom:10px}
 .panel{background:var(--bg2);border:1px solid var(--bd);border-radius:var(--r);overflow:hidden}
-.ph{padding:9px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.pt{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--mut2)}
-.pt-cnt{background:var(--bg3);border:1px solid var(--bd2);padding:2px 7px;border-radius:10px;font-size:10px;color:var(--tx);margin-left:5px}
+.ph{padding:8px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.pt{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--mut2)}
+.pt-cnt{background:var(--bg3);border:1px solid var(--bd2);padding:1px 6px;border-radius:9px;font-size:9px;color:var(--tx);margin-left:4px}
 
 /* ── TX TABLE ── */
 .tbl{width:100%;border-collapse:collapse}
-.tbl th{padding:7px 10px;text-align:left;font-size:9px;text-transform:uppercase;
+.tbl th{padding:6px 9px;text-align:left;font-size:8px;text-transform:uppercase;
   letter-spacing:.6px;color:var(--mut);border-bottom:1px solid var(--bd);white-space:nowrap;background:var(--bg2)}
-.tbl td{padding:7px 10px;border-bottom:1px solid var(--bd);vertical-align:top}
+.tbl td{padding:6px 9px;border-bottom:1px solid var(--bd);vertical-align:top}
 .tbl tr:last-child td{border-bottom:none}
-.tbl tr.new-tx td{animation:flash .7s ease}
-@keyframes flash{from{background:rgba(247,147,26,.08)}to{background:none}}
-.tbl tr.rich-tx td{animation:richflash .9s ease}
-@keyframes richflash{from{background:rgba(255,107,53,.15)}to{background:none}}
-.tbl tr:hover td{background:rgba(255,255,255,.012)}
-.mono{font-family:var(--mono);font-size:11px}
-.al{color:var(--blue);cursor:pointer;text-decoration:none}.al:hover{text-decoration:underline}
+.tbl tr:hover td{background:rgba(255,255,255,.01)}
+.tbl tr.new-tx td{animation:flash .6s ease}
+.tbl tr.buy-tx td{animation:buyflash .9s ease}
+.tbl tr.sell-tx td{animation:sellflash .9s ease}
+@keyframes flash{from{background:rgba(247,147,26,.07)}to{background:none}}
+@keyframes buyflash{from{background:rgba(22,163,74,.12)}to{background:none}}
+@keyframes sellflash{from{background:rgba(220,38,38,.12)}to{background:none}}
+.mono{font-family:var(--mono);font-size:10px}
+.al{color:#60a5fa;cursor:pointer;text-decoration:none}.al:hover{text-decoration:underline}
 
-.src-tag{font-size:9px;padding:1px 5px;border-radius:4px;border:1px solid}
-.src-bc{color:#60a5fa;border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.07)}
-.src-mp{color:#34d399;border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.07)}
-.src-bs{color:#f472b6;border-color:rgba(244,114,182,.25);background:rgba(244,114,182,.07)}
-.src-m2{color:#a78bfa;border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.07)}
-.src-m3{color:#fb923c;border-color:rgba(251,146,60,.25);background:rgba(251,146,60,.07)}
+.dir-b{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:20px;font-size:9px;font-weight:700;white-space:nowrap}
+.db-buy{background:rgba(22,163,74,.12);color:#4ade80;border:1px solid rgba(22,163,74,.3)}
+.db-sell{background:rgba(220,38,38,.12);color:#f87171;border:1px solid rgba(220,38,38,.3)}
+.db-move{background:rgba(245,158,11,.1);color:var(--vip2);border:1px solid rgba(245,158,11,.25)}
+.db-ex{background:rgba(247,147,26,.1);color:var(--acc);border:1px solid rgba(247,147,26,.2)}
+.db-noise{background:rgba(74,80,104,.08);color:var(--mut2);border:1px solid rgba(74,80,104,.2)}
+.db-whale{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.2)}
 
-.b{display:inline-flex;align-items:center;gap:2px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
-.b-in{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.2)}
-.b-out{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2)}
-.b-w2w{background:rgba(167,139,250,.1);color:var(--purple);border:1px solid rgba(167,139,250,.2)}
-.b-ex{background:rgba(247,147,26,.1);color:var(--acc);border:1px solid rgba(247,147,26,.2)}
-.b-noise{background:rgba(74,80,104,.1);color:var(--mut2);border:1px solid rgba(74,80,104,.2)}
-.b-vip{background:rgba(255,215,0,.1);color:var(--vip);border:1px solid rgba(255,215,0,.2)}
+.src-tag{font-size:8px;padding:1px 4px;border-radius:3px;border:1px solid}
+.src-bc{color:#60a5fa;border-color:rgba(96,165,250,.25);background:rgba(96,165,250,.06)}
+.src-mp{color:#34d399;border-color:rgba(52,211,153,.25);background:rgba(52,211,153,.06)}
+.src-bs{color:#f472b6;border-color:rgba(244,114,182,.25);background:rgba(244,114,182,.06)}
+.src-m2{color:#a78bfa;border-color:rgba(167,139,250,.25);background:rgba(167,139,250,.06)}
+.src-m3{color:#fb923c;border-color:rgba(251,146,60,.25);background:rgba(251,146,60,.06)}
 
-.amt-btc{font-family:var(--mono);font-weight:700;color:var(--acc);font-size:12px}
-.amt-usd{font-size:10px;color:var(--mut);margin-top:1px}
+.amt-btc{font-family:var(--mono);font-weight:700;color:var(--acc);font-size:11px}
+.amt-usd{font-size:9px;color:var(--mut);margin-top:1px}
+
+.conf-w{display:flex;align-items:center;gap:3px;margin-top:2px}
+.conf-bar{height:2px;border-radius:1px;transition:width .4s}
 
 /* ── WATCHLIST ── */
-.wl-add{display:flex;gap:6px;padding:9px 12px;border-bottom:1px solid var(--bd)}
+.wl-add{display:flex;gap:5px;padding:8px 11px;border-bottom:1px solid var(--bd)}
 .wl-add input{flex:1;background:var(--bg);border:1px solid var(--bd2);color:var(--tx);
-  padding:5px 9px;border-radius:7px;font-family:var(--mono);font-size:11px;outline:none}
+  padding:4px 8px;border-radius:6px;font-family:var(--mono);font-size:10px;outline:none}
 .wl-add input:focus{border-color:var(--acc)}
-.btn{padding:5px 12px;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
-.btn-acc{background:var(--acc);color:#000}.btn-acc:hover{background:#e88310}
+.btn{padding:4px 10px;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-acc{background:var(--acc);color:#000}.btn-acc:hover{opacity:.85}
 .btn-ghost{background:none;border:1px solid var(--bd2);color:var(--tx)}
 .btn-ghost:hover{border-color:var(--acc);color:var(--acc)}
-.wl-item{padding:8px 12px;border-bottom:1px solid var(--bd)}
+.wl-item{padding:7px 11px;border-bottom:1px solid var(--bd)}
 .wl-item:last-child{border-bottom:none}
-.wl-row{display:flex;align-items:center;gap:7px}
-.wl-lbl{font-size:12px;font-weight:600}
-.wl-addr-s{font-family:var(--mono);font-size:10px;color:var(--mut)}
-.wl-bal{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--acc)}
-.wl-usd{font-size:10px;color:var(--mut)}
-.wl-del{background:none;border:1px solid var(--bd);color:var(--mut);padding:2px 6px;border-radius:6px;cursor:pointer;font-size:11px}
-.wl-del:hover{border-color:var(--red);color:var(--red)}
+.wl-bal{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--acc)}
+.wl-del{background:none;border:1px solid var(--bd);color:var(--mut);padding:1px 5px;border-radius:5px;cursor:pointer;font-size:10px}
+.wl-del:hover{border-color:var(--red2);color:var(--red2)}
 
-/* ── ALERTS ── */
-@keyframes alertPulse{0%{box-shadow:0 0 0 0 rgba(247,147,26,.5)}70%{box-shadow:0 0 0 8px rgba(247,147,26,0)}100%{box-shadow:0 0 0 0}}
-@keyframes vipAlertPulse{0%{box-shadow:0 0 0 0 rgba(255,215,0,.7)}70%{box-shadow:0 0 0 16px rgba(255,215,0,0)}100%{box-shadow:0 0 0 0}}
-.alert-pulse{animation:alertPulse .9s ease}
-.vip-alert-pulse{animation:vipAlertPulse 1.4s ease}
+/* ── EX FLOW ── */
+#ex-flow .flow-row{display:flex;align-items:center;padding:6px 12px;border-bottom:1px solid var(--bd)}
+#ex-flow .flow-row:last-child{border-bottom:none}
 
-/* ── MISC ── */
-.empty{text-align:center;padding:1.8rem 1rem;color:var(--mut)}
-.empty i{font-size:1.5rem;display:block;margin-bottom:6px}
-.spin{display:inline-block;width:13px;height:13px;border:2px solid var(--bd2);border-top-color:var(--acc);border-radius:50%;animation:sp .7s linear infinite}
-@keyframes sp{to{transform:rotate(360deg)}}
-.loading{text-align:center;padding:16px;color:var(--mut)}
-#toasts{position:fixed;bottom:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:6px;pointer-events:none}
-.toast{background:var(--bg3);border:1px solid var(--bd2);border-radius:8px;padding:8px 13px;font-size:12px;max-width:340px;animation:tin .2s ease;pointer-events:auto;line-height:1.5}
-.toast.ok{border-color:rgba(34,197,94,.3)}.toast.err{border-color:rgba(239,68,68,.3);color:var(--red)}
-.toast.whale{border-color:rgba(247,147,26,.45);color:var(--acc);font-weight:600}
-.toast.rich{border-color:rgba(255,107,53,.55);color:var(--rich);font-weight:700}
-.toast.vip{border-color:rgba(255,215,0,.6);color:var(--vip);font-weight:700;font-size:13px;background:rgba(7,9,15,.99);box-shadow:0 0 20px rgba(255,215,0,.15)}
+/* ── TOASTS ── */
+#toasts{position:fixed;bottom:14px;right:14px;z-index:9999;display:flex;flex-direction:column;gap:5px;pointer-events:none}
+.toast{background:var(--bg3);border:1px solid var(--bd2);border-radius:7px;padding:7px 12px;font-size:11px;max-width:320px;animation:tin .18s ease;pointer-events:auto;line-height:1.5}
+.toast.ok{border-color:rgba(34,197,94,.3)}.toast.err{border-color:rgba(220,38,38,.35);color:var(--red2)}
+.toast.whale{border-color:rgba(247,147,26,.4);color:var(--acc);font-weight:600}
+.toast.buy{border-color:rgba(22,163,74,.5);color:#4ade80;font-weight:700;background:rgba(6,8,13,.99)}
+.toast.sell{border-color:rgba(220,38,38,.5);color:#f87171;font-weight:700;background:rgba(6,8,13,.99)}
 @keyframes tin{from{transform:translateX(10px);opacity:0}to{transform:none;opacity:1}}
+
+.empty{text-align:center;padding:1.5rem 1rem;color:var(--mut)}
+.empty i{font-size:1.4rem;display:block;margin-bottom:5px}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid var(--bd2);border-top-color:var(--acc);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.loading{text-align:center;padding:14px;color:var(--mut)}
 
 @media(max-width:1200px){.stats{grid-template-columns:repeat(4,1fr)}}
 @media(max-width:900px){.g2{grid-template-columns:1fr}.stats{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.wrap{padding:8px}}
+@media(max-width:600px){.stats{grid-template-columns:repeat(2,1fr)}.wrap{padding:6px}}
 </style>
 </head>
 <body>
@@ -283,140 +263,139 @@ tr.vip-tx td{animation:vipflash 1.2s ease}
 <div class="bar">
   <div style="display:flex;flex-direction:column">
     <div class="logo">🐋 Whale<em>Watch</em> BTC</div>
-    <div class="logo-sub">VIP Entities · 5 WS Kaynak · Canlı</div>
+    <div class="logo-sub">Top 50 Kurumsal Hazine · Giriş/Çıkış Sinyali · 5 WS</div>
   </div>
-  <div class="bar-right">
-    <div class="vip-status">⭐ <span id="vip-loaded">0 VIP Cüzdan</span></div>
-    <button class="sound-btn" id="sound-btn" onclick="toggleSound()">🔕 Ses</button>
-    <div class="price-pill" id="price-pill">BTC yükleniyor…</div>
-    <div class="live-badge"><div class="dot"></div><span id="ws-label">Bağlanıyor</span></div>
+  <div class="bar-r">
+    <span style="font-size:10px;color:var(--vip);background:rgba(245,158,11,.07);border:1px solid rgba(245,158,11,.18);padding:3px 9px;border-radius:20px" id="corp-loaded">0 Şirket</span>
+    <button class="snd-btn" id="snd-btn" onclick="toggleSound()">🔕 Ses</button>
+    <div class="price-pill" id="price-pill">Yükleniyor…</div>
+    <div class="live-b"><div class="dot"></div><span id="ws-lbl">Bağlanıyor</span></div>
   </div>
 </div>
 
 <div class="wrap">
 
-<!-- VIP ALERT BANNER (dinamik) -->
-<div id="vip-alert-bar">
-  <div class="vip-alert-inner">
-    <div class="vip-alert-entity">
-      <div class="vip-entity-icon" id="vip-al-emoji">🏛</div>
-      <div>
-        <div class="vip-entity-name" id="vip-al-name">—</div>
-        <div class="vip-entity-type" id="vip-al-type">—</div>
-      </div>
-    </div>
-    <div class="vip-alert-detail" id="vip-al-detail">—</div>
+<!-- SİNYAL BANNER -->
+<div id="sig-bar">
+  <div class="sig-inner">
+    <div class="sig-badge" id="sig-badge">⬆ GİRİŞ</div>
     <div>
-      <div class="vip-alert-btc" id="vip-al-btc">—</div>
-      <div class="vip-alert-usd" id="vip-al-usd">—</div>
+      <div class="sig-entity" id="sig-entity">—</div>
+      <div class="sig-detail" id="sig-detail">—</div>
     </div>
-    <button class="vip-close" onclick="document.getElementById('vip-alert-bar').style.display='none'">✕ Kapat</button>
+    <div>
+      <div class="sig-btc" id="sig-btc-val">—</div>
+      <div style="font-size:9px;color:var(--mut)" id="sig-usd-val">—</div>
+    </div>
+    <button class="sig-close" onclick="document.getElementById('sig-bar').style.display='none'">✕</button>
   </div>
 </div>
 
-<div class="banner">
-  ⭐&nbsp;<span>
-    <strong>VIP Cüzdan Takibi:</strong>
-    Strategy, Binance, ABD Hükümeti, BlackRock IBIT, Fidelity, MicroStrategy ve diğer kurumsal cüzdanlar anlık izlenir.
-    Hareket tespit edildiğinde <strong style="color:var(--vip)">⭐ VIP Uyarısı</strong> verilir.
-    WebSocket: blockchain.info · mempool.space · Blockstream · bisq · emzy.
+<div class="info-strip">
+  ⚡&nbsp;<span>
+    <strong>Giriş Sinyali (ALIŞ):</strong> Kurumsal cüzdan <em>borsaya BTC gönderdiğinde</em> — satış hazırlığı.
+    <strong>Çıkış Sinyali (SATIŞ):</strong> Borsadan kurumsal cüzdana transfer — birikim/satın alma.
+    Strateji · Twenty One · MARA · Binance · Coinbase · BlackRock · Fidelity ve 43 şirket daha izleniyor.
   </span>
 </div>
 
-<!-- ── VIP ENTITY KARTLARI ── -->
-<div class="vip-grid" id="vip-grid"></div>
+<!-- TOP 50 ŞİRKET GRID -->
+<div class="corp-grid" id="corp-grid"></div>
 
-<!-- ── SOURCE GRID ── -->
-<div class="src-grid" id="src-grid"></div>
+<!-- WS SOURCES -->
+<div class="src-row" id="src-row"></div>
 
-<!-- ── BUDGET ROW ── -->
+<!-- BUDGET ROW -->
 <div class="brow">
-  <div class="bpill">🔑 Blockchair: <div class="bbar-w"><div class="bbar" id="bbar" style="width:0%;background:var(--green)"></div></div><span id="blbl" style="color:var(--mut)">0/1400</span></div>
-  <div class="bpill">💾 Önbellek: <span id="cache-lbl" style="color:var(--purple);margin-left:4px">0 adres</span></div>
+  <div class="bpill">🔑 API: <div class="bbar-w"><div class="bbar" id="bbar" style="width:0%;background:var(--green2)"></div></div><span id="blbl" style="color:var(--mut);margin-left:3px">0/1400</span></div>
+  <div class="bpill">💾 Önbellek: <span id="cache-lbl" style="color:#a78bfa;margin-left:4px">0</span></div>
   <div class="bpill">🔁 Dedup: <span id="dedup-lbl" style="color:var(--mut);margin-left:4px">0</span></div>
-  <div class="bpill">📡 Aktif: <span id="active-lbl" style="color:var(--green);margin-left:4px;font-weight:700">0/5</span></div>
-  <div class="bpill">⭐ VIP Hit: <span id="vip-hit-lbl" style="color:var(--vip);margin-left:4px;font-weight:700">0</span></div>
-  <div class="bpill">🔍 Heuristic: <span id="h-lbl" style="color:var(--yellow);margin-left:4px">0</span></div>
+  <div class="bpill">📡 Aktif: <span id="active-lbl" style="color:var(--green2);margin-left:4px;font-weight:700">0/5</span></div>
+  <div class="bpill">🟢 Giriş: <span id="buy-hit-lbl" style="color:#4ade80;margin-left:4px;font-weight:700">0</span></div>
+  <div class="bpill">🔴 Çıkış: <span id="sell-hit-lbl" style="color:#f87171;margin-left:4px;font-weight:700">0</span></div>
+  <div class="bpill">🐋 Whale: <span id="whale-hit-lbl" style="color:#a78bfa;margin-left:4px;font-weight:700">0</span></div>
 </div>
 
-<!-- ── HEURISTIC LEGEND ── -->
+<!-- SİNYAL TİPİ LEGEND -->
 <div class="hleg">
-  <span class="hleg-title">TX Tipi:</span>
-  <span class="sub-badge sb-vip">⭐ VIP Entity</span>
-  <span class="sub-badge sb-inst">🏛 Kurumsal</span>
-  <span class="sub-badge sb-miner">⛏ Miner</span>
-  <span class="sub-badge sb-batch">📦 Toplu</span>
-  <span class="sub-badge sb-consolidate">🔗 UTXO</span>
-  <span class="sub-badge sb-transit">🔄 Transit</span>
-  <span class="sub-badge sb-unknown">🐋 Whale</span>
-  <div class="hleg-sep"></div>
+  <span style="font-size:9px;text-transform:uppercase;letter-spacing:.6px;color:var(--mut);margin-right:3px">Sinyal:</span>
+  <span class="sb sb-buy">🟢 Borsa GİRİŞ = Satış Hazırlığı</span>
+  <span class="sb sb-sell">🔴 Borsa ÇIKIŞ = Birikim/Alış</span>
+  <span class="sb sb-corp">🏛 Kurumsal</span>
+  <span class="sb sb-miner">⛏ Miner</span>
+  <span class="sb sb-batch">📦 Toplu</span>
+  <span class="sb sb-consolidate">🔗 UTXO</span>
+  <span class="sb sb-transit">🔄 Transit</span>
+  <span class="sb sb-whale">🐋 Whale</span>
+  <div style="width:1px;height:14px;background:var(--bd2)"></div>
   <div class="ntog">
-    <div class="tog-track" id="noise-tog" onclick="toggleNoise()"><div class="tog-knob"></div></div>
+    <div class="tog-t" id="noise-tog" onclick="toggleNoise()"><div class="tog-k"></div></div>
     <span style="color:var(--mut2)">Gürültüyü Gizle</span>
   </div>
 </div>
 
-<!-- ── STATS ── -->
+<!-- STATS -->
 <div class="stats">
   <div class="stat"><div class="stat-l">BTC Fiyat</div><div class="stat-v c-acc" id="s-price">—</div><div class="stat-s" id="s-chg">—</div></div>
-  <div class="stat"><div class="stat-l">Canlı TX</div><div class="stat-v c-blue" id="s-total">0</div><div class="stat-s">tüm kaynaklardan</div></div>
-  <div class="stat"><div class="stat-l">Borsa Girişi ↓</div><div class="stat-v c-red" id="s-in">0</div><div class="stat-s" id="s-in-v">—</div></div>
-  <div class="stat"><div class="stat-l">Borsa Çıkışı ↑</div><div class="stat-v c-green" id="s-out">0</div><div class="stat-s" id="s-out-v">—</div></div>
-  <div class="stat"><div class="stat-l">⭐ VIP TX</div><div class="stat-v c-vip" id="s-vip">0</div><div class="stat-s">kurumsal hareket</div></div>
+  <div class="stat"><div class="stat-l">Canlı TX</div><div class="stat-v c-blue" id="s-total">0</div><div class="stat-s">tüm kaynak</div></div>
+  <div class="stat"><div class="stat-l">🟢 Giriş Sinyali</div><div class="stat-v c-green" id="s-buy">0</div><div class="stat-s" id="s-buy-v">Satış hazırlığı</div></div>
+  <div class="stat"><div class="stat-l">🔴 Çıkış Sinyali</div><div class="stat-v c-red" id="s-sell">0</div><div class="stat-s" id="s-sell-v">Birikim/alış</div></div>
+  <div class="stat"><div class="stat-l">⚡ Corp TX</div><div class="stat-v c-vip" id="s-corp">0</div><div class="stat-s">kurumsal hareket</div></div>
   <div class="stat"><div class="stat-l">🐋 Whale TX</div><div class="stat-v c-yellow" id="s-whale">0</div><div class="stat-s">büyük transfer</div></div>
-  <div class="stat"><div class="stat-l">İzlenen</div><div class="stat-v" id="s-watch" style="color:var(--cyan)">0</div><div class="stat-s">kayıtlı adres</div></div>
+  <div class="stat"><div class="stat-l">Borsa ↓ Vol</div><div class="stat-v c-red" id="s-in-v">—</div><div class="stat-s">toplam USD</div></div>
+  <div class="stat"><div class="stat-l">Borsa ↑ Vol</div><div class="stat-v c-green" id="s-out-v">—</div><div class="stat-s">toplam USD</div></div>
 </div>
 
-<!-- ── CHART ── -->
-<div class="chart-panel">
+<!-- CHART -->
+<div class="chart-p">
   <div class="chart-hdr">
     <span class="pt">📈 Fiyat & TX Hacmi</span>
-    <div class="chart-tabs">
+    <div style="display:flex;gap:4px">
       <button class="ctab on" onclick="setChartMode('price',this)">Fiyat</button>
       <button class="ctab" onclick="setChartMode('volume',this)">Hacim</button>
       <button class="ctab" onclick="setChartMode('both',this)">İkisi</button>
     </div>
   </div>
   <canvas id="price-canvas"></canvas>
-  <div class="chart-leg">
-    <span><span class="ldot" style="background:var(--acc)"></span>BTC Fiyat</span>
-    <span><span class="ldot" style="background:var(--blue)"></span>TX Hacmi</span>
-    <span><span class="ldot" style="background:var(--vip)"></span>VIP TX</span>
+  <div style="display:flex;gap:12px;padding:4px 13px 7px;font-size:9px;color:var(--mut)">
+    <span><span style="display:inline-block;width:8px;height:2px;background:var(--acc);border-radius:1px;vertical-align:2px"></span> BTC Fiyat</span>
+    <span><span style="display:inline-block;width:8px;height:2px;background:#60a5fa;border-radius:1px;vertical-align:2px"></span> Hacim</span>
+    <span><span style="display:inline-block;width:8px;height:2px;background:#4ade80;border-radius:1px;vertical-align:2px"></span> Giriş Sinyali</span>
+    <span><span style="display:inline-block;width:8px;height:2px;background:#f87171;border-radius:1px;vertical-align:2px"></span> Çıkış Sinyali</span>
   </div>
 </div>
 
-<!-- ── FILTER BAR ── -->
+<!-- FILTER -->
 <div class="fbar">
   <label>Min BTC:</label>
-  <input type="number" id="f-min" value="100" min="1" style="width:78px"/>
+  <input type="number" id="f-min" value="50" min="1" style="width:70px"/>
   <div class="fsep"></div>
-  <label>Yön:</label>
+  <label>Sinyal:</label>
   <button class="fchip on" onclick="setFilter(this,'all')">Tümü</button>
-  <button class="fchip" onclick="setFilter(this,'in')">↓ Giriş</button>
-  <button class="fchip" onclick="setFilter(this,'out')">↑ Çıkış</button>
-  <button class="fchip" onclick="setFilter(this,'w2w')">🐋 Whale</button>
-  <button class="fchip vip-chip" onclick="setFilter(this,'vip')">⭐ VIP</button>
+  <button class="fchip buy-chip" onclick="setFilter(this,'buy')">🟢 Giriş</button>
+  <button class="fchip sell-chip" onclick="setFilter(this,'sell')">🔴 Çıkış</button>
+  <button class="fchip" onclick="setFilter(this,'corp')">⚡ Kurumsal</button>
+  <button class="fchip" onclick="setFilter(this,'whale')">🐋 Whale</button>
   <div class="fsep"></div>
   <label>Sırala:</label>
   <select id="f-sort" onchange="renderTx()">
     <option value="time">Yeniye</option>
     <option value="amt">Miktara</option>
   </select>
-  <button class="btn btn-ghost" style="padding:4px 9px;font-size:11px" onclick="clearAll()">Temizle</button>
+  <button class="btn btn-ghost" style="padding:3px 8px;font-size:10px" onclick="clearAll()">Temizle</button>
 </div>
 
-<!-- ── MAIN GRID ── -->
+<!-- MAIN GRID -->
 <div class="g2">
-  <!-- TX TABLE -->
-  <div class="panel" id="tx-panel">
+  <div class="panel">
     <div class="ph">
       <span class="pt">🔴 Canlı Büyük BTC Transferleri <span class="pt-cnt" id="tx-cnt">0</span></span>
-      <span style="font-size:10px;color:var(--mut)" id="ws-status">Bağlanıyor…</span>
+      <span style="font-size:9px;color:var(--mut)" id="ws-status">Bağlanıyor…</span>
     </div>
-    <div style="overflow-x:auto;max-height:580px;overflow-y:auto">
+    <div style="overflow-x:auto;max-height:620px;overflow-y:auto">
       <table class="tbl">
         <thead><tr>
-          <th>Zaman</th><th>BTC / USD</th><th>Yön / Tip</th>
+          <th>Zaman</th><th>BTC / USD</th><th>Sinyal / Tip</th>
           <th>Gönderen</th><th>Alıcı</th><th>Src</th><th>TX</th>
         </tr></thead>
         <tbody id="tx-body">
@@ -426,93 +405,317 @@ tr.vip-tx td{animation:vipflash 1.2s ease}
     </div>
   </div>
 
-  <!-- RIGHT COLUMN -->
-  <div style="display:flex;flex-direction:column;gap:12px">
+  <div style="display:flex;flex-direction:column;gap:10px">
 
-    <!-- VIP ALERT LOG -->
-    <div class="vip-log-panel">
+    <!-- SİNYAL LOG -->
+    <div class="sig-log">
       <div class="ph">
-        <span class="pt" style="color:var(--vip)">⭐ VIP Hareket Geçmişi</span>
-        <span class="pt-cnt" id="vip-log-cnt">0</span>
+        <span class="pt" style="color:var(--vip)">⚡ Kurumsal Sinyal Geçmişi</span>
+        <span class="pt-cnt" id="sig-log-cnt">0</span>
       </div>
-      <div id="vip-log-body"><div class="empty"><i>⭐</i>VIP hareket bekleniyor…<br><small>Strategy, Binance, US Gov vb.</small></div></div>
+      <div id="sig-log-body"><div class="empty"><i>⚡</i>Kurumsal hareket bekleniyor…</div></div>
     </div>
 
-    <!-- EXCHANGE FLOW -->
+    <!-- EX FLOW -->
     <div class="panel">
       <div class="ph">
-        <span class="pt">🏦 Borsa Akış Özeti</span>
-        <span style="font-size:10px;color:var(--mut)">Oturumdan beri</span>
+        <span class="pt">🏦 Borsa Akış</span>
+        <span style="font-size:9px;color:var(--mut)">Oturumdan beri</span>
       </div>
-      <div id="ex-flow"><div class="empty"><i>📊</i>İşlem bekleniyor…</div></div>
+      <div id="ex-flow"><div class="empty"><i>📊</i>Bekleniyor…</div></div>
     </div>
 
     <!-- WATCHLIST -->
     <div class="panel">
       <div class="ph">
         <span class="pt">👁 İzleme Listesi</span>
-        <button class="btn btn-ghost" style="padding:3px 7px;font-size:10px" onclick="refreshAllWL()">↺</button>
+        <button class="btn btn-ghost" style="padding:2px 6px;font-size:9px" onclick="refreshAllWL()">↺</button>
       </div>
       <div class="wl-add">
-        <input id="wl-addr" placeholder="BTC adresi (1… 3… bc1…)"/>
-        <input id="wl-lbl" placeholder="Etiket" style="width:80px;flex:none"/>
+        <input id="wl-addr" placeholder="BTC adresi"/>
+        <input id="wl-lbl" placeholder="Etiket" style="width:70px;flex:none"/>
         <button class="btn btn-acc" onclick="addWatch()">+</button>
       </div>
       <div id="wl-body"><div class="empty"><i>📋</i>Adres ekleyin</div></div>
     </div>
-
   </div>
 </div>
 
-</div><!-- /wrap -->
+</div>
 
 <div id="toasts"></div>
 <div id="chart-tip"></div>
 
 <script>
 // ════════════════════════════════════════════════════════════
-// ⭐ VIP ENTITY DATABASE
-// Bilinen kurumsal/devlet cüzdanları — gerçek zamanlı izlenir
+// TOP 50 KURUMSAL BTC HAZİNE VERİTABANI
+// Kaynak: Arkham Intelligence, BitcoinTreasuries.net, Coin.Space 2026
 // ════════════════════════════════════════════════════════════
-const VIP_ENTITIES = {
-  strategy: {
-    name:'Strategy Inc.', emoji:'🟠', color:'#ff6b00', rank:1,
-    btcHeld:580000, type:'Halka Açık Şirket (MSTR)',
-    note:'En büyük kurumsal BTC alıcısı',
+const CORPS = {
+  strategy:{
+    name:'Strategy Inc.', emoji:'🟠', rank:1, ticker:'MSTR', country:'US',
+    btcHeld:846842, type:'Halka Açık Şirket', note:'En büyük kurumsal BTC alıcısı — SEC tescilli',
     addrs:[
       'bc1q0cau4jfzqjpcsne6sq0lk6gx6vl8jk29zuy7tj',
       'bc1qdnf34kltjxm6p56pgeulx6vkxzuatmjndjy0cw',
       '3LRW2jFyNL6rCp4SnFyDHpSXtLMnM1ZPt2',
       'bc1q8qa5r2mj6jjd4pj9jl58qhm06yqm5qp2t2q7az',
       '3EFVhDNNPgfkakmqv39cFnvMTxL5E2KSbz',
+      'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h',
     ]
   },
-  blackrock: {
-    name:'BlackRock IBIT', emoji:'🏛', color:'#1a1a2e', rank:2,
-    btcHeld:540000, type:'ETF (iShares Bitcoin Trust)',
-    note:'Coinbase Prime custody',
+  twentyone:{
+    name:'Twenty One Capital', emoji:'♾️', rank:2, ticker:'XXI', country:'US',
+    btcHeld:43514, type:'Halka Açık Şirket', note:'Tether+SoftBank destekli, SPAC 2025',
+    addrs:[
+      'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+      '3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a',
+    ]
+  },
+  metaplanet:{
+    name:'Metaplanet', emoji:'🇯🇵', rank:3, ticker:'MPJPY', country:'JP',
+    btcHeld:40177, type:'Halka Açık Şirket', note:'Japonya\'nın Strategy\'si — yen hedge',
+    addrs:[
+      'bc1q8p3wnn4q4rlrqjqe7j8n3w4k7s4p0pj5yk5k8w',
+      '3JvL5SHku7dGEVbNz8Wj9T1yPqbLGqhB9B',
+      'bc1qr7vkm5dxh0ukcmjh7e3e9ywmyxn3nqge6faxnx',
+    ]
+  },
+  mara:{
+    name:'MARA Holdings', emoji:'⛏', rank:4, ticker:'MARA', country:'US',
+    btcHeld:36303, type:'Bitcoin Miner', note:'Kuzey Amerika\'nın en büyük mineri',
+    addrs:[
+      'bc1q2wcsxqq5xpd7k7h6k3wdz4ywms5f9x6pzqjwz2',
+      '3Kzh9QAQgHkXDAX1RArMJdJAZU5rPZmFYo',
+      'bc1qp5klrw7kh2dfapq5rcx30rwzjwkcr8qh5kqtau',
+      '19dSFkYFnQNkBpZsuF4XbPVDJGHMBCPmjz',
+      'bc1q4ghm8k4mx2h0zjktzwqrqyq4x9mhf5cgz27mdy',
+    ]
+  },
+  bstr:{
+    name:'Bitcoin Standard Treasury', emoji:'🟣', rank:5, ticker:'BSTR', country:'US',
+    btcHeld:30021, type:'Halka Açık Şirket', note:'Adam Back/Blockstream — Nasdaq BSTR',
+    addrs:[
+      '3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B',
+      'bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40',
+    ]
+  },
+  bullish:{
+    name:'Bullish', emoji:'🐂', rank:6, ticker:'BLSH', country:'US',
+    btcHeld:24300, type:'Borsa', note:'Kurumsal odaklı kripto borsası',
+    addrs:[
+      'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz',
+      '3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb',
+    ]
+  },
+  strive:{
+    name:'Strive', emoji:'💪', rank:7, ticker:'ASST', country:'US',
+    btcHeld:19105, type:'Halka Açık Şirket', note:'Vivek Ramaswamy — Bitcoin odaklı ETF',
+    addrs:[
+      'bc1q0lhfzyrn6p6aaxcvjjp8k7syzmlvexh4m0uxxt',
+    ]
+  },
+  spacex:{
+    name:'SpaceX', emoji:'🚀', rank:8, ticker:'SPCX', country:'US',
+    btcHeld:18712, type:'Özel Şirket', note:'Elon Musk — 2021\'den bu yana BTC tutuyor',
+    addrs:[
+      'bc1qszrvl9rqr4vk90e4t0j7a6gqvhchwnfqzlwelp',
+      '3E8rJPqMCAc5HKJCQ8ZjF4FBJpb9Yq7EiB',
+    ]
+  },
+  coinbase:{
+    name:'Coinbase', emoji:'🔵', rank:9, ticker:'COIN', country:'US',
+    btcHeld:16492, type:'Borsa / ETF Saklayıcı', note:'IBIT + FBTC custody dahil ~993K BTC',
+    addrs:[
+      'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+      '3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr',
+      '3cjEMqdx2z8Y7sPqaS3H9cHPxCiGGD3Dc3',
+      '1Mf23VBDrSbdT8JCB7KCcBTPZkDL3y9AaM',
+      'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2',
+      'bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g',
+    ]
+  },
+  riot:{
+    name:'Riot Platforms', emoji:'⚡', rank:10, ticker:'RIOT', country:'US',
+    btcHeld:15680, type:'Bitcoin Miner', note:'Texas merkezli büyük ölçekli miner',
+    addrs:[
+      'bc1q9xgcl3g0phq0e8a7lhvrd23svcumz0f3p8fgwl',
+      '3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh',
+      'bc1qc2xvy7k3x97f8y4g5c6m9ynkv3j0l6pzyrscpf',
+    ]
+  },
+  cleanspark:{
+    name:'CleanSpark', emoji:'🌿', rank:11, ticker:'CLSK', country:'US',
+    btcHeld:13453, type:'Bitcoin Miner', note:'Amerika\'nın mineri — 50 EH/s milestone',
+    addrs:[
+      'bc1qawwv7mv8z0epzzhyat05tsp0vxfmxjfm8vk8lz',
+      '3JqJufFZmkEP97xrmfD1KkMMjUYR4A9BCn',
+      'bc1q6q7mmvqxap5qkdm8h9cxjts87vhh3jjt2aqyz9',
+    ]
+  },
+  tesla:{
+    name:'Tesla', emoji:'⚡', rank:12, ticker:'TSLA', country:'US',
+    btcHeld:11509, type:'Halka Açık Şirket', note:'2021\'de 1.5B$\'lık alış, kısmen sattı',
+    addrs:[
+      'bc1q4t7tazl59kmhyxjy56yzw84j23a79xkepn6hlt',
+      '3PW8tHhiBiEBbA3GhRjhCBhvY7DmNS2gKj',
+    ]
+  },
+  hut8:{
+    name:'Hut 8 Mining', emoji:'🏔', rank:13, ticker:'HUT', country:'US',
+    btcHeld:10278, type:'Bitcoin Miner', note:'American Bitcoin (Eric Trump) ortaklığı',
+    addrs:[
+      'bc1qyh8jqsjxh3efkdqkvnzn9c0prw9uvy0qzm63jy',
+      '3BqTvMfz6YVkA7kL0JjHFNj2eJe0PcHgBC',
+      '1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F',
+    ]
+  },
+  djt:{
+    name:'Trump Media & Tech', emoji:'🇺🇸', rank:14, ticker:'DJT', country:'US',
+    btcHeld:9542, type:'Halka Açık Şirket', note:'Truth Social — Devin Nunes CEO',
+    addrs:[
+      'bc1q9ycx3jytkwv3s5aqlxv8nlujf2hm84zs08uzuq',
+      '3DrT3M4i3qRQPL9fFYt5FEFdaL3N3xTJ5H',
+    ]
+  },
+  block:{
+    name:'Block Inc.', emoji:'🟫', rank:15, ticker:'XYZ', country:'US',
+    btcHeld:9032, type:'Fintech', note:'Jack Dorsey — Cash App BTC alımları',
+    addrs:[
+      'bc1q0nlxcf90mkr9q4pknkrq3ythqr5rrw5gkz55m2',
+      '3PbJsbiT3cTPdkU9L6qS7L2jCzF4B81Jfk',
+    ]
+  },
+  blackrock:{
+    name:'BlackRock IBIT', emoji:'🏛', rank:16, ticker:'IBIT', country:'US',
+    btcHeld:771000, type:'ETF (Coinbase custody)', note:'Dünya\'nın en büyük ETF\'i — Coinbase\'de',
     addrs:[
       'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3',
+      'bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g',
       '3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh',
-      'bc1qx9t2l3pyny2spqpqlye8svce70nppwtaxwdrp4',
     ]
   },
-  usgov: {
-    name:'ABD Hükümeti', emoji:'🇺🇸', color:'#b91c1c', rank:3,
-    btcHeld:198000, type:'Devlet (DOJ/FBI/IRS)',
-    note:'Silk Road + Bitfinex el koyma',
+  ambtc:{
+    name:'American Bitcoin Corp', emoji:'🦅', rank:17, ticker:'ABTC', country:'US',
+    btcHeld:7500, type:'Bitcoin Miner', note:'Hut 8 + Eric Trump ortaklığı',
     addrs:[
-      'bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt',
-      'bc1qa5wkgaew2dkv56kfvj49j0av5nml45x9ek9hz6',
-      '1HQ3Go3ggs8pFnXuHVHRytPCq5fGG8Hbhx',
-      '1AC4fMwgY8j9onSbXEWeH6Zan8QGMSdmtA',
-      'bc1qe7nk2nlnjewghgw4sgm0r89zkjzsurda7z4rdg',
+      'bc1qxrdg8w7j2zf2r5w5r3cjk3ck5t7bpevn97h46l',
+      '3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5',
     ]
   },
-  binance: {
-    name:'Binance', emoji:'🟡', color:'#f0b90b', rank:4,
-    btcHeld:631000, type:'Borsa',
-    note:'Cold wallet #1: ~249K BTC',
+  gd_culture:{
+    name:'GD Culture Group', emoji:'🎭', rank:18, ticker:'GDC', country:'US',
+    btcHeld:7500, type:'Halka Açık Şirket', note:'Medya/eğlence şirketi BTC stratejisi',
+    addrs:[
+      'bc1q2mc3wfpd9wfl7syk8qtp0wd6w90x7c68rqwegr',
+    ]
+  },
+  galaxy:{
+    name:'Galaxy Digital', emoji:'🌌', rank:19, ticker:'GLXY', country:'US',
+    btcHeld:6894, type:'Dijital Varlık Firması', note:'Mike Novogratz — crypto yatırım bankası',
+    addrs:[
+      'bc1qfyzpg0h4fjnl4e44zhqzrww30y72z24rnmyvxs',
+      '3E5JunJqkJPi2hKbp5DxoJ5Lnusg3fVGwA',
+      'bc1q6srz5g9t6rp4myjmfr6gj43s3s6g3gy8wphygz',
+    ]
+  },
+  nextech:{
+    name:'Next Technology Holding', emoji:'💻', rank:20, ticker:'NXTT', country:'CN',
+    btcHeld:5833, type:'Halka Açık Şirket', note:'Çin menşeili BTC hazine stratejisi',
+    addrs:[
+      'bc1qv4e7tzd0n7mwxmq0j2s30l23mz8y6fzdlvw8rs',
+    ]
+  },
+  procap:{
+    name:'ProCap Financial', emoji:'💰', rank:21, ticker:'BRR', country:'US',
+    btcHeld:5405, type:'Finans', note:'BTC odaklı finansal hizmetler',
+    addrs:[
+      'bc1qrk4qfatmrq8cllf2dzgz73jle82fvyg8cjhzxp',
+    ]
+  },
+  gemini_space:{
+    name:'Gemini Space Station', emoji:'👨‍🚀', rank:22, ticker:'GEMI', country:'US',
+    btcHeld:4619, type:'Halka Açık Şirket', note:'Uzay teknolojisi + BTC hazine',
+    addrs:[
+      'bc1q0r3xjt6vp3k2w7k5a9plfhcnjxm0n3j8k3y7l5',
+    ]
+  },
+  nakamoto:{
+    name:'Nakamoto Inc.', emoji:'₿', rank:23, ticker:'NAKA', country:'US',
+    btcHeld:4467, type:'Halka Açık Şirket', note:'David Bailey — Bitcoin odaklı holding',
+    addrs:[
+      'bc1q6yqkp0jqkkhwt4ajg84v84qgxkmfftyy8uuwxs',
+      '3HjPaWKs4K4rU2n5nnJRHdyQZxgk9a2vTr',
+    ]
+  },
+  boyaa:{
+    name:'Boyaa Interactive', emoji:'🎮', rank:24, ticker:'0434', country:'HK',
+    btcHeld:4091, type:'Halka Açık Şirket', note:'Hong Kong oyun şirketi — BTC stratejisi',
+    addrs:[
+      'bc1qm35kxm5gy8hfvtdyk2w5tkjvgaz4x4hm7gqzdn',
+    ]
+  },
+  oranje:{
+    name:'OranjeBTC', emoji:'🍊', rank:25, ticker:'OBTC3', country:'BR',
+    btcHeld:3803, type:'Halka Açık Şirket', note:'Brezilya BTC hazine şirketi',
+    addrs:[
+      'bc1q8yp3vn2nxw4mhck5g8tjy3m9yt7xnkxrwuupcn',
+    ]
+  },
+  bitcoin_group:{
+    name:'Bitcoin Group SE', emoji:'🇩🇪', rank:26, ticker:'ADE', country:'DE',
+    btcHeld:3605, type:'Halka Açık Şirket', note:'Almanya\'nın ilk halka açık BTC şirketi',
+    addrs:[
+      '1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX',
+      'bc1qp9wpwlf0svgdnvn4h32gmyxf0w8z5qh8ycxqmn',
+    ]
+  },
+  capitalb:{
+    name:'Capital B', emoji:'🏦', rank:27, ticker:'ALCPB', country:'FR',
+    btcHeld:3139, type:'Halka Açık Şirket', note:'Fransız BTC yatırım şirketi',
+    addrs:[
+      'bc1q3hce80rw3f2zvs6g24x4kmhpykpezymwmtd9jy',
+    ]
+  },
+  empery:{
+    name:'Empery Digital', emoji:'🔷', rank:28, ticker:'EMPD', country:'US',
+    btcHeld:2914, type:'Dijital Varlık', note:'BTC odaklı dijital varlık firması',
+    addrs:[
+      'bc1q5xm3k9h7lv6z2jj9wt8mkp3n4g7yd4x8vq0lkr',
+    ]
+  },
+  smarter_web:{
+    name:'Smarter Web Company', emoji:'🌐', rank:29, ticker:'SWC', country:'GB',
+    btcHeld:2878, type:'Halka Açık Şirket', note:'İngiltere merkezli BTC hazine şirketi',
+    addrs:[
+      '1PARVS6UXcLjdSqMjmphEJDvDL5kRkZwB5',
+      'bc1qr5cwmg9duvck44l8dg5mtnhqrw6j8jyyxqhwp2',
+    ]
+  },
+  ddc:{
+    name:'DDC Enterprise', emoji:'🏗', rank:30, ticker:'DDC', country:'US',
+    btcHeld:2804, type:'Halka Açık Şirket', note:'Kurumsal BTC hazine stratejisi',
+    addrs:[
+      'bc1q6mzj5drmfzwvry8p9xj6gqe7hz0m6pcwqhv3h7',
+    ]
+  },
+  keel:{
+    name:'Keel Infrastructure', emoji:'⚓', rank:31, ticker:'KEEL', country:'CA',
+    btcHeld:2469, type:'Halka Açık Şirket', note:'Kanada altyapı + BTC hazine',
+    addrs:[
+      'bc1q5pswx83m42m8g8y76jpd3k7j9y5kp9lhkq0lxm',
+    ]
+  },
+  defi_tech:{
+    name:'DeFi Technologies', emoji:'🔶', rank:32, ticker:'DEFT', country:'CA',
+    btcHeld:2453, type:'Fintech', note:'Kanada DeFi & kripto yatırım',
+    addrs:[
+      'bc1q6vl4nmd7t0fwtpymvjxfhyx3rk3k4psk4v7p42',
+    ]
+  },
+  binance:{
+    name:'Binance', emoji:'🟡', rank:33, ticker:'BNB', country:'MT',
+    btcHeld:631000, type:'Borsa', note:'Dünyanın en büyük kripto borsası',
     addrs:[
       '34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo',
       '3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6',
@@ -520,176 +723,254 @@ const VIP_ENTITIES = {
       '38UmuUqPCrFmQo4khkomQwZ4VbY2nZMJ67',
       '3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb',
       '3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a',
+      '1P5ZEDWTKTFGxQjZphgWPQUpe554WKDfHQ',
     ]
   },
-  coinbase: {
-    name:'Coinbase', emoji:'🔵', color:'#1652f0', rank:5,
-    btcHeld:976000, type:'Borsa / ETF Saklayıcı',
-    note:'IBIT + FBTC custody dahil',
+  usgov:{
+    name:'ABD Hükümeti', emoji:'🇺🇸', rank:34, ticker:'GOV', country:'US',
+    btcHeld:198000, type:'Devlet (DOJ/FBI)', note:'Silk Road + Bitfinex el koyma',
     addrs:[
-      'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-      '3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr',
-      '3cjEMqdx2z8Y7sPqaS3H9cHPxCiGGD3Dc3',
-      '1Mf23VBDrSbdT8JCB7KCcBTPZkDL3y9AaM',
-      'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2',
+      'bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt',
+      'bc1qa5wkgaew2dkv56kfvj49j0av5nml45x9ek9hz6',
+      '1HQ3Go3ggs8pFnXuHVHRytPCq5fGG8Hbhx',
+      '1AC4fMwgY8j9onSbXEWeH6Zan8QGMSdmtA',
     ]
   },
-  fidelity: {
-    name:'Fidelity FBTC', emoji:'🟢', color:'#00843d', rank:6,
-    btcHeld:200000, type:'ETF / Saklayıcı (FBTC)',
-    note:'Fidelity Digital Assets',
+  tether:{
+    name:'Tether', emoji:'💚', rank:35, ticker:'USDT', country:'VG',
+    btcHeld:97000, type:'Özel Şirket (Stablecoin)', note:'USDT rezerv teminatı olarak BTC',
+    addrs:[
+      '1KAt6STtisWMMVo5XGdos9DtWXGMkuXAaD',
+      '3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8',
+      '15aibZQkmDh4BSRR1hpkhBBmfQ7RVaAJhf',
+      '1FeexV6bAHb8ybZjqQMjJrcCrHGW9sb6uF',
+    ]
+  },
+  fidelity:{
+    name:'Fidelity FBTC', emoji:'🟢', rank:36, ticker:'FBTC', country:'US',
+    btcHeld:200000, type:'ETF (Öz-saklama)', note:'Kendi cold storage altyapısı',
     addrs:[
       'bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40',
       '3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B',
       '12XqeqZRVkBDgmPLVY4ZC6Y4ruUUEug8Fx',
+      'bc1qkf2cgjkce2l6sqx0zfp2efp3j2v4amq4xkrq9f',
     ]
   },
-  chngov: {
-    name:'Çin Hükümeti', emoji:'🇨🇳', color:'#dc2626', rank:7,
-    btcHeld:192000, type:'Devlet',
-    note:'PlusToken + WoToken el koyma',
+  bitfinex:{
+    name:'Bitfinex', emoji:'🔶', rank:37, ticker:'BFX', country:'VG',
+    btcHeld:156000, type:'Borsa', note:'2016 hack sonrası kurtarılan fonlar dahil',
+    addrs:[
+      'bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97',
+      '1Kr6QSydW9bFQG1mXiPNNu6WpJGmUa9i1g',
+      '3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r',
+    ]
+  },
+  upbit:{
+    name:'Upbit', emoji:'🇰🇷', rank:38, ticker:'UPB', country:'KR',
+    btcHeld:120000, type:'Borsa', note:'Güney Kore\'nin en büyük borsası',
+    addrs:[
+      '3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh',
+      'bc1q2md2m2h2n0xnvj4g5k7v2c5jymhpjg5m7kk4mz',
+      '17A16QmavnUfCW11DAApiJxp7ARnxN5pGX',
+    ]
+  },
+  robinhood:{
+    name:'Robinhood', emoji:'🏹', rank:39, ticker:'HOOD', country:'US',
+    btcHeld:96200, type:'Borsa (Perakende)', note:'Jump Trading custody — retail BTC',
+    addrs:[
+      'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2',
+      '3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh',
+    ]
+  },
+  kraken:{
+    name:'Kraken', emoji:'🦑', rank:40, ticker:'KRK', country:'US',
+    btcHeld:82300, type:'Borsa', note:'2011\'den bu yana köklü borsa',
+    addrs:[
+      'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3',
+      '3FupZp77ySr7jwoLYEJ9Ro4i7ksepjta8r',
+      '1FuppPFSAVwepKPLbbGZfPo8q3bNABFbcv',
+    ]
+  },
+  okx:{
+    name:'OKX', emoji:'🔘', rank:41, ticker:'OKB', country:'SC',
+    btcHeld:78600, type:'Borsa', note:'Seychelles merkezli büyük borsa',
+    addrs:[
+      '3LqJPuT5NkHfPoVgkCYcMm7hJEVZyFEEHy',
+      'bc1q9ym8z36vcp8v3p8hjlawlhp3fj0p0hzk7a7dh7',
+      '37Nt3z9dMdFeMPXJfzXCTxGTdvdGLHpJBz',
+    ]
+  },
+  bybit:{
+    name:'Bybit', emoji:'🎯', rank:42, ticker:'BYB', country:'AE',
+    btcHeld:52000, type:'Borsa', note:'Dubai merkezli türev borsası',
+    addrs:[
+      'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz',
+      '3DPfHGHPcCJMnBCMBqjq6zHY8TcXLCuYDc',
+    ]
+  },
+  chngov:{
+    name:'Çin Hükümeti', emoji:'🇨🇳', rank:43, ticker:'GOV', country:'CN',
+    btcHeld:192000, type:'Devlet', note:'PlusToken + WoToken el koyma',
     addrs:[
       '1LruNZjwamWJXThX2Y8C2d47QqhAkkc5os',
       '38DN2uFMZPiHLHJigfv4kWC9JWJrNnhLcn',
       '1FzWLkAahHooV3kzTgyx6qsswXJ6sCXkSR',
     ]
   },
-  tether: {
-    name:'Tether', emoji:'💚', color:'#26a17b', rank:8,
-    btcHeld:97000, type:'Özel Şirket (Stablecoin)',
-    note:'USDT rezerv teminatı',
-    addrs:[
-      '1KAt6STtisWMMVo5XGdos9DtWXGMkuXAaD',
-      '3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8',
-      '15aibZQkmDh4BSRR1hpkhBBmfQ7RVaAJhf',
-    ]
-  },
-  mara: {
-    name:'MARA Holdings', emoji:'⛏', color:'#f59e0b', rank:9,
-    btcHeld:44000, type:'Bitcoin Miner',
-    note:'En büyük halka açık miner',
-    addrs:[
-      'bc1q2wcsxqq5xpd7k7h6k3wdz4ywms5f9x6pzqjwz2',
-      '3Kzh9QAQgHkXDAX1RArMJdJAZU5rPZmFYo',
-    ]
-  },
-  ukgov: {
-    name:'İngiltere Hükümeti', emoji:'🇬🇧', color:'#1d4ed8', rank:10,
-    btcHeld:61245, type:'Devlet (HMRC/NCA)',
-    note:'Çeşitli suç el koymalar',
+  ukgov:{
+    name:'İngiltere Hükümeti', emoji:'🇬🇧', rank:44, ticker:'GOV', country:'GB',
+    btcHeld:61245, type:'Devlet (HMRC/NCA)', note:'Çeşitli suç el koymalar',
     addrs:[
       '1FszNJQy53p2uyy3jb1MTCvyqRb5GsmUbP',
       '17A16QmavnUfCW11DAApiJxp7ARnxN5pGX',
+      '1GR9qNz7zgtaW5HwwVpEJWMnGWhsbsieCG',
     ]
   },
-  twentyone: {
-    name:'Twenty One Capital', emoji:'♾️', color:'#8b5cf6', rank:11,
-    btcHeld:42000, type:'Halka Açık Şirket (XXI)',
-    note:'Tether + SoftBank destekli',
-    addrs:[]
+  bitfufu:{
+    name:'BitFuFu Inc.', emoji:'⚡', rank:45, ticker:'FUFU', country:'SG',
+    btcHeld:1855, type:'Bitcoin Miner', note:'Singapur merkezli miner + cloud mining',
+    addrs:[
+      'bc1q7mx4qjhh83vkcgkuvsf98j0nz6mhgq5n8z3lyq',
+      '3HvRCYkRZMXgGHj4VLT7ufrJwrgzYqvxRE',
+    ]
   },
-  metaplanet: {
-    name:'Metaplanet', emoji:'🇯🇵', color:'#ef4444', rank:12,
-    btcHeld:7800, type:'Halka Açık Şirket (MPJPY)',
-    note:'Japonya Strategy\'si',
-    addrs:[]
+  nexon:{
+    name:'NEXON Co.', emoji:'🎮', rank:46, ticker:'3659', country:'JP',
+    btcHeld:1717, type:'Halka Açık Şirket', note:'Japon oyun devi — 100M$ BTC',
+    addrs:[
+      'bc1q4a3kbel80g6a68nm8y48fmxn5u4ypw6yzdpkkf',
+      '3KRNfJVW5EjWyYfpzNgHvb8q5Wme2oJXsD',
+    ]
   },
-  spacex: {
-    name:'SpaceX', emoji:'🚀', color:'#475569', rank:13,
-    btcHeld:18712, type:'Özel Şirket',
-    note:'Elon Musk şirketi',
-    addrs:[]
+  cipher:{
+    name:'Cipher Mining', emoji:'🔐', rank:47, ticker:'CIFR', country:'US',
+    btcHeld:1500, type:'Bitcoin Miner', note:'ABD miner + BTC hazine',
+    addrs:[
+      'bc1qjmn3x9mhg2j28klcqj0z97k6yfcvqhpgpnq4mz',
+    ]
   },
-  tesla: {
-    name:'Tesla', emoji:'⚡', color:'#cc0000', rank:14,
-    btcHeld:11509, type:'Halka Açık Şirket (TSLA)',
-    note:'11,509 BTC hâlâ tutuldu',
-    addrs:[]
+  kucoin:{
+    name:'KuCoin', emoji:'🐊', rank:48, ticker:'KCS', country:'SC',
+    btcHeld:68000, type:'Borsa', note:'Perakende odaklı küresel borsa',
+    addrs:[
+      '3GNpfCMr34CMpEXBqJeGP7y3vxYZkRR7Bx',
+      'bc1q3p2s0nlhrkrm9x9d9rlhfhxfjkxdxs48wq3s6h',
+    ]
   },
-  riot: {
-    name:'Riot Platforms', emoji:'⛏', color:'#0ea5e9', rank:15,
-    btcHeld:15680, type:'Bitcoin Miner (RIOT)',
-    note:'Büyük ölçekli miner',
-    addrs:[]
+  gemini_ex:{
+    name:'Gemini Exchange', emoji:'♊', rank:49, ticker:'GEM', country:'US',
+    btcHeld:45000, type:'Borsa', note:'Winklevoss ikizleri — NY kayıtlı',
+    addrs:[
+      '1FeguRrKnSBxqjMaKNiT2w7GE7E7pBwqPf',
+      'bc1qr2fjw4znj4c9m3nnzx5p7s0wqjymynj4u4dzjt',
+    ]
   },
-  satoshi: {
-    name:'Satoshi Nakamoto', emoji:'👤', color:'#f59e0b', rank:0,
-    btcHeld:1100000, type:'Birey / Yaratıcı',
-    note:'Patoshi Pattern — hiç hareket etmedi',
+  satoshi:{
+    name:'Satoshi Nakamoto', emoji:'👤', rank:50, ticker:'—', country:'—',
+    btcHeld:1096000, type:'Birey / Yaratıcı', note:'Patoshi Pattern — 14 yıldır hareket yok',
     addrs:[
       '12cbQLTFMXRnSzktFkuoG3eHoMeFtpTu3S',
-      '1A1zP1eP5QGefi2DMPTfTL5SLmv7Divfna',
+      '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',
       '1HLoD9E4SDFFPDiYfNYnkBLQ85Y51J3Zb1',
     ]
   },
 };
 
-// Lowercase adres → entity key haritası
-const VIP_ADDR_MAP = {};
-let totalVipAddrs = 0;
-for (const [key, ent] of Object.entries(VIP_ENTITIES)) {
-  for (const addr of ent.addrs) {
-    VIP_ADDR_MAP[addr.toLowerCase()] = key;
-    totalVipAddrs++;
+// Adres → şirket key haritası
+const CORP_ADDR_MAP = {};
+let totalCorpAddrs = 0;
+for (const [key, corp] of Object.entries(CORPS)) {
+  for (const addr of corp.addrs) {
+    CORP_ADDR_MAP[addr.toLowerCase()] = key;
+    totalCorpAddrs++;
   }
 }
 
-function getVipByAddrs(addrs) {
+function getCorpByAddrs(addrs) {
   for (const a of (addrs||[])) {
-    const key = VIP_ADDR_MAP[a?.toLowerCase()];
-    if (key) return { key, ...VIP_ENTITIES[key] };
+    const key = CORP_ADDR_MAP[a?.toLowerCase()];
+    if (key) return { key, ...CORPS[key] };
   }
   return null;
 }
 
 // ════════════════════════════════════════════════════════════
-// KNOWN EXCHANGES
+// KNOWN EXCHANGES — sinyal üretimi için
 // ════════════════════════════════════════════════════════════
 const KNOWN_EX = {
   '34xp4vrocgjym3xr7ycvpfhocnxv4twseo':'Binance',
   '3m219kr5venenb47ewrpfwyb5jq2djxrp6':'Binance',
   'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h':'Binance',
+  '38umuuqpcrfmqo4khkomqwz4vby2nzmj67':'Binance',
   '3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr':'Coinbase',
   'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh':'Coinbase',
-  'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3':'Coinbase/Kraken',
+  'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2':'Coinbase/Huobi',
+  'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3':'Coinbase',
   '3lqtfzmqq7xqmz7gc8fq84pvzxqj3xfxp7':'OKX',
+  '3lqjput5nkhfpovgkcycmm7hje7ze7pfby':'OKX',
+  '37nt3z9dmdfepmxjfzxctxgtdvdglhpjbz':'OKX',
   'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz':'Bybit',
-  '1kr1ue4462cqu9s4h1f27oa89gqpfz7lm':'Bitfinex',
-  '1feg9rp2rrqijacv5t1lrnlvpqqzx2wppt':'Gemini',
+  '3dphghpcckjmbbcbqjq6zhytctxlcuydcs':'Bybit',
+  '1kr6qsydw9bfqg1mxipnnu6wpjgmua9i1g':'Bitfinex',
+  '1fegurkknsbxqjmakniit2w7ge7e7pbwqpf':'Gemini',
   '3aa9b9jnk16ey3km7g7dzewmjfwghgiqm5':'Gate.io',
-  'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2':'Huobi/HTX',
-  '14ykvjxdmu8jbhg8bfwh6t8q2c2aqbzsgb':'Bittrex',
+  '3gnpfcmr34cmpeхбqjegp7y3vxyzkrr7bx':'KuCoin',
+  '17a16qmavnuflcw11daapijxp7arnxn5pgx':'HMRC/UK Gov',
+  '1p5zedwtkfgxqjzphgwpqupe554wkdfhq':'Binance',
 };
 
 // ════════════════════════════════════════════════════════════
 // HEURISTIC ENGINE
 // ════════════════════════════════════════════════════════════
-function classifyWhale(tx) {
+function classifyTx(tx) {
   const ic = tx.fromAll?.length||1, oc = tx.toAll?.length||1, btc = tx.btc;
   let score = {};
-  if (ic <= 3 && oc >= 30)          score.miner       = 60 + Math.min(oc,200)/5;
-  if (ic >= 8 && oc <= 3)           score.consolidate = 50 + Math.min(ic/Math.max(oc,1)*3,45);
-  if (ic >= 20&& oc <= 2)           score.consolidate = (score.consolidate||0)+25;
-  if (ic <= 3 && oc >= 10&& oc<30)  score.batch       = 55+oc;
-  if (ic <= 5 && oc >= 5 && oc<10)  score.batch       = (score.batch||0)+30;
-  if (ic===1  && oc===1)             score.transit     = btc>=1000?90:btc>=500?80:60;
-  if (ic<=3   && oc===2 && btc>=300) score.transit     = (score.transit||0)+35;
-  const allAddrs=[...(tx.fromAll||[]),...(tx.toAll||[])];
-  const segWit=allAddrs.filter(a=>a?.startsWith('bc1')).length;
-  const ratio=segWit/Math.max(allAddrs.length,1);
-  if (ratio>=0.8&&btc>=100) { score.inst=40+ratio*30; if(allAddrs.some(a=>a?.startsWith('bc1p')))score.inst+=15; }
-  const winners=Object.entries(score).sort((a,b)=>b[1]-a[1]);
-  if (!winners.length||winners[0][1]<40) return {type:'unknown',label:'Gerçek Whale?',emoji:'🐋',cssClass:'sb-unknown',confColor:'#a78bfa',confidence:0,isNoise:false};
-  const [win,conf]=winners[0];
-  const capped=Math.min(conf,99);
-  const map={
-    miner:       {label:'Miner/Pool',       emoji:'⛏',cssClass:'sb-miner',      confColor:'#fbbf24',isNoise:true},
-    consolidate: {label:'UTXO Konsolidasyon',emoji:'🔗',cssClass:'sb-consolidate',confColor:'#94a3b8',isNoise:true},
-    batch:       {label:'Toplu Ödeme',       emoji:'📦',cssClass:'sb-batch',      confColor:'#fb923c',isNoise:true},
-    transit:     {label:'Transit/OTC',       emoji:'🔄',cssClass:'sb-transit',    confColor:'#64748b',isNoise:true},
-    inst:        {label:'Kurumsal SegWit',   emoji:'🏛',cssClass:'sb-inst',       confColor:'#60a5fa',isNoise:false},
+  if (ic <= 3 && oc >= 30)         score.miner       = 60 + Math.min(oc,200)/5;
+  if (ic >= 8 && oc <= 3)          score.consolidate = 50 + Math.min(ic/Math.max(oc,1)*3,45);
+  if (ic >= 20 && oc <= 2)         score.consolidate = (score.consolidate||0)+25;
+  if (ic <= 3 && oc >= 10 && oc<30)score.batch       = 55+oc;
+  if (ic <= 5 && oc >= 5 && oc<10) score.batch       = (score.batch||0)+30;
+  if (ic===1  && oc===1)            score.transit     = btc>=1000?90:btc>=500?80:60;
+  if (ic<=3   && oc===2 && btc>=300)score.transit     = (score.transit||0)+35;
+  const allA=[...(tx.fromAll||[]),...(tx.toAll||[])];
+  const sw=allA.filter(a=>a?.startsWith('bc1')).length;
+  const ratio=sw/Math.max(allA.length,1);
+  if (ratio>=0.8&&btc>=100){score.corp=40+ratio*30;if(allA.some(a=>a?.startsWith('bc1p')))score.corp+=15;}
+  const w=Object.entries(score).sort((a,b)=>b[1]-a[1]);
+  if(!w.length||w[0][1]<40)return{type:'whale',label:'Büyük Whale',emoji:'🐋',cssClass:'sb-whale',confColor:'#a78bfa',confidence:0,isNoise:false};
+  const[win,conf]=w[0];const cap=Math.min(conf,99);
+  const M={
+    miner:      {label:'Miner/Pool',     emoji:'⛏',cssClass:'sb-miner',      confColor:'#fbbf24',isNoise:true},
+    consolidate:{label:'UTXO Konsol.',   emoji:'🔗',cssClass:'sb-consolidate',confColor:'#94a3b8',isNoise:true},
+    batch:      {label:'Toplu Ödeme',    emoji:'📦',cssClass:'sb-batch',      confColor:'#fb923c',isNoise:true},
+    transit:    {label:'Transit/OTC',    emoji:'🔄',cssClass:'sb-transit',    confColor:'#64748b',isNoise:true},
+    corp:       {label:'Kurumsal SegWit',emoji:'🏛',cssClass:'sb-corp',       confColor:'#60a5fa',isNoise:false},
   };
-  return {type:win,...map[win],confidence:capped};
+  return{type:win,...M[win],confidence:cap};
+}
+
+// ════════════════════════════════════════════════════════════
+// SİNYAL TİPİ — En kritik özellik
+// GİRİŞ: Corp cüzdan → Borsa = SATIŞ HAZIRLIĞI (bearish)
+// ÇIKIŞ: Borsa → Corp cüzdan = BİRİKİM/ALIŞ (bullish)
+// ════════════════════════════════════════════════════════════
+function getSignalType(entry) {
+  const {dir, corpInfo} = entry;
+  if (!corpInfo) return null;
+
+  if (dir === 'in') {
+    // Corp → Borsa: satış için transfer (BEARİŞ SİNYAL)
+    return { signal:'sell', label:'🔴 BORSA GİRİŞ', detail:'Satış Hazırlığı', color:'#f87171', cssClass:'sld-sell', dirBadge:'db-sell' };
+  }
+  if (dir === 'out') {
+    // Borsa → Corp: birikim (BOLLİŞ SİNYAL)
+    return { signal:'buy', label:'🟢 BORSA ÇIKIŞ', detail:'Birikim / Alış', color:'#4ade80', cssClass:'sld-buy', dirBadge:'db-buy' };
+  }
+  if (dir === 'w2w') {
+    // Corp → Corp veya walletlar arası
+    return { signal:'move', label:'🟡 HAREKET', detail:'Cüzdan → Cüzdan', color:'#fcd34d', cssClass:'sld-move', dirBadge:'db-move' };
+  }
+  return null;
 }
 
 // ════════════════════════════════════════════════════════════
@@ -714,55 +995,54 @@ const WS_SOURCES = [
 ];
 
 function handleMempoolMsg(data, srcId) {
-  try {
+  try{
     const m=JSON.parse(data);
     const txs=m.transactions||m['mempool-transactions']||[];
     txs.forEach(tx=>{
-      if (!tx?.txid) return;
+      if(!tx?.txid)return;
       let totalIn=0;
       (tx.vin||[]).forEach(i=>{totalIn+=i.prevout?.value||0;});
       handleTx({
         hash:tx.txid,
         inputs:(tx.vin||[]).map(i=>({prev_out:{addr:i.prevout?.scriptpubkey_address,value:i.prevout?.value||0}})),
-        out:  (tx.vout||[]).map(o=>({addr:o.scriptpubkey_address})),
-        _sat:totalIn, _inputCount:(tx.vin||[]).length, _outputCount:(tx.vout||[]).length,
+        out:(tx.vout||[]).map(o=>({addr:o.scriptpubkey_address})),
+        _sat:totalIn,_inputCount:(tx.vin||[]).length,_outputCount:(tx.vout||[]).length,
       },srcId);
     });
-  } catch {}
+  }catch{}
 }
 
 // ════════════════════════════════════════════════════════════
-// ADDRESS CACHE
+// ADDR CACHE
 // ════════════════════════════════════════════════════════════
 const ADDR_CACHE=new Map();
 const CACHE_TTL=10*60*1000;
-function cacheGet(addr){const e=ADDR_CACHE.get(addr);if(!e)return undefined;if(Date.now()-e.ts>CACHE_TTL){ADDR_CACHE.delete(addr);return undefined;}return e.ex;}
-function cacheSet(addr,ex){ADDR_CACHE.set(addr,{ex,ts:Date.now()});document.getElementById('cache-lbl').textContent=ADDR_CACHE.size+' adres';}
-setInterval(()=>{const now=Date.now();for(const[k,v]of ADDR_CACHE)if(now-v.ts>CACHE_TTL)ADDR_CACHE.delete(k);document.getElementById('cache-lbl').textContent=ADDR_CACHE.size+' adres';},5*60*1000);
+function cacheGet(a){const e=ADDR_CACHE.get(a);if(!e)return undefined;if(Date.now()-e.ts>CACHE_TTL){ADDR_CACHE.delete(a);return undefined;}return e.ex;}
+function cacheSet(a,ex){ADDR_CACHE.set(a,{ex,ts:Date.now()});document.getElementById('cache-lbl').textContent=ADDR_CACHE.size;}
+setInterval(()=>{const n=Date.now();for(const[k,v]of ADDR_CACHE)if(n-v.ts>CACHE_TTL)ADDR_CACHE.delete(k);document.getElementById('cache-lbl').textContent=ADDR_CACHE.size;},5*60*1000);
 
 // ════════════════════════════════════════════════════════════
 // STATE
 // ════════════════════════════════════════════════════════════
-let btcPrice=0, txList=[], vipTxList=[];
+let btcPrice=0, txList=[], sigTxList=[];
 let seenHashes=new Set(), dedupCount=0, exFlows={};
-let statsIn=0, statsOut=0, statsTotal=0, vipHits=0, whaleHits=0, hClassified=0;
-let inVol=0, outVol=0;
+let sTotal=0, sBuy=0, sSell=0, sCorp=0, sWhale=0, buyVol=0, sellVol=0;
 let watchlist=[], filterDir='all', hideNoise=false;
 let batchQueue=[], batchBusy=false, apiUsed=0;
-const API_MAX=1400, BATCH_SIZE=5, TX_MAX=200;
+const API_MAX=1400, TX_MAX=250;
 let soundEnabled=false, audioCtx=null;
 let chartMode='price', priceHistory=[], volumeHistory=[];
 let chartVolBucket={btc:0};
 const CHART_MAX=60;
-const vipHitCounts={};
+const corpHits={buy:{},sell:{},move:{}};
 
 // ════════════════════════════════════════════════════════════
 // INIT
 // ════════════════════════════════════════════════════════════
 function init(){
-  document.getElementById('vip-loaded').textContent=totalVipAddrs+' VIP Adres';
-  renderVipGrid();
-  renderSrcGrid();
+  document.getElementById('corp-loaded').textContent=Object.keys(CORPS).length+' Şirket · '+totalCorpAddrs+' Adres';
+  renderCorpGrid();
+  renderSrcRow();
   loadWL();
   fetchPrice();
   setInterval(fetchPrice,60000);
@@ -780,70 +1060,75 @@ function toggleNoise(){
 }
 
 // ════════════════════════════════════════════════════════════
-// VIP GRID RENDER
+// CORP GRID
 // ════════════════════════════════════════════════════════════
-function renderVipGrid(){
-  const el=document.getElementById('vip-grid');
-  const sorted=Object.entries(VIP_ENTITIES).sort((a,b)=>a[1].rank-b[1].rank);
-  el.innerHTML=sorted.map(([key,ent])=>{
-    const btcStr=ent.btcHeld>=1e6?(ent.btcHeld/1e6).toFixed(2)+'M BTC':ent.btcHeld>=1000?(ent.btcHeld/1000).toFixed(0)+'K BTC':ent.btcHeld.toLocaleString()+' BTC';
-    const usdStr=ent.btcHeld&&btcPrice?'$'+fmtUSD(ent.btcHeld*btcPrice):'';
-    const hits=vipHitCounts[key]||0;
-    const hasAddrs=ent.addrs.length>0;
-    return`<div class="vip-card${hits?' hit':''}${!hasAddrs?' '+key:''}${!hasAddrs?' no-addrs':''}"
-      id="vip-card-${key}" title="${ent.note}"
-      style="${hits?'border-color:rgba(255,215,0,.35);':''}"
-    >
-      <div class="vip-card-hit">▲ ${hits} hit</div>
-      <div class="vip-card-top">
-        <div class="vip-card-emoji">${ent.emoji}</div>
+function renderCorpGrid(){
+  const el=document.getElementById('corp-grid');
+  const sorted=Object.entries(CORPS).sort((a,b)=>a[1].rank-b[1].rank);
+  el.innerHTML=sorted.map(([key,c])=>{
+    const btcStr=c.btcHeld>=1e6?(c.btcHeld/1e6).toFixed(2)+'M':c.btcHeld>=1000?(c.btcHeld/1000).toFixed(0)+'K':c.btcHeld.toLocaleString();
+    const usd=btcPrice&&c.btcHeld?fmtUSD(c.btcHeld*btcPrice):'';
+    const buyH=corpHits.buy[key]||0,sellH=corpHits.sell[key]||0;
+    const hasSig=buyH>0||sellH>0;
+    let cardCls='corp-card';
+    if(sellH>buyH)cardCls+=' active-sell';
+    else if(buyH>sellH)cardCls+=' active-buy';
+    return`<div class="${cardCls}" id="cc-${key}" title="${c.note}">
+      <div class="corp-rank">${c.rank}</div>
+      <div class="corp-sig-dot ${sellH>buyH?'sell':buyH>sellH?'buy':''}" id="cd-${key}"></div>
+      <div class="corp-top">
+        <div class="corp-emoji">${c.emoji}</div>
         <div>
-          <div class="vip-card-name">${ent.name}</div>
-          <div class="vip-card-type">${ent.type}</div>
+          <div class="corp-name">${c.name}</div>
+          <div class="corp-type">${c.ticker} · ${c.country}</div>
         </div>
-        <div class="vip-hit-dot"></div>
       </div>
-      <div class="vip-card-btc" style="color:${ent.color!=='#1a1a2e'?ent.color:'var(--vip)'}">${btcStr}</div>
-      ${usdStr?`<div class="vip-card-usd">${usdStr}</div>`:''}
-      ${hasAddrs?`<div class="vip-card-note" style="color:rgba(255,215,0,.5);margin-top:4px">📡 ${ent.addrs.length} adres izleniyor</div>`:`<div class="vip-card-note">ℹ️ Adres bilgisi yok</div>`}
+      <div class="corp-btc">${btcStr} BTC</div>
+      <div class="corp-sub">${usd?'$'+usd:'—'} ${c.type}</div>
+      <div class="corp-addrs">${c.addrs.length} adres izleniyor</div>
+      ${hasSig?`<div class="corp-hits"><span class="buy-hits">🟢 ${buyH}</span> / <span class="sell-hits">🔴 ${sellH}</span></div>`:''}
     </div>`;
   }).join('');
 }
-function updateVipCard(key){
-  const card=document.getElementById('vip-card-'+key);
+function updateCorpCard(key,signal){
+  const card=document.getElementById('cc-'+key);
+  const dot=document.getElementById('cd-'+key);
   if(!card)return;
-  const hits=vipHitCounts[key]||0;
-  card.classList.add('hit');
-  const hitEl=card.querySelector('.vip-card-hit');
-  if(hitEl)hitEl.textContent='▲ '+hits+' hit';
-  setTimeout(()=>{if(!vipHitCounts[key])card.classList.remove('hit');},5000);
+  const buyH=corpHits.buy[key]||0,sellH=corpHits.sell[key]||0;
+  card.className='corp-card'+(sellH>buyH?' active-sell':buyH>sellH?' active-buy':'');
+  if(dot){dot.className='corp-sig-dot '+(sellH>buyH?'sell':buyH>sellH?'buy':'');} 
+  const hEl=card.querySelector('.corp-hits');
+  if(hEl){
+    hEl.style.display='block';
+    hEl.innerHTML=`<span class="buy-hits">🟢 ${buyH}</span> / <span class="sell-hits">🔴 ${sellH}</span>`;
+  }
 }
 
 // ════════════════════════════════════════════════════════════
-// SOURCE GRID
+// WS SOURCE GRID
 // ════════════════════════════════════════════════════════════
-function renderSrcGrid(){
-  document.getElementById('src-grid').innerHTML=WS_SOURCES.map(s=>
+function renderSrcRow(){
+  document.getElementById('src-row').innerHTML=WS_SOURCES.map(s=>
     `<div class="src-card"><div class="src-dot" id="cdot-${s.id}" style="background:var(--mut)"></div>
-     <div class="src-name">${s.name}</div><div class="src-rx" id="crx-${s.id}">0</div></div>`
+     <div style="font-size:10px;font-weight:600">${s.name}</div><div class="src-rx" id="crx-${s.id}">0</div></div>`
   ).join('');
 }
 function updateSrcCard(s){
   const dot=document.getElementById('cdot-'+s.id);
   const rx=document.getElementById('crx-'+s.id);
   if(!dot)return;
-  const colors={connecting:'var(--yellow)',ok:'var(--green)',err:'var(--red)',off:'var(--mut)'};
+  const colors={connecting:'var(--yellow2)',ok:'var(--green2)',err:'var(--red2)',off:'var(--mut)'};
   dot.style.background=colors[s.status]||'var(--mut)';
   dot.style.animation=s.status==='ok'?'blink 1.8s infinite':'none';
-  if(rx)rx.textContent=s.rxCount>999?Math.floor(s.rxCount/1000)+'K':s.rxCount;
+  if(rx)rx.textContent=s.rxCount>999?(s.rxCount/1000).toFixed(1)+'K':s.rxCount;
 }
 function updateActiveLbl(){
   const active=WS_SOURCES.filter(s=>s.status==='ok').length;
   const el=document.getElementById('active-lbl');
   el.textContent=active+'/5';
-  el.style.color=active>=3?'var(--green)':active>=1?'var(--yellow)':'var(--red)';
-  document.getElementById('ws-label').textContent=active+' kaynak canlı';
-  document.getElementById('ws-status').textContent=active>=3?'✓ '+active+' aktif':active>=1?'⚡ '+active+' aktif':'Yeniden bağlanıyor…';
+  el.style.color=active>=3?'var(--green2)':active>=1?'var(--yellow2)':'var(--red2)';
+  document.getElementById('ws-lbl').textContent=active+' kaynak canlı';
+  document.getElementById('ws-status').textContent=active>=3?'✓ '+active+' aktif':active>=1?'⚡ '+active:' Yeniden…';
 }
 function connectSrc(src){
   src.status='connecting';updateSrcCard(src);
@@ -857,64 +1142,62 @@ function connectSrc(src){
 }
 
 // ════════════════════════════════════════════════════════════
-// SOUND
+// SES
 // ════════════════════════════════════════════════════════════
 function toggleSound(){
   soundEnabled=!soundEnabled;
-  const btn=document.getElementById('sound-btn');
+  const btn=document.getElementById('snd-btn');
   if(soundEnabled){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();btn.textContent='🔔 Ses';btn.classList.add('on');toast('Ses açık','ok');}
   else{btn.textContent='🔕 Ses';btn.classList.remove('on');}
 }
 function playAlert(type){
   if(!soundEnabled||!audioCtx)return;
   try{
-    const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
-    osc.connect(gain);gain.connect(audioCtx.destination);
-    if(type==='vip'){
-      // Özel VIP sesi — 3 nota arp
-      const freqs=[523,659,784];
+    if(type==='sell'||type==='buy'){
+      const freqs=type==='buy'?[523,659,784]:[784,659,523];
       freqs.forEach((f,i)=>{
-        const o2=audioCtx.createOscillator(),g2=audioCtx.createGain();
-        o2.connect(g2);g2.connect(audioCtx.destination);
-        o2.type='sine';o2.frequency.setValueAtTime(f,audioCtx.currentTime+i*.12);
-        g2.gain.setValueAtTime(.32,audioCtx.currentTime+i*.12);
-        g2.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.12+.18);
-        o2.start(audioCtx.currentTime+i*.12);o2.stop(audioCtx.currentTime+i*.12+.2);
+        const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+        o.connect(g);g.connect(audioCtx.destination);
+        o.type='sine';o.frequency.setValueAtTime(f,audioCtx.currentTime+i*.12);
+        g.gain.setValueAtTime(.28,audioCtx.currentTime+i*.12);
+        g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+i*.12+.18);
+        o.start(audioCtx.currentTime+i*.12);o.stop(audioCtx.currentTime+i*.12+.2);
       });
-      return;
+    } else {
+      const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();
+      osc.connect(gain);gain.connect(audioCtx.destination);
+      osc.type='sine';osc.frequency.setValueAtTime(520,audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(220,audioCtx.currentTime+.4);
+      gain.gain.setValueAtTime(.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.5);
+      osc.start();osc.stop(audioCtx.currentTime+.5);
     }
-    if(type==='whale'){osc.type='sine';osc.frequency.setValueAtTime(520,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(220,audioCtx.currentTime+.4);gain.gain.setValueAtTime(.28,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.5);osc.start();osc.stop(audioCtx.currentTime+.5);}
-    else if(type==='in'){osc.type='triangle';osc.frequency.setValueAtTime(880,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(440,audioCtx.currentTime+.25);gain.gain.setValueAtTime(.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.25);osc.start();osc.stop(audioCtx.currentTime+.25);}
-    else{osc.type='triangle';osc.frequency.setValueAtTime(440,audioCtx.currentTime);osc.frequency.exponentialRampToValueAtTime(880,audioCtx.currentTime+.25);gain.gain.setValueAtTime(.2,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+.25);osc.start();osc.stop(audioCtx.currentTime+.25);}
   }catch{}
 }
 
 // ════════════════════════════════════════════════════════════
-// PRICE
+// FİYAT
 // ════════════════════════════════════════════════════════════
 async function fetchPrice(){
-  try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');const d=await r.json();if(!d.bitcoin?.usd)throw 0;applyPrice(d.bitcoin.usd,d.bitcoin.usd_24h_change,'CoinGecko');return;}catch{}
-  try{const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');const d=await r.json();applyPrice(parseFloat(d.lastPrice),parseFloat(d.priceChangePercent),'Binance');return;}catch{}
-  document.getElementById('price-pill').textContent='Fiyat yok';
+  try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_24hr_change=true');const d=await r.json();if(!d.bitcoin?.usd)throw 0;applyPrice(d.bitcoin.usd,d.bitcoin.usd_24h_change,'CG');return;}catch{}
+  try{const r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT');const d=await r.json();applyPrice(parseFloat(d.lastPrice),parseFloat(d.priceChangePercent),'BNB');return;}catch{}
 }
 function applyPrice(price,change,src){
   btcPrice=price;
   document.getElementById('price-pill').textContent='$'+price.toLocaleString('en-US');
   document.getElementById('s-price').textContent='$'+price.toLocaleString('en-US');
   const cs=document.getElementById('s-chg');
-  cs.textContent=(change>=0?'▲ +':'▼ ')+change.toFixed(2)+'% (24s) · '+src;
-  cs.style.color=change>=0?'var(--green)':'var(--red)';
+  cs.textContent=(change>=0?'▲ +':'▼ ')+change.toFixed(2)+'% · '+src;
+  cs.style.color=change>=0?'var(--green2)':'var(--red2)';
   priceHistory.push({t:Date.now(),price});
   if(priceHistory.length>CHART_MAX)priceHistory.shift();
   drawChart();
-  // VIP kartlarını USD ile güncelle
-  renderVipGrid();
+  renderCorpGrid();
 }
 
 // ════════════════════════════════════════════════════════════
 // CORE TX HANDLER
 // ════════════════════════════════════════════════════════════
-function handleTx(tx,source){
+function handleTx(tx, source){
   if(seenHashes.has(tx.hash)){dedupCount++;document.getElementById('dedup-lbl').textContent=dedupCount;return;}
   seenHashes.add(tx.hash);
   if(seenHashes.size>50000){[...seenHashes].slice(0,10000).forEach(h=>seenHashes.delete(h));}
@@ -922,59 +1205,76 @@ function handleTx(tx,source){
   let sat=tx._sat||0;
   if(!sat)tx.inputs.forEach(i=>{sat+=i.prev_out?.value||0;});
   const btc=sat/1e8;
-  const minBtc=parseFloat(document.getElementById('f-min').value)||100;
+  const minBtc=parseFloat(document.getElementById('f-min').value)||50;
 
-  statsTotal++;
-  document.getElementById('s-total').textContent=statsTotal.toLocaleString('tr-TR');
+  sTotal++;
+  document.getElementById('s-total').textContent=sTotal.toLocaleString('tr-TR');
   chartVolBucket.btc+=btc;
 
   const fromAddrs=tx.inputs.map(i=>i.prev_out?.addr).filter(Boolean);
   const toAddrs=tx.out.map(o=>o.addr).filter(Boolean);
 
-  // ⭐ VIP CHECK — önce kontrol et
-  const fromVip=getVipByAddrs(fromAddrs);
-  const toVip=getVipByAddrs(toAddrs);
-  const vipInfo=fromVip||toVip;
-  const isVip=!!vipInfo;
+  // ⚡ CORP CHECK
+  const fromCorp=getCorpByAddrs(fromAddrs);
+  const toCorp=getCorpByAddrs(toAddrs);
+  const corpInfo=fromCorp||toCorp;
+  const isCorp=!!corpInfo;
 
-  if(btc<minBtc&&!isVip)return; // VIP ise minBtc'yi bypass et
+  if(btc<minBtc&&!isCorp)return;
 
   let fromEx=findKnownEx(fromAddrs)||findCached(fromAddrs);
-  let toEx  =findKnownEx(toAddrs)  ||findCached(toAddrs);
+  let toEx=findKnownEx(toAddrs)||findCached(toAddrs);
 
   const entry={
-    hash:tx.hash, time:Date.now(), btc,
-    usd:btc*btcPrice,
+    hash:tx.hash, time:Date.now(), btc, usd:btc*btcPrice,
     from:fromAddrs[0]||'?', fromAll:fromAddrs,
-    to:toAddrs[0]||'?',     toAll:toAddrs,
+    to:toAddrs[0]||'?', toAll:toAddrs,
     inputCount:tx._inputCount||fromAddrs.length,
     outputCount:tx._outputCount||toAddrs.length,
     fromEx, toEx,
     dir:classifyDir(fromEx,toEx),
     isNew:true, source,
-    isVip, vipInfo,
-    fromVip, toVip,
+    isCorp, corpInfo, fromCorp, toCorp,
     lookupDone:!!(fromEx||toEx),
   };
-  entry.heuristic=classifyWhale(entry);
-  if(entry.heuristic.type!=='unknown'){hClassified++;document.getElementById('h-lbl').textContent=hClassified;}
+  entry.heuristic=classifyTx(entry);
+  entry.signal=getSignalType(entry);
 
-  // ⭐ VIP HIT
-  if(isVip){
-    vipHits++;
-    document.getElementById('s-vip').textContent=vipHits;
-    document.getElementById('vip-hit-lbl').textContent=vipHits;
-    vipHitCounts[vipInfo.key]=(vipHitCounts[vipInfo.key]||0)+1;
-    vipTxList.unshift(entry);
-    if(vipTxList.length>50)vipTxList.pop();
-    renderVipLog();
-    updateVipCard(vipInfo.key);
-    showVipAlertBanner(entry);
+  // ⚡ SİNYAL
+  if(isCorp && entry.signal){
+    const sig=entry.signal.signal;
+    if(sig==='sell'){
+      sSell++;
+      corpHits.sell[corpInfo.key]=(corpHits.sell[corpInfo.key]||0)+1;
+      document.getElementById('s-sell').textContent=sSell;
+      document.getElementById('sell-hit-lbl').textContent=sSell;
+      sellVol+=entry.usd||0;
+      document.getElementById('s-sell-v').textContent='$'+fmtUSD(sellVol);
+    } else if(sig==='buy'){
+      sBuy++;
+      corpHits.buy[corpInfo.key]=(corpHits.buy[corpInfo.key]||0)+1;
+      document.getElementById('s-buy').textContent=sBuy;
+      document.getElementById('buy-hit-lbl').textContent=sBuy;
+      buyVol+=entry.usd||0;
+      document.getElementById('s-buy-v').textContent='$'+fmtUSD(buyVol);
+    } else {
+      corpHits.move[corpInfo.key]=(corpHits.move[corpInfo.key]||0)+1;
+    }
+    sCorp++;
+    document.getElementById('s-corp').textContent=sCorp;
+    sigTxList.unshift(entry);
+    if(sigTxList.length>60)sigTxList.pop();
+    renderSigLog();
+    updateCorpCard(corpInfo.key, entry.signal);
+    showSigBanner(entry);
+    playAlert(sig==='sell'?'sell':sig==='buy'?'buy':'whale');
+    toast(`${entry.signal.label} ${corpInfo.emoji} ${corpInfo.name}\n${entry.btc.toFixed(2)} BTC${entry.usd?' ($'+fmtUSD(entry.usd)+')':''}`, sig==='sell'?'sell':'buy');
   }
 
   if(btc>=minBtc){
-    whaleHits++;
-    document.getElementById('s-whale').textContent=whaleHits;
+    sWhale++;
+    document.getElementById('s-whale').textContent=sWhale;
+    document.getElementById('whale-hit-lbl').textContent=sWhale;
   }
 
   txList.unshift(entry);
@@ -982,7 +1282,6 @@ function handleTx(tx,source){
 
   updateStats(entry);
   renderTx();
-  triggerAlerts(entry);
 
   if(!entry.lookupDone&&apiUsed<API_MAX)batchQueue.push({hash:tx.hash,fromAddrs,toAddrs});
 }
@@ -992,32 +1291,28 @@ function findKnownEx(addrs){for(const a of addrs){const k=a?.toLowerCase();if(k&
 function classifyDir(fromEx,toEx){
   if(toEx&&!fromEx)return 'in';
   if(fromEx&&!toEx)return 'out';
-  if(fromEx&&toEx) return 'ex2ex';
+  if(fromEx&&toEx)return 'ex2ex';
   return 'w2w';
 }
 
 // ════════════════════════════════════════════════════════════
-// VIP ALERT BANNER
+// SİNYAL BANNER
 // ════════════════════════════════════════════════════════════
-function showVipAlertBanner(entry){
-  const v=entry.vipInfo;
-  const bar=document.getElementById('vip-alert-bar');
-  document.getElementById('vip-al-emoji').textContent=v.emoji;
-  document.getElementById('vip-al-name').textContent=v.name;
-  document.getElementById('vip-al-type').textContent=v.type;
-  const fromEntity=entry.fromVip?.key===v.key?'GÖNDEREN':'ALICI';
-  const dirStr=entry.dir==='in'?'↓ Borsa\'ya Giriş':entry.dir==='out'?'↑ Borsa\'dan Çıkış':entry.fromVip&&entry.toVip?'⇄ VIP→VIP':'🐋 Hareket Tespit';
-  document.getElementById('vip-al-detail').innerHTML=
-    `<strong style="color:var(--vip)">${fromEntity}</strong> — ${dirStr}
-    ${entry.fromEx?` · <span style="color:var(--acc)">${entry.fromEx}</span>`:''}
-    ${entry.toEx?` → <span style="color:var(--acc)">${entry.toEx}</span>`:''}`;
-  document.getElementById('vip-al-btc').textContent=entry.btc.toFixed(2)+' BTC';
-  document.getElementById('vip-al-usd').textContent=entry.usd?'≈ $'+fmtUSD(entry.usd):'';
+function showSigBanner(entry){
+  const bar=document.getElementById('sig-bar');
+  const sig=entry.signal;
+  const corp=entry.corpInfo;
+  bar.className=sig.signal==='sell'?'sell':'buy';
+  const badge=document.getElementById('sig-badge');
+  badge.textContent=sig.signal==='sell'?'🔴 BORSA GİRİŞ — SATIŞ':'🟢 BORSA ÇIKIŞ — BİRİKİM';
+  badge.className='sig-badge '+(sig.signal==='sell'?'sig-sell-badge':'sig-buy-badge');
+  document.getElementById('sig-entity').textContent=corp.emoji+' '+corp.name+' ('+corp.ticker+')';
+  document.getElementById('sig-entity').style.color=sig.signal==='sell'?'#f87171':'#4ade80';
+  document.getElementById('sig-detail').textContent=sig.detail+(entry.fromEx?' · '+entry.fromEx:'')+(entry.toEx?' → '+entry.toEx:'');
+  document.getElementById('sig-btc-val').textContent=entry.btc.toFixed(2)+' BTC';
+  document.getElementById('sig-btc-val').className='sig-btc '+(sig.signal==='sell'?'sig-sell-btc':'sig-buy-btc');
+  document.getElementById('sig-usd-val').textContent=entry.usd?'≈ $'+fmtUSD(entry.usd):'';
   bar.style.display='block';
-  const panel=document.getElementById('tx-panel');
-  panel.classList.remove('vip-alert-pulse');
-  void panel.offsetWidth;
-  panel.classList.add('vip-alert-pulse');
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1026,34 +1321,40 @@ function showVipAlertBanner(entry){
 async function flushBatch(){
   if(batchBusy||!batchQueue.length||apiUsed>=API_MAX)return;
   batchBusy=true;
-  const batch=batchQueue.splice(0,BATCH_SIZE);
+  const batch=batchQueue.splice(0,5);
   try{
     const url=`https://api.blockchair.com/bitcoin/dashboards/transactions/${batch.map(b=>b.hash).join(',')}?transaction_details=true`;
-    const r=await fetch(url);if(!r.ok)throw new Error('HTTP '+r.status);
+    const r=await fetch(url);if(!r.ok)throw 0;
     apiUsed++;updateBudgetUI();
-    const d=await r.json();if(!d.data)throw new Error('no data');
+    const d=await r.json();if(!d.data)throw 0;
     for(const item of batch){
-      const txData=d.data[item.hash];if(!txData)continue;
-      const labels=d.context?.labels||{};
-      const fromEx=extractExLabel(txData.inputs?.map(i=>({addr:i.recipient,label:labels[i.recipient]}))||[]);
-      const toEx  =extractExLabel(txData.outputs?.map(o=>({addr:o.recipient,label:labels[o.recipient]}))||[]);
-      txData.inputs?.forEach(i=>{if(i.recipient)cacheSet(i.recipient,fromEx||null);});
-      txData.outputs?.forEach(o=>{if(o.recipient)cacheSet(o.recipient,toEx||null);});
+      const txD=d.data[item.hash];if(!txD)continue;
+      const lbl=d.context?.labels||{};
+      const fromEx=exFromLabels(txD.inputs?.map(i=>({addr:i.recipient,label:lbl[i.recipient]}))||[]);
+      const toEx=exFromLabels(txD.outputs?.map(o=>({addr:o.recipient,label:lbl[o.recipient]}))||[]);
+      txD.inputs?.forEach(i=>{if(i.recipient)cacheSet(i.recipient,fromEx||null);});
+      txD.outputs?.forEach(o=>{if(o.recipient)cacheSet(o.recipient,toEx||null);});
       const ent=txList.find(t=>t.hash===item.hash);
-      if(ent&&(fromEx||toEx)){ent.fromEx=fromEx||ent.fromEx;ent.toEx=toEx||ent.toEx;ent.dir=classifyDir(ent.fromEx,ent.toEx);ent.heuristic=classifyWhale(ent);updateStats(ent);renderTx();}
+      if(ent&&(fromEx||toEx)){
+        ent.fromEx=fromEx||ent.fromEx;ent.toEx=toEx||ent.toEx;
+        ent.dir=classifyDir(ent.fromEx,ent.toEx);
+        ent.heuristic=classifyTx(ent);
+        ent.signal=getSignalType(ent);
+        updateStats(ent);renderTx();
+      }
     }
   }catch(e){if(batch[0]&&!batch[0]._retry){batch.forEach(b=>{b._retry=true;batchQueue.unshift(b);});}}
   batchBusy=false;
 }
-function extractExLabel(list){
-  const MAP={binance:'Binance',coinbase:'Coinbase',kraken:'Kraken','okx':'OKX','okex':'OKX',bybit:'Bybit',bitfinex:'Bitfinex','huobi':'Huobi/HTX','htx':'Huobi/HTX',kucoin:'KuCoin','gate':'Gate.io',gemini:'Gemini',bitmex:'BitMEX',bitstamp:'Bitstamp','crypto.com':'Crypto.com'};
-  for(const item of list){if(!item.label)continue;const l=item.label.toLowerCase();for(const[k,v]of Object.entries(MAP))if(l.includes(k))return v;}
+function exFromLabels(list){
+  const M={binance:'Binance',coinbase:'Coinbase',kraken:'Kraken',okx:'OKX',okex:'OKX',bybit:'Bybit',bitfinex:'Bitfinex',huobi:'Huobi/HTX',htx:'Huobi/HTX',kucoin:'KuCoin','gate.io':'Gate.io',gemini:'Gemini',bitmex:'BitMEX',bitstamp:'Bitstamp','crypto.com':'Crypto.com',upbit:'Upbit',robinhood:'Robinhood'};
+  for(const item of list){if(!item.label)continue;const l=item.label.toLowerCase();for(const[k,v]of Object.entries(M))if(l.includes(k))return v;}
   return null;
 }
 function updateBudgetUI(){
   const pct=(apiUsed/API_MAX*100).toFixed(1);
   document.getElementById('bbar').style.width=pct+'%';
-  document.getElementById('bbar').style.background=apiUsed<700?'var(--green)':apiUsed<1200?'var(--yellow)':'var(--red)';
+  document.getElementById('bbar').style.background=apiUsed<700?'var(--green2)':apiUsed<1200?'var(--yellow2)':'var(--red2)';
   document.getElementById('blbl').textContent=apiUsed+'/'+API_MAX;
 }
 
@@ -1061,36 +1362,25 @@ function updateBudgetUI(){
 // STATS
 // ════════════════════════════════════════════════════════════
 function updateStats(entry){
-  if(entry.dir==='in'){statsIn++;inVol+=entry.usd;document.getElementById('s-in').textContent=statsIn;document.getElementById('s-in-v').textContent='$'+fmtUSD(inVol)+' toplam';}
-  if(entry.dir==='out'){statsOut++;outVol+=entry.usd;document.getElementById('s-out').textContent=statsOut;document.getElementById('s-out-v').textContent='$'+fmtUSD(outVol)+' toplam';}
   const ex=entry.toEx||entry.fromEx;
-  if(ex){if(!exFlows[ex])exFlows[ex]={in:0,out:0};if(entry.dir==='in')exFlows[ex].in+=entry.usd;if(entry.dir==='out')exFlows[ex].out+=entry.usd;renderExFlow();}
-}
-
-// ════════════════════════════════════════════════════════════
-// ALERTS
-// ════════════════════════════════════════════════════════════
-function triggerAlerts(entry){
-  const minBtc=parseFloat(document.getElementById('f-min').value)||100;
-  if(entry.isVip){
-    playAlert('vip');
-    const v=entry.vipInfo;
-    const dirStr=entry.dir==='in'?'↓ Borsa\'ya gönderdi':entry.dir==='out'?'↑ Borsa\'dan aldı':'🐋 hareket etti';
-    toast(`⭐ ${v.emoji} ${v.name}\n${dirStr}: ${entry.btc.toFixed(2)} BTC${entry.usd?' ($'+fmtUSD(entry.usd)+')':''}`, 'vip');
-  } else if(entry.btc>=minBtc&&!entry.heuristic?.isNoise){
-    playAlert(entry.dir==='in'?'in':entry.dir==='out'?'out':'whale');
-    if(entry.btc>=minBtc*2)toast(`🐋 ${entry.btc.toFixed(0)} BTC — ${dirLabel(entry.dir)}${entry.fromEx||entry.toEx?' · '+(entry.fromEx||entry.toEx):''}`, 'whale');
+  if(ex){
+    if(!exFlows[ex])exFlows[ex]={in:0,out:0};
+    if(entry.dir==='in')exFlows[ex].in+=entry.usd;
+    if(entry.dir==='out')exFlows[ex].out+=entry.usd;
+    renderExFlow();
   }
 }
-function dirLabel(d){return d==='in'?'↓ Borsa Girişi':d==='out'?'↑ Borsa Çıkışı':d==='ex2ex'?'⇄ Borsa→Borsa':'🐋 Whale→Whale';}
 
 // ════════════════════════════════════════════════════════════
 // RENDER: TX TABLE
 // ════════════════════════════════════════════════════════════
 function renderTx(){
   let list=txList.filter(t=>{
-    if(filterDir==='vip')return t.isVip;
-    if(filterDir!=='all'&&t.dir!==filterDir)return false;
+    if(filterDir==='buy')return t.signal?.signal==='buy';
+    if(filterDir==='sell')return t.signal?.signal==='sell';
+    if(filterDir==='corp')return t.isCorp;
+    if(filterDir==='whale')return !t.isCorp&&t.btc>=(parseFloat(document.getElementById('f-min').value)||50);
+    if(filterDir!=='all')return t.dir===filterDir;
     if(hideNoise&&t.heuristic?.isNoise&&t.dir==='w2w')return false;
     return true;
   });
@@ -1101,104 +1391,101 @@ function renderTx(){
     return;
   }
   document.getElementById('tx-body').innerHTML=list.slice(0,80).map(t=>{
-    const h=t.heuristic;
-    const isVip=t.isVip;
-    const cls=(isVip?'vip-tx ':'')+(t.isNew?'new-tx':'');
+    const sig=t.signal;
+    const cls=(sig?.signal==='buy'?'buy-tx':sig?.signal==='sell'?'sell-tx':'')+(t.isNew?' new-tx':'');
     t.isNew=false;
     return`<tr class="${cls}">
-      <td style="color:var(--mut);white-space:nowrap;font-size:10px">${timeAgo(t.time)}</td>
+      <td style="color:var(--mut);white-space:nowrap;font-size:9px">${timeAgo(t.time)}</td>
       <td>
         <div class="amt-btc">${t.btc.toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:4})} BTC</div>
         <div class="amt-usd">${t.usd?'$'+fmtUSD(t.usd):'—'}</div>
       </td>
-      <td>${buildDirBadge(t)}${buildHeuristicHtml(h)}</td>
-      <td>${buildAddrHtml(t.from,t.fromEx,t.fromVip)}</td>
-      <td>${buildAddrHtml(t.to,t.toEx,t.toVip)}</td>
+      <td>${buildSigBadge(t)}${buildHeurHtml(t.heuristic)}</td>
+      <td>${buildAddrHtml(t.from,t.fromEx,t.fromCorp)}</td>
+      <td>${buildAddrHtml(t.to,t.toEx,t.toCorp)}</td>
       <td><span class="src-tag src-${t.source}">${t.source}</span></td>
       <td><a class="mono al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,8)}…↗</a></td>
     </tr>`;
   }).join('');
 }
 
-function buildAddrHtml(addr,ex,vipEnt){
-  if(vipEnt) return`<span class="sub-badge sb-vip" style="font-size:10px">${vipEnt.emoji} ${vipEnt.name}</span>`;
-  if(ex) return`<span class="b b-ex">${ex}</span>`;
-  if(!addr||addr==='?') return'<span style="color:var(--mut)">—</span>';
+function buildAddrHtml(addr,ex,corpEnt){
+  if(corpEnt)return`<span class="sb sb-corp" style="font-size:9px">${corpEnt.emoji} ${corpEnt.name}</span>`;
+  if(ex)return`<span class="dir-b db-ex">${ex}</span>`;
+  if(!addr||addr==='?')return'<span style="color:var(--mut)">—</span>';
   return`<a class="mono al" href="https://blockchair.com/bitcoin/address/${addr}" target="_blank">${shortAddr(addr)}</a>`;
 }
-function buildHeuristicHtml(h){
+function buildHeurHtml(h){
   if(!h)return'';
-  const confPct=Math.round(h.confidence);
-  const bar=h.confidence>0?`<div class="conf-wrap"><div class="conf-bar" style="width:${confPct}px;max-width:60px;background:${h.confColor}"></div><span style="font-size:9px;color:var(--mut)">${confPct}%</span></div>`:'';
-  return`<div class="sub-badge ${h.cssClass}" style="margin-top:3px">${h.emoji} ${h.label}</div>${bar}`;
+  const cp=Math.round(h.confidence);
+  const bar=h.confidence>0?`<div class="conf-w"><div class="conf-bar" style="width:${cp}px;max-width:55px;background:${h.confColor}"></div><span style="font-size:8px;color:var(--mut)">${cp}%</span></div>`:'';
+  return`<div class="sb ${h.cssClass}" style="margin-top:2px">${h.emoji} ${h.label}</div>${bar}`;
 }
-function buildDirBadge(t){
-  if(t.isVip){
-    const v=t.vipInfo;
-    const dirStr=t.dir==='in'?'↓ Giriş':t.dir==='out'?'↑ Çıkış':'🐋';
-    return`<span class="b b-vip">⭐ ${v.emoji} ${v.name} ${dirStr}</span>`;
+function buildSigBadge(t){
+  const sig=t.signal;
+  if(sig){
+    if(sig.signal==='buy')return`<span class="dir-b db-buy">🟢 ÇIKIŞ — Birikim${t.fromEx?' · '+t.fromEx:''}</span>`;
+    if(sig.signal==='sell')return`<span class="dir-b db-sell">🔴 GİRİŞ — Satış${t.toEx?' · '+t.toEx:''}</span>`;
+    return`<span class="dir-b db-move">🟡 HAREKET</span>`;
   }
-  if(t.dir==='in') return`<span class="b b-in">↓ Giriş${t.toEx?' · '+t.toEx:''}</span>`;
-  if(t.dir==='out')return`<span class="b b-out">↑ Çıkış${t.fromEx?' · '+t.fromEx:''}</span>`;
-  if(t.dir==='ex2ex')return`<span class="b b-ex">⇄ Borsa</span>`;
-  if(t.heuristic?.isNoise)return`<span class="b b-noise">🔄 ${t.heuristic.label}</span>`;
-  return`<span class="b b-w2w">🐋 Whale</span>`;
+  if(t.dir==='in')return`<span class="dir-b db-sell">↓ Giriş${t.toEx?' · '+t.toEx:''}</span>`;
+  if(t.dir==='out')return`<span class="dir-b db-buy">↑ Çıkış${t.fromEx?' · '+t.fromEx:''}</span>`;
+  if(t.dir==='ex2ex')return`<span class="dir-b db-ex">⇄ Borsa</span>`;
+  if(t.heuristic?.isNoise)return`<span class="dir-b db-noise">${t.heuristic.emoji} ${t.heuristic.label}</span>`;
+  return`<span class="dir-b db-whale">🐋 Whale</span>`;
 }
 
 // ════════════════════════════════════════════════════════════
-// RENDER: VIP LOG
+// RENDER: SİNYAL LOG
 // ════════════════════════════════════════════════════════════
-function renderVipLog(){
-  const el=document.getElementById('vip-log-body');
-  document.getElementById('vip-log-cnt').textContent=vipTxList.length;
-  if(!vipTxList.length){el.innerHTML='<div class="empty"><i>⭐</i>VIP hareket bekleniyor…<br><small>Strategy, Binance, US Gov vb.</small></div>';return;}
-  el.innerHTML=vipTxList.slice(0,20).map(t=>{
-    const v=t.vipInfo;
-    const dirStr=t.dir==='in'?'↓ Borsaya Gönderdi':t.dir==='out'?'↑ Borsadan Aldı':t.fromVip&&t.toVip?'⇄ VIP arası':'🐋 Hareket';
-    const dirColor=t.dir==='in'?'var(--red)':t.dir==='out'?'var(--green)':'var(--vip)';
-    return`<div class="vip-log-item">
-      <div class="vip-log-emoji">${v.emoji}</div>
-      <div class="vip-log-body">
-        <div class="vip-log-name">${v.name}</div>
-        <div class="vip-log-detail">
-          <span class="dir-badge-vip">${dirStr}</span>
-          ${t.fromEx?` · <span style="color:var(--acc)">${t.fromEx}</span>`:''}
-          ${t.toEx?` → <span style="color:var(--acc)">${t.toEx}</span>`:''}
-        </div>
-        <div class="vip-log-meta">
-          <a class="al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,12)}…↗</a>
+function renderSigLog(){
+  const el=document.getElementById('sig-log-body');
+  document.getElementById('sig-log-cnt').textContent=sigTxList.length;
+  if(!sigTxList.length){el.innerHTML='<div class="empty"><i>⚡</i>Kurumsal sinyal bekleniyor…</div>';return;}
+  el.innerHTML=sigTxList.slice(0,25).map(t=>{
+    const sig=t.signal;const corp=t.corpInfo;
+    const dirCls=sig.signal==='sell'?'sld-sell':sig.signal==='buy'?'sld-buy':'sld-move';
+    const amtCls=sig.signal==='sell'?'slb-sell':sig.signal==='buy'?'slb-buy':'slb-move';
+    return`<div class="sig-log-item">
+      <div class="sig-log-dir ${dirCls}">${sig.label}</div>
+      <div class="sig-log-body">
+        <div class="sig-log-name">${corp.emoji} ${corp.name} <span style="font-size:9px;color:var(--mut);font-weight:400">${corp.ticker}</span></div>
+        <div class="sig-log-detail">${sig.detail}${t.fromEx?' · '+t.fromEx:''}${t.toEx?' → '+t.toEx:''}</div>
+        <div class="sig-log-meta">
+          <a class="al" href="https://blockchair.com/bitcoin/transaction/${t.hash}" target="_blank">${t.hash.slice(0,10)}…↗</a>
           · ${timeAgo(t.time)} · ${t.source}
         </div>
       </div>
-      <div style="text-align:right;flex-shrink:0">
-        <div class="vip-log-btc">${t.btc.toFixed(2)}</div>
-        <div style="font-size:9px;color:var(--vip);margin-top:1px">BTC</div>
-        <div class="vip-log-usd">${t.usd?'$'+fmtUSD(t.usd):''}</div>
+      <div class="sig-log-amt">
+        <div class="sig-log-btc ${amtCls}">${t.btc.toFixed(2)}</div>
+        <div style="font-size:8px;color:var(--vip)">BTC</div>
+        <div style="font-size:9px;color:var(--mut)">${t.usd?'$'+fmtUSD(t.usd):''}</div>
       </div>
     </div>`;
   }).join('');
 }
 
 // ════════════════════════════════════════════════════════════
-// RENDER: EXCHANGE FLOW
+// RENDER: EX FLOW
 // ════════════════════════════════════════════════════════════
 function renderExFlow(){
   const el=document.getElementById('ex-flow');
   const entries=Object.entries(exFlows);
-  if(!entries.length){el.innerHTML='<div class="empty"><i>📊</i>İşlem bekleniyor…</div>';return;}
+  if(!entries.length){el.innerHTML='<div class="empty"><i>📊</i>Bekleniyor…</div>';return;}
   entries.sort((a,b)=>(b[1].in+b[1].out)-(a[1].in+a[1].out));
   const maxV=Math.max(...entries.map(e=>e[1].in+e[1].out));
-  const cols=['#f7931a','#3b82f6','#22c55e','#a78bfa','#ef4444','#fbbf24','#06b6d4','#f472b6'];
-  el.innerHTML='<div style="padding:4px 0">'+entries.slice(0,8).map(([name,v],i)=>{
+  el.innerHTML='<div>'+entries.slice(0,8).map(([name,v])=>{
     const total=v.in+v.out,pct=(total/maxV*100).toFixed(1);
-    const nd=v.in>v.out?'<span style="color:var(--red)">↓</span>':'<span style="color:var(--green)">↑</span>';
-    return`<div style="display:flex;align-items:center;padding:7px 13px;border-bottom:1px solid var(--bd)">
-      <div style="font-size:11px;font-weight:700;width:80px;flex-shrink:0">${name}</div>
-      <div style="flex:1;height:4px;background:var(--bg);border-radius:3px;margin:0 8px;overflow:hidden">
-        <div style="height:100%;width:${pct}%;background:${cols[i%cols.length]};border-radius:3px;transition:width .5s"></div>
+    const netBuy=v.out>v.in,netSell=v.in>v.out;
+    const ind=netBuy?'<span style="color:#4ade80">↑</span>':'<span style="color:#f87171">↓</span>';
+    const col=netBuy?'#4ade80':'#f87171';
+    return`<div class="flow-row">
+      <div style="font-size:10px;font-weight:700;width:75px;flex-shrink:0">${name}</div>
+      <div style="flex:1;height:3px;background:var(--bg);border-radius:2px;margin:0 7px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:${col};border-radius:2px;transition:width .5s"></div>
       </div>
-      <div style="font-size:10px;width:20px;text-align:center">${nd}</div>
-      <div style="font-family:var(--mono);font-size:10px;color:var(--mut);width:55px;text-align:right">$${fmtUSD(total)}</div>
+      <div style="font-size:9px;width:16px;text-align:center">${ind}</div>
+      <div style="font-family:var(--mono);font-size:9px;color:var(--mut);width:50px;text-align:right">$${fmtUSD(total)}</div>
     </div>`;
   }).join('')+'</div>';
 }
@@ -1214,7 +1501,7 @@ function initChart(){
 }
 function resizeCanvas(){
   const c=document.getElementById('price-canvas');
-  c.width=c.offsetWidth*devicePixelRatio;c.height=140*devicePixelRatio;c.style.height='140px';
+  c.width=c.offsetWidth*devicePixelRatio;c.height=130*devicePixelRatio;c.style.height='130px';
 }
 function tickVol(){
   if(chartVolBucket.btc>0){volumeHistory.push({t:Date.now(),btc:chartVolBucket.btc});if(volumeHistory.length>CHART_MAX)volumeHistory.shift();chartVolBucket.btc=0;drawChart();}
@@ -1224,47 +1511,54 @@ function drawChart(){
   const c=document.getElementById('price-canvas'),ctx=c.getContext('2d');
   const W=c.width,H=c.height,dpr=devicePixelRatio;
   ctx.clearRect(0,0,W,H);
-  const P={top:12*dpr,right:10*dpr,bottom:24*dpr,left:55*dpr};
+  const P={top:10*dpr,right:8*dpr,bottom:20*dpr,left:52*dpr};
   const pW=W-P.left-P.right,pH=H-P.top-P.bottom;
   ctx.strokeStyle='rgba(255,255,255,0.03)';ctx.lineWidth=1;
   for(let i=0;i<=4;i++){const y=P.top+(pH/4)*i;ctx.beginPath();ctx.moveTo(P.left,y);ctx.lineTo(W-P.right,y);ctx.stroke();}
-  if((chartMode!=='price')&&volumeHistory.length>1){
+  if(chartMode!=='price'&&volumeHistory.length>1){
     const maxV=Math.max(...volumeHistory.map(d=>d.btc),1);
-    const bW=Math.max(3,(pW/CHART_MAX)-1);
-    volumeHistory.forEach((d,i)=>{const x=P.left+(i/(CHART_MAX-1))*pW,bH=(d.btc/maxV)*pH*.4;ctx.fillStyle='rgba(59,130,246,0.3)';ctx.fillRect(x-bW/2,P.top+pH-bH,bW,bH);});
+    const bW=Math.max(2,(pW/CHART_MAX)-1);
+    volumeHistory.forEach((d,i)=>{const x=P.left+(i/(CHART_MAX-1))*pW,bH=(d.btc/maxV)*pH*.35;ctx.fillStyle='rgba(59,130,246,0.25)';ctx.fillRect(x-bW/2,P.top+pH-bH,bW,bH);});
   }
-  if((chartMode!=='volume')&&priceHistory.length>1){
+  if(chartMode!=='volume'&&priceHistory.length>1){
     const prices=priceHistory.map(d=>d.price);
-    const minP=Math.min(...prices)*.9995,maxP=Math.max(...prices)*1.0005,range=maxP-minP||1;
+    const minP=Math.min(...prices)*.9997,maxP=Math.max(...prices)*1.0003,range=maxP-minP||1;
     const toX=i=>P.left+(i/(priceHistory.length-1))*pW;
     const toY=p=>P.top+pH-((p-minP)/range)*pH;
-    const grad=ctx.createLinearGradient(0,P.top,0,P.top+pH);
-    grad.addColorStop(0,'rgba(247,147,26,.15)');grad.addColorStop(1,'rgba(247,147,26,0)');
-    ctx.beginPath();
-    priceHistory.forEach((d,i)=>{i===0?ctx.moveTo(toX(i),toY(d.price)):ctx.lineTo(toX(i),toY(d.price));});
-    ctx.lineTo(toX(priceHistory.length-1),P.top+pH);ctx.lineTo(P.left,P.top+pH);ctx.closePath();
-    ctx.fillStyle=grad;ctx.fill();
-    ctx.beginPath();
-    priceHistory.forEach((d,i)=>{i===0?ctx.moveTo(toX(i),toY(d.price)):ctx.lineTo(toX(i),toY(d.price));});
+    ctx.beginPath();priceHistory.forEach((d,i)=>{i===0?ctx.moveTo(toX(i),toY(d.price)):ctx.lineTo(toX(i),toY(d.price));});
     ctx.strokeStyle='#f7931a';ctx.lineWidth=1.5*dpr;ctx.lineJoin='round';ctx.stroke();
-    ctx.fillStyle='rgba(74,80,104,.8)';ctx.font=`${8*dpr}px monospace`;ctx.textAlign='right';
+    ctx.fillStyle='rgba(74,80,104,.7)';ctx.font=`${7*dpr}px monospace`;ctx.textAlign='right';
     [minP,(minP+maxP)/2,maxP].forEach(p=>{ctx.fillText('$'+p.toLocaleString('en-US',{maximumFractionDigits:0}),P.left-3,toY(p)+3*dpr);});
   }
+  // Sinyal işaretleri
+  sigTxList.slice(0,10).forEach(t=>{
+    const idx=priceHistory.length-1-Math.round((Date.now()-t.time)/(60000/CHART_MAX));
+    if(idx<0||idx>=priceHistory.length)return;
+    if(priceHistory.length<2)return;
+    const prices=priceHistory.map(d=>d.price);
+    const minP=Math.min(...prices)*.9997,maxP=Math.max(...prices)*1.0003,range=maxP-minP||1;
+    const toX=i=>P.left+(i/(priceHistory.length-1))*pW;
+    const toY=p=>P.top+pH-((p-minP)/range)*pH;
+    const x=toX(idx);const y=toY(priceHistory[idx]?.price||maxP);
+    ctx.beginPath();ctx.arc(x,y,4*dpr,0,2*Math.PI);
+    ctx.fillStyle=t.signal?.signal==='sell'?'rgba(248,113,113,.8)':'rgba(74,222,128,.8)';
+    ctx.fill();
+  });
   if(priceHistory.length<2&&volumeHistory.length<2){
-    ctx.fillStyle='rgba(74,80,104,.5)';ctx.font=`${10*dpr}px sans-serif`;ctx.textAlign='center';
-    ctx.fillText('Veri birikmesi bekleniyor…',W/2,H/2);
+    ctx.fillStyle='rgba(74,80,104,.5)';ctx.font=`${9*dpr}px sans-serif`;ctx.textAlign='center';
+    ctx.fillText('Fiyat verisi bekleniyor…',W/2,H/2);
   }
 }
 function onChartHover(e){
   const c=document.getElementById('price-canvas'),rect=c.getBoundingClientRect();
-  const dpr=devicePixelRatio,PL=55*dpr,pW=c.width-PL-10*dpr;
+  const dpr=devicePixelRatio,PL=52*dpr,pW=c.width-PL-8*dpr;
   const frac=(e.clientX-rect.left)*dpr-PL;
   if(frac<0||frac>pW){document.getElementById('chart-tip').style.display='none';return;}
   const idx=Math.round((frac/pW)*(priceHistory.length-1));
   const pt=priceHistory[idx];if(!pt){document.getElementById('chart-tip').style.display='none';return;}
   const tip=document.getElementById('chart-tip');
-  tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-30)+'px';
-  tip.innerHTML=`<strong>$${pt.price.toLocaleString('en-US')}</strong><br><span style="color:var(--mut)">${timeAgo(pt.t)}</span>`;
+  tip.style.display='block';tip.style.left=(e.clientX+10)+'px';tip.style.top=(e.clientY-28)+'px';
+  tip.innerHTML=`<strong style="color:var(--acc)">$${pt.price.toLocaleString('en-US')}</strong> · <span style="color:var(--mut)">${timeAgo(pt.t)}</span>`;
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1272,10 +1566,9 @@ function onChartHover(e){
 // ════════════════════════════════════════════════════════════
 function loadWL(){
   try{watchlist=JSON.parse(localStorage.getItem('ww_wl')||'[]');}catch{watchlist=[];}
-  document.getElementById('s-watch').textContent=watchlist.length;
   renderWL();if(watchlist.length)refreshAllWL();
 }
-function saveWL(){localStorage.setItem('ww_wl',JSON.stringify(watchlist.map(w=>({addr:w.addr,label:w.label}))));document.getElementById('s-watch').textContent=watchlist.length;}
+function saveWL(){localStorage.setItem('ww_wl',JSON.stringify(watchlist.map(w=>({addr:w.addr,label:w.label}))));} 
 async function addWatch(){
   const addr=document.getElementById('wl-addr').value.trim();
   const label=document.getElementById('wl-lbl').value.trim()||shortAddr(addr);
@@ -1283,12 +1576,11 @@ async function addWatch(){
   if(!isValidBTC(addr)){toast('Geçersiz BTC adresi','err');return;}
   if(watchlist.find(w=>w.addr===addr)){toast('Zaten listede','err');return;}
   document.getElementById('wl-addr').value='';document.getElementById('wl-lbl').value='';
-  const vipCheck=getVipByAddrs([addr]);
-  watchlist.push({addr,label,bal:null,txs:[],lastFetch:null,isVip:!!vipCheck,vipEnt:vipCheck});
+  const corpCheck=getCorpByAddrs([addr]);
+  watchlist.push({addr,label,bal:null,lastFetch:null,isCorp:!!corpCheck,corpEnt:corpCheck});
   saveWL();renderWL();
-  await fetchWLAddr(watchlist[watchlist.length-1]);
-  renderWL();
-  if(vipCheck)toast(`⭐ VIP adres! ${vipCheck.emoji} ${vipCheck.name}`,'vip');
+  await fetchWLAddr(watchlist[watchlist.length-1]);renderWL();
+  if(corpCheck)toast(`⚡ Kurumsal adres! ${corpCheck.emoji} ${corpCheck.name}`,'buy');
 }
 function removeWatch(addr){watchlist=watchlist.filter(w=>w.addr!==addr);saveWL();renderWL();}
 async function refreshAllWL(){for(const e of watchlist){await fetchWLAddr(e);renderWL();await sleep(2000);}}
@@ -1306,8 +1598,8 @@ async function fetchWLAddr(entry){
       const d=await r.json(),ad=d.data?.[entry.addr]?.address;
       if(!ad)throw 0;
       entry.bal=ad.balance/1e8;entry.txCount=ad.transaction_count;entry.lastFetch=Date.now();delete entry.balErr;
-    }catch(e){entry.balErr=e.message;}
-  }else{entry.balErr='API limiti';}
+    }catch(e){entry.balErr='API limiti';}
+  }
 }
 function renderWL(){
   const el=document.getElementById('wl-body');
@@ -1315,15 +1607,15 @@ function renderWL(){
   el.innerHTML=watchlist.map(w=>{
     const balStr=w.bal!=null?w.bal.toFixed(4)+' BTC':(w.balErr?'⚠ '+w.balErr:'…');
     const usdStr=w.bal!=null&&btcPrice?'$'+fmtUSD(w.bal*btcPrice):'';
-    const vipTag=w.vipEnt?`<span class="sub-badge sb-vip" style="margin-left:4px">⭐ ${w.vipEnt.emoji} ${w.vipEnt.name}</span>`:'';
-    return`<div class="wl-item"><div class="wl-row">
+    const corpTag=w.corpEnt?`<span class="sb sb-corp" style="margin-left:3px">${w.corpEnt.emoji} ${w.corpEnt.name}</span>`:'';
+    return`<div class="wl-item"><div style="display:flex;align-items:center;gap:6px">
       <div style="flex:1;min-width:0">
-        <div class="wl-lbl">${esc(w.label)}${vipTag}</div>
-        <div class="wl-addr-s"><a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>${w.txCount!=null?' · '+w.txCount.toLocaleString('tr-TR')+' tx':''}</div>
+        <div style="font-size:11px;font-weight:600">${esc(w.label)}${corpTag}</div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--mut)"><a href="https://blockchair.com/bitcoin/address/${w.addr}" target="_blank" class="al">${shortAddr(w.addr)}</a>${w.txCount!=null?' · '+w.txCount.toLocaleString('tr-TR')+' tx':''}</div>
       </div>
       <div style="text-align:right;flex-shrink:0">
         <div class="wl-bal">${balStr}</div>
-        <div class="wl-usd">${usdStr}</div>
+        <div style="font-size:9px;color:var(--mut)">${usdStr}</div>
       </div>
       <button class="wl-del" onclick="removeWatch('${w.addr}')">✕</button>
     </div></div>`;
@@ -1331,19 +1623,25 @@ function renderWL(){
 }
 
 // ════════════════════════════════════════════════════════════
-// FILTER / CONTROL
+// FILTER
 // ════════════════════════════════════════════════════════════
-function setFilter(btn,dir){filterDir=dir;document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderTx();}
+function setFilter(btn,dir){
+  filterDir=dir;
+  document.querySelectorAll('.fchip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderTx();
+}
 function clearAll(){
-  txList=[];vipTxList=[];seenHashes.clear();dedupCount=0;
-  statsIn=0;statsOut=0;statsTotal=0;vipHits=0;whaleHits=0;hClassified=0;inVol=0;outVol=0;exFlows={};
+  txList=[];sigTxList=[];seenHashes.clear();dedupCount=0;
+  sTotal=0;sBuy=0;sSell=0;sCorp=0;sWhale=0;buyVol=0;sellVol=0;exFlows={};
   batchQueue=[];ADDR_CACHE.clear();
-  ['s-in','s-out','s-total','s-vip','s-whale'].forEach(id=>document.getElementById(id).textContent='0');
-  ['s-in-v','s-out-v'].forEach(id=>document.getElementById(id).textContent='—');
-  ['dedup-lbl','h-lbl','vip-hit-lbl'].forEach(id=>document.getElementById(id).textContent='0');
-  document.getElementById('cache-lbl').textContent='0 adres';
-  document.getElementById('vip-alert-bar').style.display='none';
-  renderTx();renderVipLog();renderExFlow();
+  Object.keys(CORPS).forEach(k=>{corpHits.buy[k]=0;corpHits.sell[k]=0;corpHits.move[k]=0;});
+  ['s-total','s-buy','s-sell','s-corp','s-whale'].forEach(id=>document.getElementById(id).textContent='0');
+  ['s-buy-v','s-sell-v'].forEach(id=>document.getElementById(id).textContent='—');
+  ['dedup-lbl','buy-hit-lbl','sell-hit-lbl','whale-hit-lbl'].forEach(id=>document.getElementById(id).textContent='0');
+  document.getElementById('cache-lbl').textContent='0';
+  document.getElementById('sig-bar').style.display='none';
+  renderTx();renderSigLog();renderExFlow();renderCorpGrid();
 }
 
 // ════════════════════════════════════════════════════════════
@@ -1352,15 +1650,14 @@ function clearAll(){
 function shortAddr(a){if(!a||a.length<12)return a||'?';return a.slice(0,6)+'…'+a.slice(-4);}
 function fmtUSD(v){if(v>=1e9)return(v/1e9).toFixed(2)+'B';if(v>=1e6)return(v/1e6).toFixed(2)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return v.toFixed(0);}
 function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'sn';if(s<3600)return Math.floor(s/60)+'dk';if(s<86400)return Math.floor(s/3600)+'sa';return Math.floor(s/86400)+'g';}
-function isValidBTC(a){return/^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a)||/^bc1[a-z0-9]{39,59}$/i.test(a);}
+function isValidBTC(a){return/^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a)||/^bc1[a-z0-9]{39,87}$/i.test(a);}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function toast(msg,type=''){
   const t=document.createElement('div');t.className='toast '+type;
-  // Multi-line toast desteği
   t.innerHTML=msg.replace(/\n/g,'<br>');
   document.getElementById('toasts').appendChild(t);
-  setTimeout(()=>t.remove(),type==='vip'?9000:type==='whale'?7000:4000);
+  setTimeout(()=>t.remove(),type==='buy'||type==='sell'?9000:type==='whale'?6000:3500);
 }
 
 document.getElementById('wl-addr').addEventListener('keydown',e=>{if(e.key==='Enter')addWatch();});

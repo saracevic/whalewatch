@@ -13,8 +13,6 @@
   --safe-bottom:env(safe-area-inset-bottom,0px);
 }
 html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;font-size:14px;min-height:100vh;overscroll-behavior:none}
-
-/* ── TOPBAR */
 .bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
   padding:0 14px;height:52px;background:rgba(7,9,15,.98);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);
   padding-top:env(safe-area-inset-top,0)}
@@ -26,18 +24,19 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .live{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green);
   background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);padding:4px 8px;border-radius:20px}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.8s infinite}
+.ws-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);margin-left:2px}
+.ws-dot.connected{background:#a78bfa}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
-
-/* Sound toggle button */
 .sound-btn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
   border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;
   font-size:16px;color:var(--txt);transition:all .2s}
 .sound-btn.on{border-color:rgba(247,147,26,.4);background:rgba(247,147,26,.08);color:var(--orange)}
 .sound-btn.off{opacity:.45}
-
+.notif-btn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;
+  font-size:15px;color:var(--txt);transition:all .2s}
+.notif-btn.on{border-color:rgba(167,139,250,.4);background:rgba(167,139,250,.08);color:#a78bfa}
 .page{max-width:480px;margin:0 auto;padding:10px 10px calc(24px + var(--safe-bottom))}
-
-/* ── BANNER */
 #banner{display:none;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid}
 #banner.buy {background:rgba(34,197,94,.07); border-color:rgba(34,197,94,.3)}
 #banner.sell{background:rgba(239,68,68,.07); border-color:rgba(239,68,68,.3)}
@@ -52,32 +51,22 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .bn-amount{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-.5px}
 .bn-summary{font-size:12px;color:#8892aa;line-height:1.6;margin-bottom:8px}
 .bn-link{font-size:10px;color:var(--muted);font-family:monospace;text-decoration:none}
-
-/* ── STAT CARDS */
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:left}
 .stat-l{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:5px}
 .stat-v{font-size:20px;font-weight:800;font-family:'SF Mono',monospace;letter-spacing:-.5px}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .co{color:var(--orange)}.cg{color:var(--green)}.cr{color:var(--red)}.cy{color:var(--yellow)}
-
-/* ── PROGRESS */
 .progress-bar{height:2px;background:rgba(247,147,26,.1);margin-bottom:10px;border-radius:1px;overflow:hidden}
 .progress-fill{height:2px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:1px;transition:width .4s;width:0%}
-
-/* ── SECTION */
 .section{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
 .sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.sec-count{font-size:9px;background:rgba(247,147,26,.12);color:var(--orange);padding:1px 7px;border-radius:10px}
 .sec-act{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;white-space:nowrap;font-weight:600}
-
-/* ── QUERY BOX */
 .qbox{padding:12px}
 .qrow{margin-bottom:8px}
 .qrow input{width:100%;background:var(--bg);border:1px solid rgba(255,255,255,.1);color:var(--txt);
-  padding:11px 12px;border-radius:10px;font-family:'SF Mono',monospace;font-size:12px;outline:none;
-  -webkit-appearance:none;appearance:none;font-size:16px} /* 16px to prevent zoom on iOS */
+  padding:11px 12px;border-radius:10px;font-family:'SF Mono',monospace;font-size:16px;outline:none;-webkit-appearance:none}
 .qrow input:focus{border-color:var(--orange)}
 .qrow input::placeholder{color:var(--dim);font-size:13px}
 .qrow2{display:flex;gap:8px}
@@ -88,8 +77,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .qbtn{padding:11px 16px;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;letter-spacing:.2px}
 .qbtn-p{background:var(--orange);color:#000}
 .qbtn-s{background:none;border:1px solid rgba(255,255,255,.12);color:var(--txt)}
-
-/* ── QUERY RESULT */
 #qr{display:none;border-top:1px solid var(--border);padding:14px}
 .qr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px}
 .qr-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
@@ -99,8 +86,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .qr-bal{text-align:right;flex-shrink:0}
 .qr-btc{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;color:var(--orange);letter-spacing:-.5px}
 .qr-usd{font-size:11px;color:var(--muted);margin-top:1px}
-
-/* Summary Box */
 .summary-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px}
 .summary-title{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px;font-weight:700}
 .summary-row{display:flex;align-items:center;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
@@ -109,14 +94,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .summary-vals{text-align:right}
 .summary-btc{font-family:'SF Mono',monospace;font-size:12px;font-weight:700;color:var(--orange)}
 .summary-usd{font-size:10px;color:var(--muted);margin-top:1px}
-
-/* Stats grid */
-.qr-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:12px}
-.qr-stat{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 6px;text-align:center}
-.qr-stat-l{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;font-weight:700}
-.qr-stat-v{font-family:'SF Mono',monospace;font-size:14px;font-weight:700}
-
-/* TX */
 .qr-tx-title{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:8px;padding-top:12px;border-top:1px solid var(--border);font-weight:700}
 .tx-item{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .tx-item:last-child{border-bottom:none}
@@ -129,8 +106,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .tx-meta a{color:var(--dim);text-decoration:none;font-family:monospace}
 .tx-amt{font-family:'SF Mono',monospace;font-size:12px;font-weight:700;text-align:right;white-space:nowrap;flex-shrink:0}
 .qr-actions{display:flex;gap:8px;margin-top:12px}
-
-/* Score */
 .score-box{display:flex;align-items:center;gap:8px;margin:10px 0;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border)}
 .score-num{font-family:'SF Mono',monospace;font-size:24px;font-weight:800;letter-spacing:-.5px}
 .score-label{font-size:9px;font-weight:800;padding:2px 9px;border-radius:20px}
@@ -138,13 +113,9 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .sl-med  {background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
 .sl-high {background:rgba(239,68,68,.15); color:#f87171;border:1px solid rgba(239,68,68,.3)}
 .sl-vhigh{background:rgba(239,68,68,.3);  color:#fca5a5;border:1px solid rgba(239,68,68,.5)}
-
-/* Dup warning */
 .dup-warn{display:flex;align-items:center;gap:6px;padding:9px 11px;border-radius:9px;
   background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);margin:6px 0;font-size:11px;color:#f87171;font-weight:600}
-
-/* ── LOG */
-.log-item{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.log-item{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
 .log-item:last-child{border-bottom:none}
 .log-badge{font-size:9px;font-weight:800;padding:3px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
 .lb-buy {background:rgba(34,197,94,.14); color:#4ade80;border:1px solid rgba(34,197,94,.3)}
@@ -158,12 +129,9 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .log-right{text-align:right;flex-shrink:0}
 .log-btc{font-family:'SF Mono',monospace;font-size:13px;font-weight:700;letter-spacing:-.3px}
 .log-usd{font-size:9px;color:var(--muted);margin-top:2px}
-
 .empty{text-align:center;padding:28px 16px;color:var(--dim);font-size:11px;line-height:1.8}
 .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.08);border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* ── TOASTS */
 #toasts{position:fixed;bottom:calc(16px + var(--safe-bottom));left:50%;transform:translateX(-50%);z-index:999;
   display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;width:90%;max-width:380px}
 .toast{background:#161923;border:1px solid rgba(255,255,255,.1);border-radius:10px;
@@ -174,13 +142,17 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .toast.ok{border-color:rgba(34,197,94,.25)}
 .toast.err{border-color:rgba(239,68,68,.3);color:#f87171}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-/* Sound alert banner */
 .alert-banner{display:none;position:fixed;top:52px;left:0;right:0;z-index:40;
   padding:10px 16px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.2px;animation:flashin .3s ease}
 .alert-banner.sell{background:rgba(239,68,68,.95);color:#fff}
 .alert-banner.buy{background:rgba(34,197,94,.9);color:#000}
 @keyframes flashin{0%{opacity:0;transform:translateY(-6px)}100%{opacity:1;transform:none}}
+
+/* Stats bar extra */
+.stats-bar{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px}
+.stat-pill{font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;
+  border:1px solid var(--border);background:var(--card);color:var(--muted)}
+.stat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
 </style>
 </head>
 <body>
@@ -190,15 +162,19 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 <div class="bar">
   <div class="logo">🐋 <em>BTC</em> Watch</div>
   <div class="bar-r">
-    <button class="sound-btn on" id="sound-btn" onclick="toggleSound()" title="Ses bildirimi">🔔</button>
+    <button class="notif-btn" id="notif-btn" onclick="toggleNotif()" title="Desktop bildirimi">🔔</button>
+    <button class="sound-btn on" id="sound-btn" onclick="toggleSound()" title="Ses bildirimi">🔊</button>
     <div class="price-pill" id="price-pill">—</div>
-    <div class="live"><div class="dot"></div><span id="status">Başlıyor</span></div>
+    <div class="live">
+      <div class="dot"></div>
+      <div class="ws-dot" id="ws-dot" title="WebSocket"></div>
+      <span id="status">Başlıyor</span>
+    </div>
   </div>
 </div>
 
 <div class="page">
 
-  <!-- SON SİNYAL -->
   <div id="banner">
     <div class="bn-top">
       <div class="bn-badge" id="bn-badge">—</div>
@@ -210,7 +186,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <a class="bn-link" id="bn-link" href="#" target="_blank">TX: —</a>
   </div>
 
-  <!-- STATS -->
   <div class="stats">
     <div class="stat">
       <div class="stat-l">₿ BTC Fiyat</div>
@@ -233,9 +208,12 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     </div>
   </div>
 
+  <!-- Kategori özeti -->
+  <div class="stats-bar" id="stats-bar"></div>
+
   <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
-  <!-- ADRES SORGULA -->
+  <!-- Adres Sorgula -->
   <div class="section">
     <div class="sec-h">
       <span class="sec-title">🔍 Adres Sorgula</span>
@@ -252,7 +230,7 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div id="qr"></div>
   </div>
 
-  <!-- SON HAREKETLER -->
+  <!-- Son Hareketler -->
   <div class="section">
     <div class="sec-h">
       <span class="sec-title">⚡ Son Hareketler</span>
@@ -269,327 +247,287 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 
 <script>
 // ═══════════════════════════════════════════
-//  SES SİSTEMİ
+//  VERİ — xlsx'ten parse edildi, 130 adres
+//  EXCHANGES: 59 borsa adresi (Set olarak tanımlı)
+//  KNOWN_MAP: tüm adresler → {name, type}
 // ═══════════════════════════════════════════
-let soundEnabled = true;
-let audioCtx = null;
 
+// ── 1. Kategorilere göre ham veri (xlsx'ten)
+const RAW = {
+  exchange: [
+    ["1PJiGp2yDLvUgqeBsuZVCBADArNsk6XEiw","Binance - Treasury"],
+    ["34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo","Binance - Cold Wallet"],
+    ["3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6","Binance - Cold Wallet 2"],
+    ["1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s","Binance - Cold Wallet 3"],
+    ["34HpHYiyQwg69gFmCq2BGHjF1DZnZnBeBP","Binance - Cold Wallet 4"],
+    ["1BAuq7Vho2CEkVkUxbfU26LhwQjbCmWQkD","Binance - Cold Wallet 5"],
+    ["3E97AjYaCq9QYnfFMtBCYiCEsN956Rvpj2","Binance - Cold Wallet 6"],
+    ["bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h","Binance - Hot Wallet"],
+    ["bc1qnkf37u0gqvhsr3xz3w3vr26tw5jyz59x6w3j8","Binance - Hot Wallet 2"],
+    ["bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh","Coinbase - Cold Wallet"],
+    ["bc1qa5wkgaew2dkv56kc6hp3f0u4m585euy0dtgazm","Coinbase - Cold Wallet 2"],
+    ["bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2","Coinbase - Custody"],
+    ["bc1qr4dl5wa7kl8yu792dceg9z5knl2gkn220lk7a9","Crypto.com - Cold Wallet"],
+    ["bc1q4c8n5t00jmj8temxdgcc3t32nkg2wjwz24lywv","Crypto.com - Hot Wallet"],
+    ["bc1qlt5nm3kflne7rht4alsnzdzad878ld5rcu4na0","Crypto.com - Treasury"],
+    ["3FupZp77ySr7jwoLYEJ9Ro4i7ksepjta8r","Kraken - Cold Wallet"],
+    ["bc1qukw69mjxwp30adfqddv6gcyva26laxz562rhlk","Kraken - Cold Wallet 2"],
+    ["1FuppPFSAVwepKPLbbGZfPo8q3bNABFbcv","Kraken - Hot Wallet"],
+    ["bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97","Bitfinex - Cold"],
+    ["1Kr6QSydW9bFQG1mXiPNNu6WpJGmUa9i1g","Bitfinex - Cold 2"],
+    ["3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r","Bitfinex - Hot Wallet"],
+    ["3JZq4atUahhuA9rLhXLMhhTo133J9rF97j","Bitfinex - Hot Wallet 2"],
+    ["3LqJPuT5NkHfPoVgkCYcMm7hJEVZyFEEHy","OKX - Cold Wallet"],
+    ["bc1q2s3rjwvam9dt2ftt4sqxqjf3twav0gdx0k0q2etjz8k6wtkel5squ0yhz0","OKX - Cold Wallet 2"],
+    ["37Nt3z9dMdFeMPXJfzXCTxGTdvdGLHpJBz","OKX - Hot Wallet"],
+    ["1FWQiwK27EnGXb6BiBMRLJvunJQZZPMcGd","Bitget - Cold Wallet"],
+    ["32qqF3w9W96S6br5x3cR75fgtFZwshjh4X","Bitget - Hot Wallet"],
+    ["bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz","Bybit - Cold Wallet"],
+    ["3DPfHGHPcCJMnBCMBqjq6zHY8TcXLCuYDc","Bybit - Hot Wallet"],
+    ["1FeguRrKnSBxqjMaKNiT2w7GE7E7pBwqPf","Gemini - Cold Wallet"],
+    ["bc1q7e6qu5smalrpgqrx9k2gnf0hgjyref5p36ru2m","Gemini - Cold Wallet 2"],
+    ["3GNpfCMr34CMpEXBqJeGP7y3vxYZkRR7Bx","KuCoin - Cold Wallet"],
+    ["bc1qm4hm0xhfxwuem4jrfevgtnavj8mhzgkf5c0tmq","KuCoin - Cold Wallet 2"],
+    ["bc1q2md2m2h2n0xnvj4g5k7v2c5jymhpjg5m7kk4mz","Upbit - Cold Wallet"],
+    ["1Ay8vMC7R1UbyCCZRVULMV7iQpHSAbguJP","Upbit - Cold Wallet 2"],
+    ["1GUfWdZQoo2pQ4BKHsiegxuZPnheY5ueTm","Upbit - Cold Wallet 3"],
+    ["12HnxiXEeKUVjQRbMVTytsGWnzHd5LdGCt","Upbit - Cold Wallet 4"],
+    ["17uULjz9moeLyjXHoKNwDRgKzf8ahY3Jia","Upbit - Cold Wallet 5"],
+    ["1CNtkWbb4grh8xtb8mhoZ6armNE9PHgzA8","Upbit - Hot Wallet"],
+    ["1DzsfLRDfbmQM99xm59au2SrTY3YmciBSB","Upbit - Treasury"],
+    ["3Cbq7aT1tY8kMxWLbitaG7yT6bPbKChq64","HTX - Cold Wallet"],
+    ["12ib7dApVFvg82TXKycWBNpN8kFyiAN1dr","HTX - Hot Wallet"],
+    ["1HckjUpRGcrrRAtFaaCAUaGjsPx9oYmLaZ","HTX - Treasury"],
+    ["bc1qr35hws365juz5rtlsjtvmapst74gkzjvgwjzrm","Robinhood - Cold Wallet"],
+    ["bc1qhk0ghcywv0mlmcmz408sdaxudxuk9tvng9xx8g","Robinhood - Hot Wallet"],
+    ["bc1qx2x5cqhymfcnjtg902ky8m5gueg3wg0pfnpcc","Bitstamp - Cold Wallet"],
+    ["3P3QsMVK89JBNqZQv5zMAKG8FK3kJM4rjt","Bitstamp - Hot Wallet"],
+    ["1Drt3c8pSdrkyjuBiwVcSSixZwQtMZ3Tew","Bitstamp - Treasury"],
+    ["1N52wHoVR79PMDishab2XmRHsbekCdGquK","Bittrex - Cold Wallet"],
+    ["3Nxwenay9Z8Lc9JBiywExpnEFiLp6Afp8v","Blockchain.com - Cold Wallet"],
+    ["3BMEXqGpG4FxBA1KWhRFufXfSTRgzfDBhJ","BitMEX - Cold Wallet"],
+    ["bc1qchctnvmdva5z9vrpxkkxck64v7nmzdtyxsrq64","BitMEX - Hot Wallet"],
+    ["bc1q6h2v33qt0jjvpr2hxxtwhtvdvtn086g0n2qu06","Bitbank - Cold Wallet"],
+    ["3FuhQLprN9s9MR3bZzR5da7mw75fuahsaU","Bithumb - Cold Wallet"],
+    ["bc1q4j7fcl8zx5yl56j00nkqez9zf3f6ggqchwzzcs5hjxwqhsgxvavq3qfgpr","Coincheck - Cold"],
+    ["bc1qws342rlkhszh58rtn35zrw7w076puz83gkcufy","Deribit - Cold Wallet"],
+    ["162bzZT2hJfv5Gm3ZmWfWfHJjCtMD6rHhw","Gate.io - Cold Wallet"],
+    ["bc1q7uq3u829ahn22sdlpac0h0lurq3a9yfd3ew69f","Revolut - Cold Wallet"],
+    ["bc1qysj2w7xsw09datsy9mt9x50jn7qjd6qde6d66qm3ce0a4y9uzdpqcavdr0","River - Cold Wallet"]
+  ],
+  etf: [
+    ["bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3","BlackRock IBIT - BTC ETF"],
+    ["bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g","BlackRock IBIT - Custody"],
+    ["bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40","Fidelity FBTC - ETF"],
+    ["3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B","Fidelity FBTC - Custody"],
+    ["12XqeqZRVkBDgmPLVY4ZC6Y4ruUUEug8Fx","Fidelity FBTC - Hot Wallet"]
+  ],
+  gov: [
+    ["bc1qkmk4v2xn29yge68fq6zh7gvfdqrvpq3v3p3y0s","US Gov - Silk Road Seized"],
+    ["bc1qxlth5har0qasqvattsjvgp80st2x402u5shuud","US Gov - Bitfinex Seized"],
+    ["bc1q7ydrtdn8z62xhslqyqtyt38mm4e2c4h3mxjkug","US Gov - Additional Seized"],
+    ["bc1q4vxn43l44h30nkluqfxd9eckf45vr2awz38lwa","US Gov - Cold Storage"],
+    ["bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt","ABD Hükümeti - Bitfinex Seized"],
+    ["1HQ3Go3ggs8pFnXuHVHRytPCq5fGG8Hbhx","ABD Hükümeti - Bitfinex Seized 2"],
+    ["1FszNJQy53p2uyy3jb1MTCvyqRb5GsmUbP","İngiltere Hükümeti - Seized"],
+    ["17A16QmavnUfCW11DAApiJxp7ARnxN5pGX","İngiltere Hükümeti - Cold"],
+    ["1LruNZjwamWJXThX2Y8C2d47QqhAkkc5os","Çin Hükümeti - Seized"],
+    ["38DN2uFMZPiHLHJigfv4kWC9JWJrNnhLcn","Çin Hükümeti - Cold"]
+  ],
+  miner: [
+    ["bc1q2wcsxqq5xpd7k7h6k3wdz4ywms5f9x6pzqjwz2","MARA Holdings - Mining"],
+    ["3Kzh9QAQgHkXDAX1RArMJdJAZU5rPZmFYo","MARA Holdings - Treasury"],
+    ["19dSFkYFnQNkBpZsuF4XbPVDJGHMBCPmjz","MARA Holdings - Cold"],
+    ["3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh","Riot Platforms - Mining"],
+    ["bc1qc2xvy7k3x97f8y4g5c6m9ynkv3j0l6pzyrscpf","Riot Platforms - Treasury"],
+    ["3JqJufFZmkEP97xrmfD1KkMMjUYR4A9BCn","CleanSpark - Mining"],
+    ["bc1q6q7mmvqxap5qkdm8h9cxjts87vhh3jjt2aqyz9","CleanSpark - Treasury"],
+    ["3BqTvMfz6YVkA7kL0JjHFNj2eJe0PcHgBC","Hut 8 Mining - Mining"],
+    ["1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F","Hut 8 Mining - Treasury"],
+    ["bc1qx2x5cqhymfcnjtg902ky6u5t5htmt7fvqztdsm028hkrvxcl4t2sjtpd9l","Binance Pool - Mining"],
+    ["bc1qx9t2l3pyny2spqpqlye8svce70nppwtaxwdrp4","Binance Pool - Mining 2"],
+    ["1Q8QR5k32hexiMQnRgkJ6fmmjn5fMWhdv9","Binance Pool - Mining 3"]
+  ],
+  fund: [
+    ["bc1qcpflj68s3ahy4xajez4d8v3vk28pvf7qte2jmlftvxzfke2u6mqsge3gvh","Investment Fund - Whale"],
+    ["bc1qatjx2qc8vxz39m0qdz303z8et2pgmc74xz8km3","Investment Fund - Cold"],
+    ["bc1q72nyp6mzxjxm02j7t85pg0pq24684zdj2wuweu","Investment Fund - Treasury"],
+    ["3FsDiWdG76meMpdCLbVV4dUXhrFyaLrtxL","Investment Fund - Main"],
+    ["38rFtDdFpXc4y6XPbSnNd2UvveEt5Xms2E","Investment Fund - Whale 2"],
+    ["3FM9vDYsN2iuMPKWjAcqgyahdwdrUxhbJ3","Investment Fund - Cold 2"]
+  ],
+  company: [
+    ["bc1q0cau4jfzqjpcsne6sq0lk6gx6vl8jk29zuy7tj","Strategy Inc. (MicroStrategy) - Main"],
+    ["bc1qazcm763858nkj2dz7g20jud8mu0lgth25lnl2e","Tether/MicroStrategy - Shared"],
+    ["bc1qdnf34kltjxm6p56pgeulx6vkxzuatmjndjy0cw","Strategy Inc. - Treasury"],
+    ["3LRW2jFyNL6rCp4SnFyDHpSXtLMnM1ZPt2","Strategy Inc. - Cold"],
+    ["bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a4","Tether - Ana Bitcoin Hazine Cüzdanı"],
+    ["1KAt6STtisWMMVo5XGdos9DtWXGMkuXAaD","Tether - Treasury"],
+    ["3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8","Tether - Cold Wallet"],
+    ["1NTMakcgVwQpMdGxRQnFKCkpt7du9e51GZ","Tether - Cold Wallet 2"],
+    ["bc1q4t7tazl59kmhyxjy56yzw84j23a79xkepn6hlt","Tesla - Bitcoin Treasury"],
+    ["3PW8tHhiBiEBbA3GhRjhCBhvY7DmNS2gKj","Tesla - Cold Wallet"],
+    ["bc1qfyzpg0h4fjnl4e44zhqzrww30y72z24rnmyvxs","Galaxy Digital - Main"],
+    ["3E5JunJqkJPi2hKbp5DxoJ5Lnusg3fVGwA","Galaxy Digital - Treasury"],
+    ["3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a","Twenty One Capital - Main"],
+    ["3PbJsbiT3cTPdkU9L6qS7L2jCzF4B81Jfk","Block Inc. (Square) - Treasury"],
+    ["bc1qsg6x2cvm75xuddn5g0ss9zglaamgz90q8vcp8w","Paxos - Cold Wallet"],
+    ["bc1pdscqxcegedsmkwda427yzcwvszu0xeannh85jkzxfg4ehll2e9lqexmvgn","Babylon - Main"],
+    ["bc1p8jkwplu835wtjfuzzj3pwkzydyf98qlvvufyudutvqdlpns04h4qqqhnea","Babylon - Cold"],
+    ["bc1qq2mvrp4g3ugd424dw4xv53rgsf8szkrv853jrc","Relay - Protocol"]
+  ],
+  legendary: [
+    ["1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa","Satoshi Nakamoto - Genesis Block"],
+    ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX","Satoshi - Additional Wallet"],
+    ["1N7jWmv63mkMdsYzbNUVHbEYDQfcq1u8Yp","Mt. Gox - Cold Wallet"],
+    ["1ANkDML9LtVv1E1EF7cwPFEkSv6Bpojwyt","Mt. Gox - Hot Wallet"],
+    ["1FeexV6bAHb8ybZjqQMjJrcCrHGW9sb6uF","Mt. Gox Hacker"]
+  ],
+  whale: [
+    ["bc1qd4ysezhmypwty5dnw7c8nqy5h5nxg0xqsvaefd0qn5kq32vwnwqqgv4rzr","Whale #1 - 100k+ BTC"],
+    ["bc1qa5wkgaew2dkv56kfvj49j0av5nml45x9ek9hz6","Whale #2 - 50k+ BTC"],
+    ["3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb","Whale #3 - 40k+ BTC"],
+    ["bc1q0ymzksy046tv4z88ts5nmu7s574umnwmdev3rt","Whale #4 - 30k+ BTC"],
+    ["bc1qa2eu6p5rl9255e3xz7fcgm6snn4wl5kdfh7zpt05qp5fad9dmsys0qjg0e","Whale #4b - 30k+ BTC"],
+    ["3MgEAFWu1HKSnZ5ZsC8qf61ZW18xrP5pgd","Whale #5 - 25k+ BTC"],
+    ["1LdRcdxfbSnmCYYNdeYpUnztiYzVfBEQeC","Whale #6 - 20k+ BTC"],
+    ["1AC4fMwgY8j9onSbXEWeH6Zan8QGMSdmtA","Whale #7 - 20k+ BTC"],
+    ["bc1q0j55cut9nd2c88tnnsfultdx696c8lt6n4n0su","Whale #8 - 15k+ BTC"],
+    ["bc1qy3uw2kk45uj9vsy52rjfhydm2tnd6hreu8vha3","Whale #9 - 10k+ BTC"],
+    ["bc1q8taf2eca7pn9wu4czt8fgftqm288xtfxdyt33syzxuexxty733xsszghzk","Whale #10 - 30.800 BTC"],
+    ["3EMVdMehEq5SFipQ5UfbsfMsH223sSz9A9","Whale #11"],
+    ["bc1qs4z2d3h5je080f74tax92dwg08sf3hylj9vfg3","Whale #12"],
+    ["bc1p6mv2d3rpfhatkv77r6huuurgqyyklxpsnw3090k2qjwqtd6cwkcqzsruxt","Whale #13"],
+    ["bc1qptc9cz269u2mc5yguun5a5d6yd5c7f7ne4qj26","Whale #14"]
+  ]
+};
+
+// Kategori → Türkçe isim & renk
+const CAT_META = {
+  exchange: {label:'Borsa',   color:'#60a5fa', emoji:'🏦'},
+  etf:      {label:'ETF',     color:'#a78bfa', emoji:'📊'},
+  gov:      {label:'Hükümet', color:'#f87171', emoji:'🏛'},
+  miner:    {label:'Miner',   color:'#fbbf24', emoji:'⛏'},
+  fund:     {label:'Fon',     color:'#34d399', emoji:'💼'},
+  company:  {label:'Şirket',  color:'#fb923c', emoji:'🏢'},
+  legendary:{label:'Efsane',  color:'#e879f9', emoji:'⚡'},
+  whale:    {label:'Balina',  color:'#38bdf8', emoji:'🐋'},
+};
+
+// ── 2. EXCHANGES Set (sadece borsa adresleri, hızlı lookup için)
+const EXCHANGES = new Set(RAW.exchange.map(([a])=>a.toLowerCase()));
+
+// ── 3. KNOWN_MAP: her adres → {name, type, cat}
+const KNOWN_MAP = {};
+for(const [cat, entries] of Object.entries(RAW)){
+  const meta = CAT_META[cat];
+  for(const [addr, name] of entries){
+    KNOWN_MAP[addr.toLowerCase()] = {name, type: meta.label, cat, color: meta.color};
+  }
+}
+
+// ── 4. Tüm izleme listesi (tek düz dizi, lookup'lar yukarıdan)
+const ALL_ADDRS = Object.keys(KNOWN_MAP); // 130 adres
+
+// ── STATE
+let signalLog=[], btcPrice=0, sBuy=0, sSell=0;
+let lastTxHashes = {}; // addr → last txid
+let soundEnabled = true, notifEnabled = false;
+let audioCtx = null;
+let wsConn = null;
+const MIN_BTC = 0.5;
+const POLL_INTERVAL = 120; // saniye (REST fallback)
+
+// ═══════════════════════════════════════════
+//  SES
+// ═══════════════════════════════════════════
 function getAudioCtx(){
   if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
   return audioCtx;
 }
-
 function playAlert(type){
   if(!soundEnabled) return;
   try{
     const ctx = getAudioCtx();
-    if(ctx.state === 'suspended') ctx.resume();
-
-    if(type === 'sell'){
-      // Sert uyarı sesi - 3 bip
-      [0, 0.25, 0.5].forEach(delay => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'square';
-        osc.frequency.setValueAtTime(880, ctx.currentTime + delay);
-        osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + delay + 0.15);
-        gain.gain.setValueAtTime(0.35, ctx.currentTime + delay);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.15);
-        osc.start(ctx.currentTime + delay);
-        osc.stop(ctx.currentTime + delay + 0.15);
+    if(ctx.state==='suspended') ctx.resume();
+    if(type==='sell'){
+      [0,0.25,0.5].forEach(delay=>{
+        const osc=ctx.createOscillator(), gain=ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type='square';
+        osc.frequency.setValueAtTime(880,ctx.currentTime+delay);
+        osc.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+delay+0.15);
+        gain.gain.setValueAtTime(0.35,ctx.currentTime+delay);
+        gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+0.15);
+        osc.start(ctx.currentTime+delay); osc.stop(ctx.currentTime+delay+0.15);
       });
-    } else if(type === 'buy'){
-      // Pozitif ses - yükselen 3 nota
-      [[523, 0], [659, 0.18], [784, 0.36]].forEach(([freq, delay]) => {
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime + delay);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + 0.2);
-        osc.start(ctx.currentTime + delay);
-        osc.stop(ctx.currentTime + delay + 0.2);
+    } else if(type==='buy'){
+      [[523,0],[659,0.18],[784,0.36]].forEach(([freq,delay])=>{
+        const osc=ctx.createOscillator(), gain=ctx.createGain();
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.type='sine';
+        osc.frequency.setValueAtTime(freq,ctx.currentTime+delay);
+        gain.gain.setValueAtTime(0.3,ctx.currentTime+delay);
+        gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+0.2);
+        osc.start(ctx.currentTime+delay); osc.stop(ctx.currentTime+delay+0.2);
       });
     } else {
-      // Nötr tek bip
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.frequency.value = 600;
-      gain.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.2);
+      const osc=ctx.createOscillator(), gain=ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value=600;
+      gain.gain.setValueAtTime(0.2,ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.2);
+      osc.start(ctx.currentTime); osc.stop(ctx.currentTime+0.2);
     }
-  }catch(e){console.warn('Audio error:', e);}
+  }catch(e){}
 }
+document.addEventListener('touchstart',()=>{try{getAudioCtx();}catch(e){}},{once:true});
 
 function toggleSound(){
-  soundEnabled = !soundEnabled;
-  const btn = document.getElementById('sound-btn');
-  if(soundEnabled){
-    btn.textContent = '🔔';
-    btn.className = 'sound-btn on';
-    // test sesi
-    playAlert('move');
-    toast('Ses bildirimi AÇık 🔔', 'ok');
+  soundEnabled=!soundEnabled;
+  const btn=document.getElementById('sound-btn');
+  if(soundEnabled){btn.textContent='🔊';btn.className='sound-btn on';playAlert('move');toast('Ses AÇık','ok');}
+  else{btn.textContent='🔇';btn.className='sound-btn off';toast('Ses KAPALI','warn');}
+}
+
+// ═══════════════════════════════════════════
+//  DESKTOP BİLDİRİM
+// ═══════════════════════════════════════════
+async function toggleNotif(){
+  if(!('Notification' in window)){toast('Tarayıcı bildirim desteklemiyor','err');return;}
+  if(notifEnabled){
+    notifEnabled=false;
+    document.getElementById('notif-btn').className='notif-btn';
+    toast('Bildirim KAPALI','warn');
+    return;
+  }
+  const perm = await Notification.requestPermission();
+  if(perm==='granted'){
+    notifEnabled=true;
+    document.getElementById('notif-btn').className='notif-btn on';
+    new Notification('BTC Whale Watch',{body:'Bildirimler aktif 🔔',icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🐋</text></svg>'});
+    toast('Bildirim AÇık ✅','ok');
   } else {
-    btn.textContent = '🔕';
-    btn.className = 'sound-btn off';
-    toast('Ses bildirimi KAPALI 🔕', 'warn');
+    toast('Bildirim izni reddedildi','err');
   }
 }
+function showDesktopNotif(title, body, type){
+  if(!notifEnabled || Notification.permission!=='granted') return;
+  new Notification(title, {body, tag: type+Date.now()});
+}
 
-// Ses aktif etmek için ilk dokunuşta AudioContext başlat
-document.addEventListener('touchstart', function initAudio(){
-  try{ getAudioCtx(); }catch(e){}
-  document.removeEventListener('touchstart', initAudio);
-}, {once:true});
-
+// ═══════════════════════════════════════════
+//  FLASH BANNER
+// ═══════════════════════════════════════════
 function showAlertBanner(text, type){
-  const b = document.getElementById('alert-banner');
-  b.textContent = text;
-  b.className = 'alert-banner ' + type;
-  b.style.display = 'block';
-  setTimeout(()=>{ b.style.display = 'none'; }, 6000);
+  const b=document.getElementById('alert-banner');
+  b.textContent=text; b.className='alert-banner '+type; b.style.display='block';
+  setTimeout(()=>{b.style.display='none';},6000);
 }
 
 // ═══════════════════════════════════════════
-//  KURUMSAL CÜZDAN LİSTESİ
+//  FİYAT
 // ═══════════════════════════════════════════
-  ("1PJiGp2yDLvUgqeBsuZVCBADArNsk6XEiw", "Binance - Treasury", "Borsa"),
-  ("34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo", "Binance - Cold Wallet", "Borsa"),
-  ("3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6", "Binance - Cold Wallet 2", "Borsa"),
-  ("1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s", "Binance - Cold Wallet 3", "Borsa"),
-  ("34HpHYiyQwg69gFmCq2BGHjF1DZnZnBeBP", "Binance - Cold Wallet 4", "Borsa"),
-  ("1BAuq7Vho2CEkVkUxbfU26LhwQjbCmWQkD", "Binance - Cold Wallet 5", "Borsa"),
-  ("3E97AjYaCq9QYnfFMtBCYiCEsN956Rvpj2", "Binance - Cold Wallet 6", "Borsa"),
-  ("bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h", "Binance - Hot Wallet", "Borsa"),
-  ("bc1qnkf37u0gqvhsr3xz3w3vr26tw5jyz59x6w3j8", "Binance - Hot Wallet 2", "Borsa"),
-  ("bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh", "Coinbase - Cold Wallet", "Borsa"),
-  ("bc1qa5wkgaew2dkv56kc6hp3f0u4m585euy0dtgazm", "Coinbase - Cold Wallet 2", "Borsa"),
-  ("bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2", "Coinbase - Custody", "Borsa"),
-  ("bc1qr4dl5wa7kl8yu792dceg9z5knl2gkn220lk7a9", "Crypto.com - Cold Wallet", "Borsa"),
-  ("bc1q4c8n5t00jmj8temxdgcc3t32nkg2wjwz24lywv", "Crypto.com - Hot Wallet", "Borsa"),
-  ("bc1qlt5nm3kflne7rht4alsnzdzad878ld5rcu4na0", "Crypto.com - Treasury", "Borsa"),
-  ("3FupZp77ySr7jwoLYEJ9Ro4i7ksepjta8r", "Kraken - Cold Wallet", "Borsa"),
-  ("bc1qukw69mjxwp30adfqddv6gcyva26laxz562rhlk", "Kraken - Cold Wallet 2", "Borsa"),
-  ("1FuppPFSAVwepKPLbbGZfPo8q3bNABFbcv", "Kraken - Hot Wallet", "Borsa"),
-  ("bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97", "Bitfinex - Cold", "Borsa"),
-  ("1Kr6QSydW9bFQG1mXiPNNu6WpJGmUa9i1g", "Bitfinex - Cold 2", "Borsa"),
-  ("3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r", "Bitfinex - Hot Wallet", "Borsa"),
-  ("3JZq4atUahhuA9rLhXLMhhTo133J9rF97j", "Bitfinex - Hot Wallet 2", "Borsa"),
-  ("3LqJPuT5NkHfPoVgkCYcMm7hJEVZyFEEHy", "OKX - Cold Wallet", "Borsa"),
-  ("bc1q2s3rjwvam9dt2ftt4sqxqjf3twav0gdx0k0q2etjz8k6wtkel5squ0yhz0", "OKX - Cold Wallet 2", "Borsa"),
-  ("37Nt3z9dMdFeMPXJfzXCTxGTdvdGLHpJBz", "OKX - Hot Wallet", "Borsa"),
-  ("1FWQiwK27EnGXb6BiBMRLJvunJQZZPMcGd", "Bitget - Cold Wallet", "Borsa"),
-  ("32qqF3w9W96S6br5x3cR75fgtFZwshjh4X", "Bitget - Hot Wallet", "Borsa"),
-  ("bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz", "Bybit - Cold Wallet", "Borsa"),
-  ("3DPfHGHPcCJMnBCMBqjq6zHY8TcXLCuYDc", "Bybit - Hot Wallet", "Borsa"),
-  ("1FeguRrKnSBxqjMaKNiT2w7GE7E7pBwqPf", "Gemini - Cold Wallet", "Borsa"),
-  ("bc1q7e6qu5smalrpgqrx9k2gnf0hgjyref5p36ru2m", "Gemini - Cold Wallet 2", "Borsa"),
-  ("3GNpfCMr34CMpEXBqJeGP7y3vxYZkRR7Bx", "KuCoin - Cold Wallet", "Borsa"),
-  ("bc1qm4hm0xhfxwuem4jrfevgtnavj8mhzgkf5c0tmq", "KuCoin - Cold Wallet 2", "Borsa"),
-  ("bc1q2md2m2h2n0xnvj4g5k7v2c5jymhpjg5m7kk4mz", "Upbit - Cold Wallet", "Borsa"),
-  ("1Ay8vMC7R1UbyCCZRVULMV7iQpHSAbguJP", "Upbit - Cold Wallet 2", "Borsa"),
-  ("1GUfWdZQoo2pQ4BKHsiegxuZPnheY5ueTm", "Upbit - Cold Wallet 3", "Borsa"),
-  ("12HnxiXEeKUVjQRbMVTytsGWnzHd5LdGCt", "Upbit - Cold Wallet 4", "Borsa"),
-  ("17uULjz9moeLyjXHoKNwDRgKzf8ahY3Jia", "Upbit - Cold Wallet 5", "Borsa"),
-  ("1CNtkWbb4grh8xtb8mhoZ6armNE9PHgzA8", "Upbit - Hot Wallet", "Borsa"),
-  ("1DzsfLRDfbmQM99xm59au2SrTY3YmciBSB", "Upbit - Treasury", "Borsa"),
-  ("3Cbq7aT1tY8kMxWLbitaG7yT6bPbKChq64", "HTX - Cold Wallet", "Borsa"),
-  ("12ib7dApVFvg82TXKycWBNpN8kFyiAN1dr", "HTX - Hot Wallet", "Borsa"),
-  ("1HckjUpRGcrrRAtFaaCAUaGjsPx9oYmLaZ", "HTX - Treasury", "Borsa"),
-  ("bc1qr35hws365juz5rtlsjtvmapst74gkzjvgwjzrm", "Robinhood - Cold Wallet", "Borsa"),
-  ("bc1qhk0ghcywv0mlmcmz408sdaxudxuk9tvng9xx8g", "Robinhood - Hot Wallet", "Borsa"),
-  ("bc1qx2x5cqhymfcnjtg902ky8m5gueg3wg0pfnpcc", "Bitstamp - Cold Wallet", "Borsa"),
-  ("3P3QsMVK89JBNqZQv5zMAKG8FK3kJM4rjt", "Bitstamp - Hot Wallet", "Borsa"),
-  ("1Drt3c8pSdrkyjuBiwVcSSixZwQtMZ3Tew", "Bitstamp - Treasury", "Borsa"),
-  ("1N52wHoVR79PMDishab2XmRHsbekCdGquK", "Bittrex - Cold Wallet", "Borsa"),
-  ("3Nxwenay9Z8Lc9JBiywExpnEFiLp6Afp8v", "Blockchain.com - Cold Wallet", "Borsa"),
-  ("3BMEXqGpG4FxBA1KWhRFufXfSTRgzfDBhJ", "BitMEX - Cold Wallet", "Borsa"),
-  ("bc1qchctnvmdva5z9vrpxkkxck64v7nmzdtyxsrq64", "BitMEX - Hot Wallet", "Borsa"),
-  ("bc1q6h2v33qt0jjvpr2hxxtwhtvdvtn086g0n2qu06", "Bitbank - Cold Wallet", "Borsa"),
-  ("3FuhQLprN9s9MR3bZzR5da7mw75fuahsaU", "Bithumb - Cold Wallet", "Borsa"),
-  ("bc1q4j7fcl8zx5yl56j00nkqez9zf3f6ggqchwzzcs5hjxwqhsgxvavq3qfgpr", "Coincheck - Cold", "Borsa"),
-  ("bc1qws342rlkhszh58rtn35zrw7w076puz83gkcufy", "Deribit - Cold Wallet", "Borsa"),
-  ("162bzZT2hJfv5Gm3ZmWfWfHJjCtMD6rHhw", "Gate.io - Cold Wallet", "Borsa"),
-  ("bc1q7uq3u829ahn22sdlpac0h0lurq3a9yfd3ew69f", "Revolut - Cold Wallet", "Borsa"),
-  ("bc1qysj2w7xsw09datsy9mt9x50jn7qjd6qde6d66qm3ce0a4y9uzdpqcavdr0", "River - Cold Wallet", "Borsa"),
-  # ETFs
-  ("bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3", "BlackRock IBIT - BTC ETF", "ETF"),
-  ("bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g", "BlackRock IBIT - Custody", "ETF"),
-  ("bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40", "Fidelity FBTC - ETF", "ETF"),
-  ("3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B", "Fidelity FBTC - Custody", "ETF"),
-  ("12XqeqZRVkBDgmPLVY4ZC6Y4ruUUEug8Fx", "Fidelity FBTC - Hot Wallet", "ETF"),
-  # Governments
-  ("bc1qkmk4v2xn29yge68fq6zh7gvfdqrvpq3v3p3y0s", "US Gov - Silk Road Seized", "Hükümet"),
-  ("bc1qxlth5har0qasqvattsjvgp80st2x402u5shuud", "US Gov - Bitfinex Seized", "Hükümet"),
-  ("bc1q7ydrtdn8z62xhslqyqtyt38mm4e2c4h3mxjkug", "US Gov - Additional Seized", "Hükümet"),
-  ("bc1q4vxn43l44h30nkluqfxd9eckf45vr2awz38lwa", "US Gov - Cold Storage", "Hükümet"),
-  ("bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt", "ABD Hükümeti - Bitfinex Seized", "Hükümet"),
-  ("1HQ3Go3ggs8pFnXuHVHRytPCq5fGG8Hbhx", "ABD Hükümeti - Bitfinex Seized 2", "Hükümet"),
-  ("1FszNJQy53p2uyy3jb1MTCvyqRb5GsmUbP", "İngiltere Hükümeti - Seized", "Hükümet"),
-  ("17A16QmavnUfCW11DAApiJxp7ARnxN5pGX", "İngiltere Hükümeti - Cold", "Hükümet"),
-  ("1LruNZjwamWJXThX2Y8C2d47QqhAkkc5os", "Çin Hükümeti - Seized", "Hükümet"),
-  ("38DN2uFMZPiHLHJigfv4kWC9JWJrNnhLcn", "Çin Hükümeti - Cold", "Hükümet"),
-  # Mining
-  ("bc1q2wcsxqq5xpd7k7h6k3wdz4ywms5f9x6pzqjwz2", "MARA Holdings - Mining", "Miner"),
-  ("3Kzh9QAQgHkXDAX1RArMJdJAZU5rPZmFYo", "MARA Holdings - Treasury", "Miner"),
-  ("19dSFkYFnQNkBpZsuF4XbPVDJGHMBCPmjz", "MARA Holdings - Cold", "Miner"),
-  ("3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh", "Riot Platforms - Mining", "Miner"),
-  ("bc1qc2xvy7k3x97f8y4g5c6m9ynkv3j0l6pzyrscpf", "Riot Platforms - Treasury", "Miner"),
-  ("3JqJufFZmkEP97xrmfD1KkMMjUYR4A9BCn", "CleanSpark - Mining", "Miner"),
-  ("bc1q6q7mmvqxap5qkdm8h9cxjts87vhh3jjt2aqyz9", "CleanSpark - Treasury", "Miner"),
-  ("3BqTvMfz6YVkA7kL0JjHFNj2eJe0PcHgBC", "Hut 8 Mining - Mining", "Miner"),
-  ("1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F", "Hut 8 Mining - Treasury", "Miner"),
-  ("bc1qx2x5cqhymfcnjtg902ky6u5t5htmt7fvqztdsm028hkrvxcl4t2sjtpd9l", "Binance Pool - Mining", "Miner"),
-  ("bc1qx9t2l3pyny2spqpqlye8svce70nppwtaxwdrp4", "Binance Pool - Mining 2", "Miner"),
-  ("1Q8QR5k32hexiMQnRgkJ6fmmjn5fMWhdv9", "Binance Pool - Mining 3", "Miner"),
-  # Funds
-  ("bc1qcpflj68s3ahy4xajez4d8v3vk28pvf7qte2jmlftvxzfke2u6mqsge3gvh", "Investment Fund - Whale", "Fon"),
-  ("bc1qatjx2qc8vxz39m0qdz303z8et2pgmc74xz8km3", "Investment Fund - Cold", "Fon"),
-  ("bc1q72nyp6mzxjxm02j7t85pg0pq24684zdj2wuweu", "Investment Fund - Treasury", "Fon"),
-  ("3FsDiWdG76meMpdCLbVV4dUXhrFyaLrtxL", "Investment Fund - Main", "Fon"),
-  ("38rFtDdFpXc4y6XPbSnNd2UvveEt5Xms2E", "Investment Fund - Whale 2", "Fon"),
-  ("3FM9vDYsN2iuMPKWjAcqgyahdwdrUxhbJ3", "Investment Fund - Cold 2", "Fon"),
-  # Private Companies
-  ("bc1q0cau4jfzqjpcsne6sq0lk6gx6vl8jk29zuy7tj", "Strategy Inc. - Main", "Özel Şirket"),
-  ("bc1qazcm763858nkj2dz7g20jud8mu0lgth25lnl2e", "Tether/MicroStrategy - Shared", "Özel Şirket"),
-  ("bc1qdnf34kltjxm6p56pgeulx6vkxzuatmjndjy0cw", "Strategy Inc. - Treasury", "Özel Şirket"),
-  ("3LRW2jFyNL6rCp4SnFyDHpSXtLMnM1ZPt2", "Strategy Inc. - Cold", "Özel Şirket"),
-  ("bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a4", "Tether - Ana Bitcoin Hazine", "Özel Şirket"),
-  ("1KAt6STtisWMMVo5XGdos9DtWXGMkuXAaD", "Tether - Treasury", "Özel Şirket"),
-  ("3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8", "Tether - Cold Wallet", "Özel Şirket"),
-  ("1NTMakcgVwQpMdGxRQnFKCkpt7du9e51GZ", "Tether - Cold Wallet 2", "Özel Şirket"),
-  ("bc1q4t7tazl59kmhyxjy56yzw84j23a79xkepn6hlt", "Tesla - Bitcoin Treasury", "Özel Şirket"),
-  ("3PW8tHhiBiEBbA3GhRjhCBhvY7DmNS2gKj", "Tesla - Cold Wallet", "Özel Şirket"),
-  ("bc1qfyzpg0h4fjnl4e44zhqzrww30y72z24rnmyvxs", "Galaxy Digital - Main", "Özel Şirket"),
-  ("3E5JunJqkJPi2hKbp5DxoJ5Lnusg3fVGwA", "Galaxy Digital - Treasury", "Özel Şirket"),
-  ("3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a", "Twenty One Capital - Main", "Özel Şirket"),
-  ("3PbJsbiT3cTPdkU9L6qS7L2jCzF4B81Jfk", "Block Inc. (Square) - Treasury", "Özel Şirket"),
-  ("bc1qsg6x2cvm75xuddn5g0ss9zglaamgz90q8vcp8w", "Paxos - Cold Wallet", "Özel Şirket"),
-  ("bc1pdscqxcegedsmkwda427yzcwvszu0xeannh85jkzxfg4ehll2e9lqexmvgn", "Babylon - Main", "Özel Şirket"),
-  ("bc1p8jkwplu835wtjfuzzj3pwkzydyf98qlvvufyudutvqdlpns04h4qqqhnea", "Babylon - Cold", "Özel Şirket"),
-  ("bc1qq2mvrp4g3ugd424dw4xv53rgsf8szkrv853jrc", "Relay - Protocol", "Özel Şirket"),
-  # Legendary/Genesis
-  ("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa", "Satoshi Nakamoto - Genesis Block", "Genesis"),
-  ("12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX", "Satoshi - Additional Wallet", "Genesis"),
-  ("1N7jWmv63mkMdsYzbNUVHbEYDQfcq1u8Yp", "Mt. Gox - Cold Wallet", "Genesis"),
-  ("1ANkDML9LtVv1E1EF7cwPFEkSv6Bpojwyt", "Mt. Gox - Hot Wallet", "Genesis"),
-  ("1FeexV6bAHb8ybZjqQMjJrcCrHGW9sb6uF", "Mt. Gox Hacker", "Genesis"),
-  # Whale Wallets
-  ("bc1qd4ysezhmypwty5dnw7c8nqy5h5nxg0xqsvaefd0qn5kq32vwnwqqgv4rzr", "Whale #1 - 100k+ BTC", "Balina"),
-  ("bc1qa5wkgaew2dkv56kfvj49j0av5nml45x9ek9hz6", "Whale #2 - 50k+ BTC", "Balina"),
-  ("3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb", "Whale #3 - 40k+ BTC", "Balina"),
-  ("bc1q0ymzksy046tv4z88ts5nmu7s574umnwmdev3rt", "Whale #4 - 30k+ BTC", "Balina"),
-  ("bc1qa2eu6p5rl9255e3xz7fcgm6snn4wl5kdfh7zpt05qp5fad9dmsys0qjg0e", "Whale #4b - 30k+ BTC", "Balina"),
-  ("3MgEAFWu1HKSnZ5ZsC8qf61ZW18xrP5pgd", "Whale #5 - 25k+ BTC", "Balina"),
-  ("1LdRcdxfbSnmCYYNdeYpUnztiYzVfBEQeC", "Whale #6 - 20k+ BTC", "Balina"),
-  ("1AC4fMwgY8j9onSbXEWeH6Zan8QGMSdmtA", "Whale #7 - 20k+ BTC", "Balina"),
-  ("bc1q0j55cut9nd2c88tnnsfultdx696c8lt6n4n0su", "Whale #8 - 15k+ BTC", "Balina"),
-  ("bc1qy3uw2kk45uj9vsy52rjfhydm2tnd6hreu8vha3", "Whale #9 - 10k+ BTC", "Balina"),
-  ("bc1q8taf2eca7pn9wu4czt8fgftqm288xtfxdyt33syzxuexxty733xsszghzk", "Whale #10 - 30.800 BTC", "Balina"),
-  ("3EMVdMehEq5SFipQ5UfbsfMsH223sSz9A9", "Whale #11", "Balina"),
-  ("bc1qs4z2d3h5je080f74tax92dwg08sf3hylj9vfg3", "Whale #12", "Balina"),
-  ("bc1p6mv2d3rpfhatkv77r6huuurgqyyklxpsnw3090k2qjwqtd6cwkcqzsruxt", "Whale #13", "Balina"),
-  ("bc1qptc9cz269u2mc5yguun5a5d6yd5c7f7ne4qj26", "Whale #14", "Balina"),
-]
-
-// ═══════════════════════════════════════════
-//  PARSE & INIT
-// ═══════════════════════════════════════════
-function parseWallets(){
-  const entities=[],addrMap={};
-  WALLET_LIST.trim().split('\n').forEach(line=>{
-    line=line.trim();if(!line)return;
-    const p=line.split(';').map(x=>x.trim()).filter(Boolean);
-    if(p.length<3)return;
-    const ent={name:p[0],type:p[1],addrs:p.slice(2),bal:null,lastTxHash:null,lastCheck:null};
-    entities.push(ent);
-    ent.addrs.forEach(a=>{addrMap[a.toLowerCase()]=ent;});
-  });
-  return{entities,addrMap};
-}
-
-function buildWatchList(){
-  const seen={},dups=new Set();
-  USER_WATCH_RAW.forEach(a=>{
-    const k=a.toLowerCase();
-    if(seen[k])dups.add(k);
-    else seen[k]=1;
-  });
-  const unique=[...new Set(USER_WATCH_RAW.map(a=>a.trim()))];
-  const list=unique.map(addr=>{
-    const k=addr.toLowerCase();
-    const known=addrMap[k];
-    const isDup=dups.has(k);
-    const score=computeScore(addr,known,isDup);
-    return{addr,known,isDup,score,bal:null,lastTxHash:null,lastCheck:null};
-  });
-  return{list,dups};
-}
-
-function computeScore(addr,known,isDup){
-  let s=20;
-  if(addr.startsWith('bc1p')) s+=10;
-  else if(addr.startsWith('bc1q')&&addr.length>50) s+=8;
-  else if(addr.startsWith('bc1q')) s+=5;
-  else if(addr.startsWith('3')) s+=15;
-  else if(addr.startsWith('1')) s+=20;
-  if(known){
-    if(known.type==='Borsa') s+=30;
-    else if(known.type==='ETF') s+=25;
-    else if(known.type==='Hükümet') s+=35;
-    else if(known.type==='Genesis') s+=40;
-    else if(known.type==='Miner') s+=20;
-    else s+=15;
-  }else{
-    const h=hashStr(addr);
-    s+=h%25;
-  }
-  if(isDup) s+=10;
-  return Math.min(s,99);
-}
-function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
-function scoreLabel(s){
-  if(s<35) return{text:'LOW',cls:'sl-low',color:'#4ade80'};
-  if(s<55) return{text:'MED',cls:'sl-med',color:'#fcd34d'};
-  if(s<75) return{text:'HIGH',cls:'sl-high',color:'#f87171'};
-  return{text:'V.HIGH',cls:'sl-vhigh',color:'#fca5a5'};
-}
-function addrType(addr){
-  if(addr.startsWith('bc1p')) return 'Taproot';
-  if(addr.startsWith('bc1q')&&addr.length>50) return 'SegWit Long';
-  if(addr.startsWith('bc1q')) return 'SegWit';
-  if(addr.startsWith('3')) return 'P2SH';
-  if(addr.startsWith('1')) return 'Legacy';
-  return '?';
-}
-
-// STATE
-let{entities,addrMap}=parseWallets();
-let{list:watchList,dups:dupSet}=buildWatchList();
-let signalLog=[],btcPrice=0,sBuy=0,sSell=0;
-const MIN_BTC=0.5,INTERVAL=90;
-
-// INIT
-async function init(){
-  setStatus('Başlıyor…');
-  document.getElementById('s-total').textContent=watchList.length;
-  if(dupSet.size>0) document.getElementById('s-dup-sub').textContent=dupSet.size+' mükerrer';
-  fetchPrice();setInterval(fetchPrice,60000);
-  await runChecks();
-  setInterval(runChecks,INTERVAL*1000);
-  document.getElementById('q-addr').addEventListener('keydown',e=>{if(e.key==='Enter')queryAddr();});
-}
-
-// FİYAT
 async function fetchPrice(){
   try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');btcPrice=(await r.json()).bitcoin.usd;}
   catch{try{const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');btcPrice=parseFloat((await r.json()).price);}catch{}}
@@ -600,8 +538,86 @@ async function fetchPrice(){
 }
 
 // ═══════════════════════════════════════════
+//  WEBSOCKET — mempool.space
+// ═══════════════════════════════════════════
+function setupWebSocket(){
+  if(wsConn && wsConn.readyState < 2) return;
+  try{
+    wsConn = new WebSocket('wss://ws.mempool.space/api/v1/ws');
+    wsConn.onopen = ()=>{
+      document.getElementById('ws-dot').className='ws-dot connected';
+      // Track-address ile tüm adresleri kaydet (mempool.space adres başına tek track destekler)
+      // İlk 20 adresi track et (API sınırı)
+      const trackAddrs = ALL_ADDRS.slice(0,20);
+      wsConn.send(JSON.stringify({'track-addresses': trackAddrs}));
+    };
+    wsConn.onmessage = async (event)=>{
+      try{
+        const data = JSON.parse(event.data);
+        // multi-address tracking yanıtı
+        if(data['multi-address-transactions']){
+          for(const [addr, txData] of Object.entries(data['multi-address-transactions'])){
+            const known = KNOWN_MAP[addr.toLowerCase()];
+            if(!known) continue;
+            const txs = txData.mempool || txData.confirmed || [];
+            for(const tx of txs){
+              if(lastTxHashes[addr] === tx.txid) continue;
+              lastTxHashes[addr] = tx.txid;
+              await analyzeTx(addr, known, tx);
+            }
+          }
+        }
+      }catch(e){}
+    };
+    wsConn.onclose = ()=>{
+      document.getElementById('ws-dot').className='ws-dot';
+      setTimeout(setupWebSocket, 10000); // reconnect
+    };
+    wsConn.onerror = ()=>{ wsConn.close(); };
+  }catch(e){
+    document.getElementById('ws-dot').className='ws-dot';
+  }
+}
+
+// ═══════════════════════════════════════════
 //  ADRES SORGULA
 // ═══════════════════════════════════════════
+function addrType(addr){
+  if(addr.startsWith('bc1p')) return 'Taproot';
+  if(addr.startsWith('bc1q')&&addr.length>50) return 'SegWit Long';
+  if(addr.startsWith('bc1q')) return 'SegWit';
+  if(addr.startsWith('3')) return 'P2SH';
+  if(addr.startsWith('1')) return 'Legacy';
+  return '?';
+}
+function scoreLabel(s){
+  if(s<35) return{text:'LOW',cls:'sl-low',color:'#4ade80'};
+  if(s<55) return{text:'MED',cls:'sl-med',color:'#fcd34d'};
+  if(s<75) return{text:'HIGH',cls:'sl-high',color:'#f87171'};
+  return{text:'V.HIGH',cls:'sl-vhigh',color:'#fca5a5'};
+}
+function computeScore(addr, known){
+  let s=20;
+  if(addr.startsWith('bc1p')) s+=10;
+  else if(addr.startsWith('bc1q')&&addr.length>50) s+=8;
+  else if(addr.startsWith('bc1q')) s+=5;
+  else if(addr.startsWith('3')) s+=15;
+  else if(addr.startsWith('1')) s+=20;
+  if(known){
+    const t=known.cat;
+    if(t==='exchange') s+=30;
+    else if(t==='etf') s+=25;
+    else if(t==='gov') s+=35;
+    else if(t==='legendary') s+=40;
+    else if(t==='miner') s+=20;
+    else s+=15;
+  } else {
+    s += Math.abs(hashStr(addr))%25;
+  }
+  return Math.min(s,99);
+}
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+
 async function queryAddr(){
   const addr=document.getElementById('q-addr').value.trim();
   const label=document.getElementById('q-name').value.trim();
@@ -610,58 +626,48 @@ async function queryAddr(){
   const res=document.getElementById('qr');
   res.style.display='block';
   res.innerHTML='<div style="padding:20px;text-align:center"><div class="spin"></div><br><span style="font-size:11px;color:var(--muted);margin-top:8px;display:block">Blockchain sorgulanıyor…</span></div>';
-
   try{
     const r1=await fetch(`https://mempool.space/api/address/${addr}`);
-    if(!r1.ok)throw new Error('mempool.space yanıt vermedi');
+    if(!r1.ok) throw new Error('mempool.space yanıt vermedi');
     const info=await r1.json();
     const funded=info.chain_stats.funded_txo_sum;
     const spent=info.chain_stats.spent_txo_sum;
     const bal=(funded-spent)/1e8;
-    const totalReceived=funded/1e8;
-    const totalSent=spent/1e8;
+    const totalReceived=funded/1e8, totalSent=spent/1e8;
     const totalTx=info.chain_stats.tx_count;
 
     const r2=await fetch(`https://mempool.space/api/address/${addr}/txs`);
     const txs=r2.ok?(await r2.json()).slice(0,6):[];
 
-    const knownEnt=addrMap[addr.toLowerCase()];
-    const isExchange=EXCHANGES.has(addr.toLowerCase());
-    const displayName=label||knownEnt?.name||(isExchange?'Bilinen Borsa':'Bilinmeyen Adres');
-    const displayType=knownEnt?.type||(isExchange?'Borsa':'—');
-    const typeColor=getTypeColor(displayType);
-
-    const wItem=watchList.find(w=>w.addr.toLowerCase()===addr.toLowerCase());
-    const isDup=dupSet.has(addr.toLowerCase());
-    const score=wItem?wItem.score:computeScore(addr,knownEnt,isDup);
+    const known=KNOWN_MAP[addr.toLowerCase()];
+    const displayName=label||known?.name||'Bilinmeyen Adres';
+    const displayType=known?.type||'—';
+    const typeColor=known?.color||'#94a3b8';
+    const score=computeScore(addr, known);
     const sl=scoreLabel(score);
 
-    // Toplam hacim = giriş + çıkış
-    const totalVolume = totalReceived + totalSent;
-    const usdReceived = totalReceived * btcPrice;
-    const usdSent = totalSent * btcPrice;
-    const usdVolume = totalVolume * btcPrice;
-    const usdBal = bal * btcPrice;
+    const totalVolume=totalReceived+totalSent;
+    const roundBTC=v=>{if(v===0)return'0';if(v<1)return v.toFixed(2);if(v<10)return(Math.round(v*10)/10).toString();return Math.round(v).toLocaleString('tr-TR');};
+    const roundUSD=v=>{if(v===0)return'$0';if(v<1e6)return'$'+(v/1e3).toFixed(0)+'K';if(v<1e9)return'$'+(v/1e6).toFixed(2)+'M';return'$'+(v/1e9).toFixed(2)+'B';};
 
     const txRows=txs.map(tx=>{
       let recv=0,spentAmt=0;
       (tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address===addr)spentAmt+=v.prevout.value;});
       (tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address===addr)recv+=v.value;});
-      const net=(recv-spentAmt)/1e8;
-      const isIn=net>0;
+      const net=(recv-spentAmt)/1e8, isIn=net>0;
       const counterAddrs=[];
-      if(isIn){(tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address&&v.prevout.scriptpubkey_address!==addr)counterAddrs.push(v.prevout.scriptpubkey_address);});}
-      else{(tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address&&v.scriptpubkey_address!==addr)counterAddrs.push(v.scriptpubkey_address);});}
+      if(isIn)(tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address&&v.prevout.scriptpubkey_address!==addr)counterAddrs.push(v.prevout.scriptpubkey_address);});
+      else (tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address&&v.scriptpubkey_address!==addr)counterAddrs.push(v.scriptpubkey_address);});
       const counterEx=counterAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
-      const counterKnown=counterAddrs.map(a=>addrMap[a.toLowerCase()]).find(Boolean);
+      const counterKnown=counterAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
       let summary;
       if(isIn){
-        if(counterEx)summary='Borsadan çekildi → soğuk cüzdana';
-        else if(counterKnown)summary=counterKnown.name+' adresinden transfer';
+        if(counterEx) summary='Borsadan çekildi → soğuk cüzdana';
+        else if(counterKnown) summary=counterKnown.name+' adresinden transfer';
         else summary='Bilinmeyen kaynaktan giriş';
-      }else{
-        if(counterEx)summary='Borsaya gönderildi ⚠';
-        else if(counterKnown)summary=counterKnown.name+' adresine gönderildi';
+      } else {
+        if(counterEx) summary='Borsaya gönderildi ⚠';
+        else if(counterKnown) summary=counterKnown.name+' adresine gönderildi';
         else summary='Bilinmeyen adrese çıkış';
       }
       const when=tx.status?.block_time?timeAgo(tx.status.block_time*1000):'Bekliyor';
@@ -674,24 +680,6 @@ async function queryAddr(){
         <div class="tx-amt" style="color:${isIn?'#4ade80':'#f87171'}">${(isIn?'+':'')+net.toFixed(4)}<br><span style="font-size:8px;color:var(--orange)">BTC</span></div>
       </div>`;
     }).join('');
-
-    const isWatched=wItem||knownEnt;
-    const dupHtml=isDup?`<div class="dup-warn">⚠ Mükerrer: Bu adres izleme listesinde birden fazla var.</div>`:'';
-
-    // Yuvarlama fonksiyonu
-    const roundBTC = (v) => {
-      if(v===0) return '0';
-      if(v < 1) return v.toFixed(2);
-      if(v < 10) return Math.round(v * 10) / 10;
-      return Math.round(v / 100) * 100 > 0 ? (Math.round(v / 100) * 100).toLocaleString('tr-TR') : Math.round(v).toLocaleString('tr-TR');
-    };
-    const roundUSD = (v) => {
-      if(v===0) return '$0';
-      if(v < 1000) return '$'+Math.round(v/100)*100;
-      if(v < 1e6) return '$'+(Math.round(v/1000)).toLocaleString('tr-TR')+'.000';
-      if(v < 1e9) return '$'+(v/1e6).toFixed(2)+'M';
-      return '$'+(v/1e9).toFixed(2)+'B';
-    };
 
     res.innerHTML=`
       <div class="qr-top">
@@ -706,9 +694,6 @@ async function queryAddr(){
           <div class="qr-usd">${btcPrice?'$'+fmtUSD(bal*btcPrice):''}</div>
         </div>
       </div>
-
-      ${dupHtml}
-
       <div class="score-box">
         <div>
           <div style="font-size:8px;color:var(--muted);margin-bottom:3px;font-weight:700">EXPOSURE SCORE</div>
@@ -719,213 +704,145 @@ async function queryAddr(){
           <div style="height:4px;border-radius:2px;background:${sl.color};width:${score}%"></div>
         </div>
       </div>
-
-      <!-- ÖZET -->
       <div class="summary-box">
         <div class="summary-title">📊 Özet</div>
-        <div class="summary-row">
-          <span class="summary-label">Toplam İşlem</span>
-          <div class="summary-vals">
-            <div class="summary-btc" style="color:var(--txt)">${totalTx.toLocaleString('tr-TR')}</div>
-          </div>
-        </div>
-        <div class="summary-row">
-          <span class="summary-label">Toplam Giriş</span>
-          <div class="summary-vals">
-            <div class="summary-btc" style="color:#4ade80">+ ${roundBTC(totalReceived)} BTC</div>
-            <div class="summary-usd">${btcPrice ? roundUSD(usdReceived) : ''}</div>
-          </div>
-        </div>
-        <div class="summary-row">
-          <span class="summary-label">Toplam Çıkış</span>
-          <div class="summary-vals">
-            <div class="summary-btc" style="color:#f87171">– ${roundBTC(totalSent)} BTC</div>
-            <div class="summary-usd">${btcPrice ? roundUSD(usdSent) : ''}</div>
-          </div>
-        </div>
-        <div class="summary-row">
-          <span class="summary-label">Toplam Hacim</span>
-          <div class="summary-vals">
-            <div class="summary-btc" style="color:var(--orange)">${roundBTC(totalVolume)} BTC</div>
-            <div class="summary-usd">${btcPrice ? roundUSD(usdVolume) : ''}</div>
-          </div>
-        </div>
-        <div class="summary-row">
-          <span class="summary-label">Güncel Bakiye</span>
-          <div class="summary-vals">
-            <div class="summary-btc">${roundBTC(bal)} BTC</div>
-            <div class="summary-usd">${btcPrice ? roundUSD(usdBal) : ''}</div>
-          </div>
-        </div>
+        <div class="summary-row"><span class="summary-label">Toplam İşlem</span><div class="summary-vals"><div class="summary-btc" style="color:var(--txt)">${totalTx.toLocaleString('tr-TR')}</div></div></div>
+        <div class="summary-row"><span class="summary-label">Toplam Giriş</span><div class="summary-vals"><div class="summary-btc" style="color:#4ade80">+ ${roundBTC(totalReceived)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(totalReceived*btcPrice)}</div>`:''}</div></div>
+        <div class="summary-row"><span class="summary-label">Toplam Çıkış</span><div class="summary-vals"><div class="summary-btc" style="color:#f87171">– ${roundBTC(totalSent)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(totalSent*btcPrice)}</div>`:''}</div></div>
+        <div class="summary-row"><span class="summary-label">Toplam Hacim</span><div class="summary-vals"><div class="summary-btc" style="color:var(--orange)">${roundBTC(totalVolume)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(totalVolume*btcPrice)}</div>`:''}</div></div>
+        <div class="summary-row"><span class="summary-label">Güncel Bakiye</span><div class="summary-vals"><div class="summary-btc">${roundBTC(bal)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(bal*btcPrice)}</div>`:''}</div></div>
       </div>
-
       ${txs.length?`<div class="qr-tx-title">Son ${txs.length} İşlem</div>${txRows}`:'<div style="font-size:11px;color:var(--muted);padding:6px 0">İşlem bulunamadı</div>'}
-
       <div class="qr-actions">
         <button class="qbtn qbtn-s" style="flex:1" onclick="closeQR()">✕ Kapat</button>
         <a href="https://mempool.space/address/${addr}" target="_blank" class="qbtn qbtn-s" style="text-decoration:none;text-align:center;flex:1">mempool ↗</a>
       </div>`;
   }catch(e){
-    res.innerHTML=`<div style="padding:16px;color:#f87171;font-size:12px">Hata: ${e.message}</div>`;
+    res.innerHTML=`<div style="padding:16px;color:#f87171;font-size:12px">Hata: ${esc(e.message)}</div>`;
   }
 }
-
 function closeQR(){
   document.getElementById('qr').style.display='none';
   document.getElementById('q-addr').value='';
   document.getElementById('q-name').value='';
 }
 
-function fillQuery(addr,name){
-  document.getElementById('q-addr').value=addr;
-  document.getElementById('q-name').value=name||'';
-  window.scrollTo({top:0,behavior:'smooth'});
-  queryAddr();
-}
-
-// ═══════════════════════════════════════════
-//  PERİYODİK KONTROL
-// ═══════════════════════════════════════════
-async function runChecks(){
-  let i=0;
-  const fill=document.getElementById('progress-fill');
-  const all=entities;
-  for(const ent of all){
-    i++;
-    if(fill) fill.style.width=Math.round(i/all.length*100)+'%';
-    setStatus(`${i}/${all.length}`);
-    for(const addr of(ent.addrs||[])){
-      await checkAddr(ent,addr);
-      await sleep(350);
-    }
-  }
-  // watch listesi
-  for(const w of watchList){
-    if(!w.lastCheck||(Date.now()-w.lastCheck)>INTERVAL*1000){
-      await fetchWatchBalance(w);
-      await sleep(300);
-    }
-  }
-  if(fill) fill.style.width='0%';
-  setStatus(`${watchList.length} adres · ${timeNow()}`);
-  if(!runChecks._firstDone){runChecks._firstDone=true;warnDuplicates();}
-}
-
-async function fetchWatchBalance(w){
-  try{
-    const r=await fetch(`https://mempool.space/api/address/${w.addr}`);
-    if(!r.ok)return;
-    const info=await r.json();
-    w.bal=(info.chain_stats.funded_txo_sum-info.chain_stats.spent_txo_sum)/1e8;
-    w.lastCheck=Date.now();
-    const r2=await fetch(`https://mempool.space/api/address/${w.addr}/txs`);
-    if(!r2.ok)return;
-    const txs=await r2.json();
-    if(!txs?.length)return;
-    const latestHash=txs[0].txid;
-    if(w.lastTxHash&&w.lastTxHash!==latestHash){
-      const ent=w.known||{name:w.addr.slice(0,8)+'…',type:addrType(w.addr),addrs:[w.addr]};
-      await analyzeTx(ent,w.addr,txs[0]);
-    }
-    w.lastTxHash=latestHash;
-  }catch{}
-}
-
-async function checkAddr(entity,addr){
-  try{
-    const r1=await fetch(`https://mempool.space/api/address/${addr}`);
-    if(!r1.ok)return;
-    const info=await r1.json();
-    entity.bal=(info.chain_stats.funded_txo_sum-info.chain_stats.spent_txo_sum)/1e8;
-    const r2=await fetch(`https://mempool.space/api/address/${addr}/txs`);
-    if(!r2.ok)return;
-    const txs=await r2.json();
-    if(!txs?.length){entity.lastCheck=Date.now();return;}
-    const latestHash=txs[0].txid;
-    entity.lastCheck=Date.now();
-    if(entity.lastTxHash&&entity.lastTxHash!==latestHash)await analyzeTx(entity,addr,txs[0]);
-    entity.lastTxHash=latestHash;
-    const w=watchList.find(x=>x.addr.toLowerCase()===addr.toLowerCase());
-    if(w){w.bal=entity.bal;w.lastCheck=Date.now();w.lastTxHash=latestHash;}
-  }catch{}
-}
-
 // ═══════════════════════════════════════════
 //  TX ANALİZİ
 // ═══════════════════════════════════════════
-async function analyzeTx(entity,watchAddr,tx){
-  let recv=0,spentAmt=0;const counterAddrs=[];
+async function analyzeTx(watchAddr, known, tx){
+  let recv=0, spentAmt=0;
+  const counterAddrs=[];
   (tx.vin||[]).forEach(v=>{
-    if(v.prevout?.scriptpubkey_address===watchAddr)spentAmt+=v.prevout.value;
-    else if(v.prevout?.scriptpubkey_address)counterAddrs.push(v.prevout.scriptpubkey_address);
+    if(v.prevout?.scriptpubkey_address===watchAddr) spentAmt+=v.prevout.value;
+    else if(v.prevout?.scriptpubkey_address) counterAddrs.push(v.prevout.scriptpubkey_address);
   });
   (tx.vout||[]).forEach(v=>{
-    if(v.scriptpubkey_address===watchAddr)recv+=v.value;
-    else if(v.scriptpubkey_address)counterAddrs.push(v.scriptpubkey_address);
+    if(v.scriptpubkey_address===watchAddr) recv+=v.value;
+    else if(v.scriptpubkey_address) counterAddrs.push(v.scriptpubkey_address);
   });
   const netBtc=(recv-spentAmt)/1e8;
-  if(Math.abs(netBtc)<MIN_BTC)return;
+  if(Math.abs(netBtc)<MIN_BTC) return;
+
   const counterEx=counterAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
-  const counterEnt=counterAddrs.map(a=>addrMap[a.toLowerCase()]).find(Boolean);
-  const btcAbs=Math.abs(netBtc);const usd=btcAbs*btcPrice;
-  let signalType,badge,summary;
+  const counterEnt=counterAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
+  const btcAbs=Math.abs(netBtc), usd=btcAbs*btcPrice;
+  let signalType, badge, summary;
+
   if(netBtc>0){
-    if(counterEx){signalType='buy';badge='🟢 BİRİKİM';summary=`${entity.name}, borsadan ${btcAbs.toFixed(4)} BTC çekti. Soğuk cüzdana — birikim sinyali.`;}
-    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${entity.name}, ${counterEnt.name}'dan ${btcAbs.toFixed(4)} BTC aldı.`;}
-    else{signalType='buy';badge='🟢 GİRİŞ';summary=`${entity.name} cüzdanına ${btcAbs.toFixed(4)} BTC girdi.`;}
-  }else{
-    if(counterEx){signalType='sell';badge='🔴 SATIŞ';summary=`${entity.name}, borsaya ${btcAbs.toFixed(4)} BTC gönderdi! Satış hazırlığı uyarısı.`;}
-    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${entity.name}, ${counterEnt.name}'a ${btcAbs.toFixed(4)} BTC gönderdi.`;}
-    else{signalType='move';badge='🟡 ÇIKIŞ';summary=`${entity.name} cüzdanından ${btcAbs.toFixed(4)} BTC çıktı.`;}
+    if(counterEx){signalType='buy';badge='🟢 BİRİKİM';summary=`${known.name}, borsadan ${btcAbs.toFixed(4)} BTC çekti → soğuk cüzdan birikim sinyali.`;}
+    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'dan ${btcAbs.toFixed(4)} BTC aldı.`;}
+    else{signalType='buy';badge='🟢 GİRİŞ';summary=`${known.name} cüzdanına ${btcAbs.toFixed(4)} BTC girdi.`;}
+  } else {
+    if(counterEx){signalType='sell';badge='🔴 SATIŞ';summary=`${known.name}, borsaya ${btcAbs.toFixed(4)} BTC gönderdi! Satış hazırlığı uyarısı.`;}
+    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'a ${btcAbs.toFixed(4)} BTC gönderdi.`;}
+    else{signalType='move';badge='🟡 ÇIKIŞ';summary=`${known.name} cüzdanından ${btcAbs.toFixed(4)} BTC çıktı.`;}
   }
-  const entry={t:Date.now(),entity:entity.name,type:entity.type,btc:netBtc,usd,badge,signalType,summary,txHash:tx.txid};
-  signalLog.unshift(entry);if(signalLog.length>50)signalLog.pop();
+
+  const entry={t:Date.now(),entity:known.name,type:known.type,btc:netBtc,usd,badge,signalType,summary,txHash:tx.txid};
+  signalLog.unshift(entry); if(signalLog.length>60) signalLog.pop();
   if(signalType==='sell'){sSell++;document.getElementById('s-sell').textContent=sSell;}
   else if(signalType==='buy'){sBuy++;document.getElementById('s-buy').textContent=sBuy;}
 
-  // 🔔 SES BİLDİRİMİ
   playAlert(signalType);
 
-  // Flash banner
-  const btcStr = (netBtc>0?'+':'') + netBtc.toFixed(4) + ' BTC';
   if(signalType==='sell'){
-    showAlertBanner('🚨 SATIŞ: ' + entity.name + ' — ' + btcAbs.toFixed(4) + ' BTC borsaya gönderildi!', 'sell');
+    showAlertBanner('🚨 SATIŞ: '+known.name+' — '+btcAbs.toFixed(4)+' BTC borsaya gönderildi!','sell');
+    showDesktopNotif('🔴 Balina Satışı!',known.name+' → '+btcAbs.toFixed(4)+' BTC borsaya','sell');
   } else if(signalType==='buy'){
-    showAlertBanner('💚 BİRİKİM: ' + entity.name + ' — ' + btcAbs.toFixed(4) + ' BTC çekildi', 'buy');
+    showAlertBanner('💚 BİRİKİM: '+known.name+' — '+btcAbs.toFixed(4)+' BTC çekildi','buy');
+    showDesktopNotif('🟢 Balina Birikimi',known.name+' → '+btcAbs.toFixed(4)+' BTC çekildi','buy');
   }
 
-  showBanner(entry);renderLog();
-  toast(badge + '\n' + entity.name + ' — ' + btcAbs.toFixed(4) + ' BTC', signalType==='sell'?'sell':'buy');
+  showBanner(entry);
+  renderLog();
+  toast(badge+'\n'+known.name+' — '+btcAbs.toFixed(4)+' BTC', signalType==='sell'?'sell':'buy');
 }
 
-function warnDuplicates(){
-  if(dupSet.size===0)return;
-  const examples=[...dupSet].slice(0,2).map(a=>a.slice(0,10)+'…').join(', ');
-  const entry={t:Date.now(),entity:'Sistem',type:'Kontrol',btc:0,usd:0,
-    badge:'⚠ MÜKERRER',signalType:'move',
-    summary:`${dupSet.size} adres listede çift kayıtlı: ${examples}`,
-    txHash:''};
-  signalLog.unshift(entry);
-  renderLog();
+// ═══════════════════════════════════════════
+//  REST POLL (WebSocket fallback/supplement)
+// ═══════════════════════════════════════════
+async function pollBatch(addrs){
+  const fill=document.getElementById('progress-fill');
+  let i=0;
+  for(const addr of addrs){
+    i++;
+    if(fill) fill.style.width=Math.round(i/addrs.length*100)+'%';
+    setStatus(`${i}/${addrs.length}`);
+    try{
+      const r1=await fetch(`https://mempool.space/api/address/${addr}`);
+      if(!r1.ok){await sleep(500);continue;}
+      const r2=await fetch(`https://mempool.space/api/address/${addr}/txs`);
+      if(!r2.ok){await sleep(500);continue;}
+      const txs=await r2.json();
+      if(!txs?.length){await sleep(300);continue;}
+      const latestHash=txs[0].txid;
+      const prev=lastTxHashes[addr];
+      lastTxHashes[addr]=latestHash;
+      if(prev && prev!==latestHash){
+        const known=KNOWN_MAP[addr.toLowerCase()];
+        if(known) await analyzeTx(addr, known, txs[0]);
+      }
+      await sleep(350);
+    }catch{}
+  }
+  if(fill) fill.style.width='0%';
+  setStatus(ALL_ADDRS.length+' adres · '+timeNow());
+}
+
+async function runPolling(){
+  await pollBatch(ALL_ADDRS);
+  setInterval(()=>pollBatch(ALL_ADDRS), POLL_INTERVAL*1000);
+}
+
+// ═══════════════════════════════════════════
+//  İSTATİSTİK
+// ═══════════════════════════════════════════
+function renderStatsBar(){
+  const counts={};
+  for(const cat of Object.keys(CAT_META)) counts[cat]=RAW[cat].length;
+  const bar=document.getElementById('stats-bar');
+  bar.innerHTML=Object.entries(CAT_META).map(([cat,meta])=>
+    `<div class="stat-pill">${meta.emoji} ${meta.label} <span>${counts[cat]}</span></div>`
+  ).join('');
 }
 
 // ── BANNER
 function showBanner(e){
   const b=document.getElementById('banner');
-  b.className=e.signalType;b.style.display='block';
+  b.className=e.signalType; b.style.display='block';
   const badge=document.getElementById('bn-badge');
-  badge.textContent=e.badge;badge.className='bn-badge bb-'+e.signalType;
+  badge.textContent=e.badge; badge.className='bn-badge bb-'+e.signalType;
   document.getElementById('bn-time').textContent=timeAgo(e.t);
   const ent=document.getElementById('bn-entity');
   ent.textContent=e.entity+' · '+e.type;
   ent.style.color=e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d';
   const amt=document.getElementById('bn-amount');
-  const sign=e.btc>0?'+':'';
-  amt.textContent=sign+e.btc.toFixed(4)+' BTC'+(e.usd?' ≈ $'+fmtUSD(e.usd):'');
+  amt.textContent=(e.btc>0?'+':'')+e.btc.toFixed(4)+' BTC'+(e.usd?' ≈ $'+fmtUSD(e.usd):'');
   amt.style.color=e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d';
   document.getElementById('bn-summary').textContent=e.summary;
   const link=document.getElementById('bn-link');
-  if(e.txHash&&e.txHash.length>10){link.href='https://mempool.space/tx/'+e.txHash;link.textContent='TX: '+e.txHash.slice(0,16)+'… ↗';}
+  if(e.txHash?.length>10){link.href='https://mempool.space/tx/'+e.txHash;link.textContent='TX: '+e.txHash.slice(0,16)+'… ↗';}
   else{link.href='#';link.textContent='';}
 }
 
@@ -933,12 +850,12 @@ function renderLog(){
   const el=document.getElementById('log-body');
   if(!signalLog.length){el.innerHTML='<div class="empty">İzleniyor…<br>Balina hareketi bekleniyor 🐋</div>';return;}
   el.innerHTML=signalLog.map(e=>`
-    <div class="log-item" onclick="if('${e.txHash}')window.open('https://mempool.space/tx/${e.txHash}','_blank')">
+    <div class="log-item" onclick="${e.txHash?.length>10?`window.open('https://mempool.space/tx/${e.txHash}','_blank')`:''}">
       <div class="log-badge lb-${e.signalType}">${e.badge}</div>
       <div class="log-mid">
         <div class="log-name">${esc(e.entity)} <span style="font-size:9px;color:var(--muted);font-weight:400">${e.type}</span></div>
-        <div class="log-sum">${e.summary}</div>
-        <div class="log-meta">${timeAgo(e.t)}${e.txHash&&e.txHash.length>10?' · <a href="https://mempool.space/tx/'+e.txHash+'" target="_blank">'+e.txHash.slice(0,10)+'…↗</a>':''}</div>
+        <div class="log-sum">${esc(e.summary)}</div>
+        <div class="log-meta">${timeAgo(e.t)}${e.txHash?.length>10?' · <a href="https://mempool.space/tx/'+e.txHash+'" target="_blank">'+e.txHash.slice(0,10)+'…↗</a>':''}</div>
       </div>
       <div class="log-right">
         <div class="log-btc" style="color:${e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d'}">${(e.btc>0?'+':'')+e.btc.toFixed(4)}</div>
@@ -949,7 +866,7 @@ function renderLog(){
 }
 
 function clearLog(){
-  signalLog=[];sBuy=0;sSell=0;
+  signalLog=[]; sBuy=0; sSell=0;
   document.getElementById('s-buy').textContent='0';
   document.getElementById('s-sell').textContent='0';
   document.getElementById('banner').style.display='none';
@@ -957,19 +874,35 @@ function clearLog(){
 }
 
 // ── HELPERS
-function getTypeColor(t){return t==='Borsa'?'#60a5fa':t==='ETF'?'#a78bfa':t==='Miner'?'#fbbf24':t==='Hükümet'?'#f87171':'#94a3b8';}
 function fmtUSD(v){if(v>=1e9)return(v/1e9).toFixed(2)+'B';if(v>=1e6)return(v/1e6).toFixed(2)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return v.toFixed(0);}
 function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'sn önce';if(s<3600)return Math.floor(s/60)+'dk önce';return Math.floor(s/3600)+'sa önce';}
 function timeNow(){return new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;').replace(/"/g,'&quot;');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function setStatus(t){document.getElementById('status').textContent=t;}
 function isValidBTC(a){return/^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a)||/^bc1[a-z0-9]{39,87}$/i.test(a)||a.length>=26;}
 function toast(msg,type=''){
-  const t=document.createElement('div');t.className='toast '+type;
+  const t=document.createElement('div');
+  t.className='toast '+type;
   t.innerHTML=msg.replace(/\n/g,'<br>');
   document.getElementById('toasts').appendChild(t);
   setTimeout(()=>t.remove(),type==='sell'||type==='buy'?10000:3500);
+}
+
+// ═══════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════
+async function init(){
+  setStatus('Başlıyor…');
+  document.getElementById('s-total').textContent=ALL_ADDRS.length;
+  renderStatsBar();
+  document.getElementById('q-addr').addEventListener('keydown',e=>{if(e.key==='Enter')queryAddr();});
+
+  await fetchPrice();
+  setInterval(fetchPrice,60000);
+
+  setupWebSocket(); // Gerçek zamanlı WebSocket
+  runPolling();     // REST fallback (90s interval)
 }
 
 init();

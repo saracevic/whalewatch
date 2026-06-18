@@ -24,8 +24,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .live{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green);
   background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);padding:4px 8px;border-radius:20px}
 .dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.8s infinite}
-.ws-dot{width:5px;height:5px;border-radius:50%;background:var(--muted);margin-left:2px}
-.ws-dot.connected{background:#a78bfa}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
 .sound-btn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
   border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;
@@ -57,8 +55,8 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .stat-v{font-size:20px;font-weight:800;font-family:'SF Mono',monospace;letter-spacing:-.5px}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .co{color:var(--orange)}.cg{color:var(--green)}.cr{color:var(--red)}.cy{color:var(--yellow)}
-.progress-bar{height:2px;background:rgba(247,147,26,.1);margin-bottom:10px;border-radius:1px;overflow:hidden}
-.progress-fill{height:2px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:1px;transition:width .4s;width:0%}
+.progress-bar{height:3px;background:rgba(255,255,255,.05);margin-bottom:10px;border-radius:2px;overflow:hidden;position:relative}
+.progress-fill{height:3px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:2px;transition:width .3s;width:0%;position:relative}
 .section{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
 .sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);display:flex;align-items:center;gap:6px}
@@ -113,8 +111,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .sl-med  {background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
 .sl-high {background:rgba(239,68,68,.15); color:#f87171;border:1px solid rgba(239,68,68,.3)}
 .sl-vhigh{background:rgba(239,68,68,.3);  color:#fca5a5;border:1px solid rgba(239,68,68,.5)}
-.dup-warn{display:flex;align-items:center;gap:6px;padding:9px 11px;border-radius:9px;
-  background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.25);margin:6px 0;font-size:11px;color:#f87171;font-weight:600}
 .log-item{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
 .log-item:last-child{border-bottom:none}
 .log-badge{font-size:9px;font-weight:800;padding:3px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
@@ -147,12 +143,31 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .alert-banner.sell{background:rgba(239,68,68,.95);color:#fff}
 .alert-banner.buy{background:rgba(34,197,94,.9);color:#000}
 @keyframes flashin{0%{opacity:0;transform:translateY(-6px)}100%{opacity:1;transform:none}}
-
-/* Stats bar extra */
 .stats-bar{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px}
 .stat-pill{font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;
   border:1px solid var(--border);background:var(--card);color:var(--muted)}
 .stat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
+
+/* API Health Panel */
+.api-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.api-panel-h{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
+.api-panel-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.api-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px}
+.api-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
+.api-name{font-size:9px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.api-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);display:inline-block;margin-bottom:3px}
+.api-dot.ok{background:var(--green)}
+.api-dot.err{background:var(--red)}
+.api-dot.slow{background:var(--yellow)}
+.api-stat{font-size:9px;color:var(--dim);font-family:monospace}
+
+/* WS panel */
+.ws-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px;border-top:1px solid rgba(255,255,255,.05)}
+.ws-card{background:var(--bg);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:7px;text-align:center}
+.ws-name{font-size:8px;font-weight:700;color:var(--muted);margin-bottom:3px}
+.ws-dot-c{width:6px;height:6px;border-radius:50%;background:var(--dim);display:inline-block;margin-bottom:2px;transition:background .3s}
+.ws-dot-c.connected{background:#a78bfa}
+.ws-count{font-size:9px;color:var(--dim);font-family:monospace}
 </style>
 </head>
 <body>
@@ -167,7 +182,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div class="price-pill" id="price-pill">—</div>
     <div class="live">
       <div class="dot"></div>
-      <div class="ws-dot" id="ws-dot" title="WebSocket"></div>
       <span id="status">Başlıyor</span>
     </div>
   </div>
@@ -194,7 +208,7 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div class="stat">
       <div class="stat-l">🔍 İzlenen</div>
       <div class="stat-v" id="s-total" style="color:#60a5fa">—</div>
-      <div class="stat-sub" id="s-dup-sub"></div>
+      <div class="stat-sub" id="s-cycle-sub">döngü başlıyor</div>
     </div>
     <div class="stat">
       <div class="stat-l">🟢 Birikim</div>
@@ -208,10 +222,24 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     </div>
   </div>
 
-  <!-- Kategori özeti -->
   <div class="stats-bar" id="stats-bar"></div>
-
   <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <!-- API + WS Durum Paneli -->
+  <div class="api-panel">
+    <div class="api-panel-h" onclick="toggleApiPanel()">
+      <span class="api-panel-title">⚡ API & WebSocket Durumu</span>
+      <span id="api-panel-arrow" style="font-size:10px;color:var(--muted)">▼</span>
+    </div>
+    <div id="api-panel-body">
+      <div class="api-grid" id="api-grid">
+        <!-- JS ile doldurulacak -->
+      </div>
+      <div class="ws-panel" id="ws-panel">
+        <!-- JS ile doldurulacak -->
+      </div>
+    </div>
+  </div>
 
   <!-- Adres Sorgula -->
   <div class="section">
@@ -246,13 +274,10 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 <div id="toasts"></div>
 
 <script>
-// ═══════════════════════════════════════════
-//  VERİ — xlsx'ten parse edildi, 130 adres
-//  EXCHANGES: 59 borsa adresi (Set olarak tanımlı)
-//  KNOWN_MAP: tüm adresler → {name, type}
-// ═══════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
+//  VERİ — 130 adres, 8 kategori
+// ═══════════════════════════════════════════════════════════
 
-// ── 1. Kategorilere göre ham veri (xlsx'ten)
 const RAW = {
   exchange: [
     ["1PJiGp2yDLvUgqeBsuZVCBADArNsk6XEiw","Binance - Treasury"],
@@ -402,7 +427,6 @@ const RAW = {
   ]
 };
 
-// Kategori → Türkçe isim & renk
 const CAT_META = {
   exchange: {label:'Borsa',   color:'#60a5fa', emoji:'🏦'},
   etf:      {label:'ETF',     color:'#a78bfa', emoji:'📊'},
@@ -414,10 +438,7 @@ const CAT_META = {
   whale:    {label:'Balina',  color:'#38bdf8', emoji:'🐋'},
 };
 
-// ── 2. EXCHANGES Set (sadece borsa adresleri, hızlı lookup için)
 const EXCHANGES = new Set(RAW.exchange.map(([a])=>a.toLowerCase()));
-
-// ── 3. KNOWN_MAP: her adres → {name, type, cat}
 const KNOWN_MAP = {};
 for(const [cat, entries] of Object.entries(RAW)){
   const meta = CAT_META[cat];
@@ -425,18 +446,166 @@ for(const [cat, entries] of Object.entries(RAW)){
     KNOWN_MAP[addr.toLowerCase()] = {name, type: meta.label, cat, color: meta.color};
   }
 }
+const ALL_ADDRS = Object.keys(KNOWN_MAP);
 
-// ── 4. Tüm izleme listesi (tek düz dizi, lookup'lar yukarıdan)
-const ALL_ADDRS = Object.keys(KNOWN_MAP); // 130 adres
+// ═══════════════════════════════════════════════════════════
+//  ÇOK-API KONFIGÜRASYONU
+//  Her API'nin limiti ve güvenilirliği farklı.
+//  Adresler API'lere round-robin dağıtılır.
+// ═══════════════════════════════════════════════════════════
 
-// ── STATE
+const APIS = [
+  {
+    id: 'mempool',
+    name: 'mempool.space',
+    // Adres bilgisi
+    addrUrl: a => `https://mempool.space/api/address/${a}`,
+    txUrl:   a => `https://mempool.space/api/address/${a}/txs`,
+    parseAddr: d => ({
+      bal: (d.chain_stats.funded_txo_sum - d.chain_stats.spent_txo_sum) / 1e8,
+      txCount: d.chain_stats.tx_count
+    }),
+    parseTxs: txs => txs,
+    rateMs: 150,   // istek arası bekleme (ms)
+    maxReqPerMin: 60,
+    ok: true, errors: 0, lastMs: 0, reqCount: 0
+  },
+  {
+    id: 'blockchair',
+    name: 'Blockchair',
+    addrUrl: a => `https://api.blockchair.com/bitcoin/dashboards/address/${a}?limit=5`,
+    txUrl:   null, // addrUrl'den txs de geliyor
+    parseAddr: d => {
+      const info = d.data[Object.keys(d.data)[0]]?.address;
+      if(!info) return null;
+      return {
+        bal: info.balance / 1e8,
+        txCount: info.transaction_count
+      };
+    },
+    parseTxs: d => {
+      // Blockchair txs embedded in same response
+      const key = Object.keys(d.data)[0];
+      const txList = d.data[key]?.transactions || [];
+      // Convert to mempool-compatible minimal format
+      return txList.slice(0,5).map(txid => ({ txid, vin:[], vout:[], status:{} }));
+    },
+    rateMs: 300,
+    maxReqPerMin: 30,
+    ok: true, errors: 0, lastMs: 0, reqCount: 0
+  },
+  {
+    id: 'blockchain',
+    name: 'Blockchain.com',
+    addrUrl: a => `https://blockchain.info/rawaddr/${a}?limit=5&cors=true`,
+    txUrl:   null,
+    parseAddr: d => ({
+      bal: d.final_balance / 1e8,
+      txCount: d.n_tx
+    }),
+    parseTxs: d => {
+      return (d.txs||[]).slice(0,5).map(tx => ({
+        txid: tx.hash,
+        vin: (tx.inputs||[]).map(i=>({
+          prevout: {
+            scriptpubkey_address: i.prev_out?.addr,
+            value: i.prev_out?.value||0
+          }
+        })),
+        vout: (tx.out||[]).map(o=>({
+          scriptpubkey_address: o.addr,
+          value: o.value||0
+        })),
+        status: { block_time: tx.time }
+      }));
+    },
+    rateMs: 250,
+    maxReqPerMin: 40,
+    ok: true, errors: 0, lastMs: 0, reqCount: 0
+  },
+  {
+    id: 'bitaps',
+    name: 'Bitaps',
+    addrUrl: a => `https://api.bitaps.com/btc/v1/blockchain/address/state/${a}`,
+    txUrl:   a => `https://api.bitaps.com/btc/v1/blockchain/address/transactions/${a}`,
+    parseAddr: d => {
+      if(!d.data) return null;
+      return {
+        bal: (d.data.balance||0) / 1e8,
+        txCount: d.data.tx_count||0
+      };
+    },
+    parseTxs: d => {
+      return (d.data?.list||[]).slice(0,5).map(tx => ({
+        txid: tx.tx_hash,
+        vin: [], vout: [],
+        status: { block_time: tx.time }
+      }));
+    },
+    rateMs: 400,
+    maxReqPerMin: 15,
+    ok: true, errors: 0, lastMs: 0, reqCount: 0
+  },
+  {
+    id: 'chainso',
+    name: 'Chain.so',
+    addrUrl: a => `https://chain.so/api/v2/get_address_balance/BTC/${a}`,
+    txUrl:   a => `https://chain.so/api/v2/get_tx_received/BTC/${a}`,
+    parseAddr: d => {
+      if(d.status !== 'success') return null;
+      return {
+        bal: parseFloat(d.data?.confirmed_balance||0),
+        txCount: 0
+      };
+    },
+    parseTxs: d => {
+      return (d.data?.txs||[]).slice(0,5).map(tx => ({
+        txid: tx.txid,
+        vin: [], vout: [],
+        status: {}
+      }));
+    },
+    rateMs: 350,
+    maxReqPerMin: 20,
+    ok: true, errors: 0, lastMs: 0, reqCount: 0
+  },
+  {
+    id: 'blockcypher',
+    name: 'BlockCypher',
+    addrUrl: a => `https://api.blockcypher.com/v1/btc/main/addrs/${a}/balance`,
+    txUrl:   a => `https://api.blockcypher.com/v1/btc/main/addrs/${a}?limit=5`,
+    parseAddr: d => ({
+      bal: (d.balance||0) / 1e8,
+      txCount: d.n_tx||0
+    }),
+    parseTxs: d => {
+      return (d.txrefs||[]).slice(0,5).map(tx => ({
+        txid: tx.tx_hash,
+        vin: [], vout: [],
+        status: { block_time: tx.confirmed ? Math.floor(new Date(tx.confirmed).getTime()/1000) : undefined }
+      }));
+    },
+    rateMs: 200,
+    maxReqPerMin: 30,
+    ok: true, errors: 0, lastMs: 0, reqCount: 0
+  }
+];
+
+// ═══════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════
 let signalLog=[], btcPrice=0, sBuy=0, sSell=0;
-let lastTxHashes = {}; // addr → last txid
+let lastTxHashes = {};
 let soundEnabled = true, notifEnabled = false;
 let audioCtx = null;
-let wsConn = null;
-const MIN_BTC = 0.5;
-const POLL_INTERVAL = 120; // saniye (REST fallback)
+let apiPanelOpen = true;
+
+// Adresleri API'lere böl — her API kendi grubunu tarar
+function splitAddrsToApis(addrs, apiList){
+  const groups = apiList.map(()=>[]);
+  addrs.forEach((a,i) => groups[i % apiList.length].push(a));
+  return groups;
+}
 
 // ═══════════════════════════════════════════
 //  SES
@@ -491,34 +660,27 @@ function toggleSound(){
 }
 
 // ═══════════════════════════════════════════
-//  DESKTOP BİLDİRİM
+//  BİLDİRİM
 // ═══════════════════════════════════════════
 async function toggleNotif(){
-  if(!('Notification' in window)){toast('Tarayıcı bildirim desteklemiyor','err');return;}
+  if(!('Notification' in window)){toast('Bildirim desteklenmiyor','err');return;}
   if(notifEnabled){
     notifEnabled=false;
     document.getElementById('notif-btn').className='notif-btn';
-    toast('Bildirim KAPALI','warn');
-    return;
+    toast('Bildirim KAPALI','warn'); return;
   }
   const perm = await Notification.requestPermission();
   if(perm==='granted'){
     notifEnabled=true;
     document.getElementById('notif-btn').className='notif-btn on';
-    new Notification('BTC Whale Watch',{body:'Bildirimler aktif 🔔',icon:'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🐋</text></svg>'});
+    new Notification('BTC Whale Watch',{body:'Bildirimler aktif 🔔'});
     toast('Bildirim AÇık ✅','ok');
-  } else {
-    toast('Bildirim izni reddedildi','err');
-  }
+  } else { toast('Bildirim izni reddedildi','err'); }
 }
 function showDesktopNotif(title, body, type){
   if(!notifEnabled || Notification.permission!=='granted') return;
   new Notification(title, {body, tag: type+Date.now()});
 }
-
-// ═══════════════════════════════════════════
-//  FLASH BANNER
-// ═══════════════════════════════════════════
 function showAlertBanner(text, type){
   const b=document.getElementById('alert-banner');
   b.textContent=text; b.className='alert-banner '+type; b.style.display='block';
@@ -538,23 +700,47 @@ async function fetchPrice(){
 }
 
 // ═══════════════════════════════════════════
-//  WEBSOCKET — mempool.space
+//  WEBSOCKET — 3 paralel bağlantı × 40 adres
+//  mempool.space multi-WS: her bağlantı 40 adresi track eder
+//  Toplam: 120 adres gerçek zamanlı WS
+//  Kalan 10 adres REST'e düşer (etkilenme yok)
 // ═══════════════════════════════════════════
-function setupWebSocket(){
-  if(wsConn && wsConn.readyState < 2) return;
+
+const WS_BATCH = 40;     // Her WS bağlantısı kaç adres izlesin
+const WS_COUNT = 3;      // Kaç paralel WS bağlantısı
+const wsConns = [];      // Aktif WS bağlantıları
+const wsStats = Array.from({length:WS_COUNT}, (_,i) => ({
+  id: i, connected: false, trackCount: 0, rxCount: 0
+}));
+
+function buildWsConnections(){
+  const addrChunks = [];
+  for(let i=0; i<WS_COUNT; i++){
+    const start = i * WS_BATCH;
+    addrChunks.push(ALL_ADDRS.slice(start, start + WS_BATCH));
+  }
+  addrChunks.forEach((chunk, idx) => {
+    if(!chunk.length) return;
+    createWsConn(chunk, idx);
+  });
+}
+
+function createWsConn(addrChunk, idx){
   try{
-    wsConn = new WebSocket('wss://ws.mempool.space/api/v1/ws');
-    wsConn.onopen = ()=>{
-      document.getElementById('ws-dot').className='ws-dot connected';
-      // Track-address ile tüm adresleri kaydet (mempool.space adres başına tek track destekler)
-      // İlk 20 adresi track et (API sınırı)
-      const trackAddrs = ALL_ADDRS.slice(0,20);
-      wsConn.send(JSON.stringify({'track-addresses': trackAddrs}));
+    const ws = new WebSocket('wss://ws.mempool.space/api/v1/ws');
+    wsConns[idx] = ws;
+
+    ws.onopen = () => {
+      wsStats[idx].connected = true;
+      wsStats[idx].trackCount = addrChunk.length;
+      ws.send(JSON.stringify({'track-addresses': addrChunk}));
+      renderWsPanel();
     };
-    wsConn.onmessage = async (event)=>{
+
+    ws.onmessage = async (event) => {
       try{
         const data = JSON.parse(event.data);
-        // multi-address tracking yanıtı
+        wsStats[idx].rxCount++;
         if(data['multi-address-transactions']){
           for(const [addr, txData] of Object.entries(data['multi-address-transactions'])){
             const known = KNOWN_MAP[addr.toLowerCase()];
@@ -563,20 +749,217 @@ function setupWebSocket(){
             for(const tx of txs){
               if(lastTxHashes[addr] === tx.txid) continue;
               lastTxHashes[addr] = tx.txid;
-              await analyzeTx(addr, known, tx);
+              await analyzeTx(addr, known, tx, 'ws');
             }
           }
         }
+        renderWsPanel();
       }catch(e){}
     };
-    wsConn.onclose = ()=>{
-      document.getElementById('ws-dot').className='ws-dot';
-      setTimeout(setupWebSocket, 10000); // reconnect
+
+    ws.onclose = () => {
+      wsStats[idx].connected = false;
+      renderWsPanel();
+      setTimeout(() => createWsConn(addrChunk, idx), 10000);
     };
-    wsConn.onerror = ()=>{ wsConn.close(); };
+    ws.onerror = () => { wsStats[idx].connected=false; ws.close(); };
   }catch(e){
-    document.getElementById('ws-dot').className='ws-dot';
+    wsStats[idx].connected = false;
+    renderWsPanel();
   }
+}
+
+// ═══════════════════════════════════════════
+//  MULTI-API REST POLL
+//  Adresler 6 API'ye eşit dağıtılır.
+//  Her API kendi grubunu paralel değil, 
+//  kendi rate limit'ine uyarak sırayla tarar.
+//  6 grup paralel çalışır → ~6x hız artışı
+// ═══════════════════════════════════════════
+
+async function fetchWithApi(api, url){
+  const start = Date.now();
+  const r = await fetch(url, {signal: AbortSignal.timeout(8000)});
+  if(!r.ok) throw new Error(`HTTP ${r.status}`);
+  const data = await r.json();
+  api.lastMs = Date.now() - start;
+  api.errors = Math.max(0, api.errors - 1);
+  api.reqCount++;
+  return data;
+}
+
+// Bir API ile tek adres tara
+async function pollOneAddr(api, addr){
+  const known = KNOWN_MAP[addr.toLowerCase()];
+  if(!known) return;
+  try{
+    const addrData = await fetchWithApi(api, api.addrUrl(addr));
+    const parsed = api.parseAddr(addrData);
+    if(!parsed) return;
+
+    let txs = [];
+    if(api.txUrl){
+      // Ayrı TX endpoint'i var
+      const txData = await fetchWithApi(api, api.txUrl(addr));
+      txs = api.parseTxs(txData);
+    } else {
+      // TX'ler addrUrl response içinde
+      txs = api.parseTxs(addrData);
+    }
+
+    if(!txs.length) return;
+    const latestHash = txs[0].txid;
+    const prev = lastTxHashes[addr];
+    if(!prev){
+      lastTxHashes[addr] = latestHash;
+      return; // ilk kez görüyoruz, baseline al
+    }
+    if(prev !== latestHash){
+      lastTxHashes[addr] = latestHash;
+      // mempool.space'den tam TX detayı çek (diğer API'lerde detay eksik)
+      try{
+        const fullTx = await fetchFullTx(txs[0].txid);
+        await analyzeTx(addr, known, fullTx || txs[0], api.id);
+      }catch{
+        await analyzeTx(addr, known, txs[0], api.id);
+      }
+    }
+    api.ok = true;
+  }catch(e){
+    api.errors++;
+    if(api.errors > 5) api.ok = false;
+  }
+}
+
+// TX detayını mempool.space'den getir
+async function fetchFullTx(txid){
+  const r = await fetch(`https://mempool.space/api/tx/${txid}`, {signal: AbortSignal.timeout(6000)});
+  if(!r.ok) return null;
+  return r.json();
+}
+
+// Bir API için sonsuz döngü poll
+async function runApiWorker(api, addrGroup){
+  while(true){
+    const t0 = Date.now();
+    for(const addr of addrGroup){
+      await sleep(api.rateMs);
+      await pollOneAddr(api, addr);
+      renderApiGrid();
+    }
+    // Bir döngü ne kadar sürdü?
+    const elapsed = (Date.now()-t0)/1000;
+    // Min 60 saniye aralık — daha erken bitirse bekle
+    const wait = Math.max(0, 60000-(Date.now()-t0));
+    updateCycleSub(api, elapsed);
+    if(wait>0) await sleep(wait);
+  }
+}
+
+function updateCycleSub(api, elapsed){
+  document.getElementById('s-cycle-sub').textContent =
+    `son döngü ${elapsed.toFixed(0)}s (${api.name})`;
+}
+
+// Tüm API worker'larını başlat
+function startMultiApiPolling(){
+  const groups = splitAddrsToApis(ALL_ADDRS, APIS);
+  APIS.forEach((api, i) => {
+    if(groups[i].length) runApiWorker(api, groups[i]);
+  });
+}
+
+// ═══════════════════════════════════════════
+//  TX ANALİZİ (kaynak API bilgisiyle)
+// ═══════════════════════════════════════════
+async function analyzeTx(watchAddr, known, tx, source){
+  let recv=0, spentAmt=0;
+  const counterAddrs=[];
+  (tx.vin||[]).forEach(v=>{
+    if(v.prevout?.scriptpubkey_address===watchAddr) spentAmt+=v.prevout.value;
+    else if(v.prevout?.scriptpubkey_address) counterAddrs.push(v.prevout.scriptpubkey_address);
+  });
+  (tx.vout||[]).forEach(v=>{
+    if(v.scriptpubkey_address===watchAddr) recv+=v.value;
+    else if(v.scriptpubkey_address) counterAddrs.push(v.scriptpubkey_address);
+  });
+  const netBtc=(recv-spentAmt)/1e8;
+  const MIN_BTC = 0.5;
+  if(Math.abs(netBtc)<MIN_BTC) return;
+
+  const counterEx=counterAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
+  const counterEnt=counterAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
+  const btcAbs=Math.abs(netBtc), usd=btcAbs*btcPrice;
+  let signalType, badge, summary;
+
+  if(netBtc>0){
+    if(counterEx){signalType='buy';badge='🟢 BİRİKİM';summary=`${known.name}, borsadan ${btcAbs.toFixed(4)} BTC çekti → soğuk cüzdan birikim sinyali.`;}
+    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'dan ${btcAbs.toFixed(4)} BTC aldı.`;}
+    else{signalType='buy';badge='🟢 GİRİŞ';summary=`${known.name} cüzdanına ${btcAbs.toFixed(4)} BTC girdi.`;}
+  } else {
+    if(counterEx){signalType='sell';badge='🔴 SATIŞ';summary=`${known.name}, borsaya ${btcAbs.toFixed(4)} BTC gönderdi! Satış hazırlığı uyarısı.`;}
+    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'a ${btcAbs.toFixed(4)} BTC gönderdi.`;}
+    else{signalType='move';badge='🟡 ÇIKIŞ';summary=`${known.name} cüzdanından ${btcAbs.toFixed(4)} BTC çıktı.`;}
+  }
+
+  const entry={t:Date.now(),entity:known.name,type:known.type,btc:netBtc,usd,badge,signalType,summary,txHash:tx.txid,source:source||'rest'};
+  signalLog.unshift(entry); if(signalLog.length>60) signalLog.pop();
+  if(signalType==='sell'){sSell++;document.getElementById('s-sell').textContent=sSell;}
+  else if(signalType==='buy'){sBuy++;document.getElementById('s-buy').textContent=sBuy;}
+
+  playAlert(signalType);
+
+  if(signalType==='sell'){
+    showAlertBanner('🚨 SATIŞ: '+known.name+' — '+btcAbs.toFixed(4)+' BTC borsaya gönderildi!','sell');
+    showDesktopNotif('🔴 Balina Satışı!',known.name+' → '+btcAbs.toFixed(4)+' BTC borsaya','sell');
+  } else if(signalType==='buy'){
+    showAlertBanner('💚 BİRİKİM: '+known.name+' — '+btcAbs.toFixed(4)+' BTC çekildi','buy');
+    showDesktopNotif('🟢 Balina Birikimi',known.name+' → '+btcAbs.toFixed(4)+' BTC çekildi','buy');
+  }
+
+  showBanner(entry);
+  renderLog();
+  toast(badge+'\n'+known.name+' — '+btcAbs.toFixed(4)+' BTC'+(source?` [${source}]`:''), signalType==='sell'?'sell':'buy');
+}
+
+// ═══════════════════════════════════════════
+//  UI — API GRID & WS PANEL
+// ═══════════════════════════════════════════
+function renderApiGrid(){
+  const grid = document.getElementById('api-grid');
+  if(!grid) return;
+  grid.innerHTML = APIS.map(api=>{
+    const dotCls = !api.ok ? 'err' : api.lastMs > 2000 ? 'slow' : 'ok';
+    return `<div class="api-card">
+      <div class="api-name">${api.name}</div>
+      <div class="api-dot ${dotCls}"></div>
+      <div class="api-stat">${api.reqCount} req</div>
+      <div class="api-stat">${api.lastMs ? api.lastMs+'ms' : '—'}</div>
+      <div class="api-stat" style="color:${api.ok?'#4ade80':'#f87171'}">${api.ok?'OK':'ERR×'+api.errors}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderWsPanel(){
+  const panel = document.getElementById('ws-panel');
+  if(!panel) return;
+  panel.innerHTML = wsStats.map(ws=>{
+    return `<div class="ws-card">
+      <div class="ws-name">WS #${ws.id+1}</div>
+      <div class="ws-dot-c ${ws.connected?'connected':''}"></div>
+      <div class="ws-count">${ws.trackCount} adres</div>
+      <div class="ws-count" style="color:${ws.connected?'#a78bfa':'var(--dim)'}">${ws.connected?'CANLI':'KAPALI'}</div>
+      <div class="ws-count">${ws.rxCount} msg</div>
+    </div>`;
+  }).join('');
+}
+
+function toggleApiPanel(){
+  const body = document.getElementById('api-panel-body');
+  const arrow = document.getElementById('api-panel-arrow');
+  apiPanelOpen = !apiPanelOpen;
+  body.style.display = apiPanelOpen ? '' : 'none';
+  arrow.textContent = apiPanelOpen ? '▲' : '▼';
 }
 
 // ═══════════════════════════════════════════
@@ -728,106 +1111,8 @@ function closeQR(){
 }
 
 // ═══════════════════════════════════════════
-//  TX ANALİZİ
+//  UI — BANNER & LOG
 // ═══════════════════════════════════════════
-async function analyzeTx(watchAddr, known, tx){
-  let recv=0, spentAmt=0;
-  const counterAddrs=[];
-  (tx.vin||[]).forEach(v=>{
-    if(v.prevout?.scriptpubkey_address===watchAddr) spentAmt+=v.prevout.value;
-    else if(v.prevout?.scriptpubkey_address) counterAddrs.push(v.prevout.scriptpubkey_address);
-  });
-  (tx.vout||[]).forEach(v=>{
-    if(v.scriptpubkey_address===watchAddr) recv+=v.value;
-    else if(v.scriptpubkey_address) counterAddrs.push(v.scriptpubkey_address);
-  });
-  const netBtc=(recv-spentAmt)/1e8;
-  if(Math.abs(netBtc)<MIN_BTC) return;
-
-  const counterEx=counterAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
-  const counterEnt=counterAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
-  const btcAbs=Math.abs(netBtc), usd=btcAbs*btcPrice;
-  let signalType, badge, summary;
-
-  if(netBtc>0){
-    if(counterEx){signalType='buy';badge='🟢 BİRİKİM';summary=`${known.name}, borsadan ${btcAbs.toFixed(4)} BTC çekti → soğuk cüzdan birikim sinyali.`;}
-    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'dan ${btcAbs.toFixed(4)} BTC aldı.`;}
-    else{signalType='buy';badge='🟢 GİRİŞ';summary=`${known.name} cüzdanına ${btcAbs.toFixed(4)} BTC girdi.`;}
-  } else {
-    if(counterEx){signalType='sell';badge='🔴 SATIŞ';summary=`${known.name}, borsaya ${btcAbs.toFixed(4)} BTC gönderdi! Satış hazırlığı uyarısı.`;}
-    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'a ${btcAbs.toFixed(4)} BTC gönderdi.`;}
-    else{signalType='move';badge='🟡 ÇIKIŞ';summary=`${known.name} cüzdanından ${btcAbs.toFixed(4)} BTC çıktı.`;}
-  }
-
-  const entry={t:Date.now(),entity:known.name,type:known.type,btc:netBtc,usd,badge,signalType,summary,txHash:tx.txid};
-  signalLog.unshift(entry); if(signalLog.length>60) signalLog.pop();
-  if(signalType==='sell'){sSell++;document.getElementById('s-sell').textContent=sSell;}
-  else if(signalType==='buy'){sBuy++;document.getElementById('s-buy').textContent=sBuy;}
-
-  playAlert(signalType);
-
-  if(signalType==='sell'){
-    showAlertBanner('🚨 SATIŞ: '+known.name+' — '+btcAbs.toFixed(4)+' BTC borsaya gönderildi!','sell');
-    showDesktopNotif('🔴 Balina Satışı!',known.name+' → '+btcAbs.toFixed(4)+' BTC borsaya','sell');
-  } else if(signalType==='buy'){
-    showAlertBanner('💚 BİRİKİM: '+known.name+' — '+btcAbs.toFixed(4)+' BTC çekildi','buy');
-    showDesktopNotif('🟢 Balina Birikimi',known.name+' → '+btcAbs.toFixed(4)+' BTC çekildi','buy');
-  }
-
-  showBanner(entry);
-  renderLog();
-  toast(badge+'\n'+known.name+' — '+btcAbs.toFixed(4)+' BTC', signalType==='sell'?'sell':'buy');
-}
-
-// ═══════════════════════════════════════════
-//  REST POLL (WebSocket fallback/supplement)
-// ═══════════════════════════════════════════
-async function pollBatch(addrs){
-  const fill=document.getElementById('progress-fill');
-  let i=0;
-  for(const addr of addrs){
-    i++;
-    if(fill) fill.style.width=Math.round(i/addrs.length*100)+'%';
-    setStatus(`${i}/${addrs.length}`);
-    try{
-      const r1=await fetch(`https://mempool.space/api/address/${addr}`);
-      if(!r1.ok){await sleep(500);continue;}
-      const r2=await fetch(`https://mempool.space/api/address/${addr}/txs`);
-      if(!r2.ok){await sleep(500);continue;}
-      const txs=await r2.json();
-      if(!txs?.length){await sleep(300);continue;}
-      const latestHash=txs[0].txid;
-      const prev=lastTxHashes[addr];
-      lastTxHashes[addr]=latestHash;
-      if(prev && prev!==latestHash){
-        const known=KNOWN_MAP[addr.toLowerCase()];
-        if(known) await analyzeTx(addr, known, txs[0]);
-      }
-      await sleep(350);
-    }catch{}
-  }
-  if(fill) fill.style.width='0%';
-  setStatus(ALL_ADDRS.length+' adres · '+timeNow());
-}
-
-async function runPolling(){
-  await pollBatch(ALL_ADDRS);
-  setInterval(()=>pollBatch(ALL_ADDRS), POLL_INTERVAL*1000);
-}
-
-// ═══════════════════════════════════════════
-//  İSTATİSTİK
-// ═══════════════════════════════════════════
-function renderStatsBar(){
-  const counts={};
-  for(const cat of Object.keys(CAT_META)) counts[cat]=RAW[cat].length;
-  const bar=document.getElementById('stats-bar');
-  bar.innerHTML=Object.entries(CAT_META).map(([cat,meta])=>
-    `<div class="stat-pill">${meta.emoji} ${meta.label} <span>${counts[cat]}</span></div>`
-  ).join('');
-}
-
-// ── BANNER
 function showBanner(e){
   const b=document.getElementById('banner');
   b.className=e.signalType; b.style.display='block';
@@ -853,7 +1138,9 @@ function renderLog(){
     <div class="log-item" onclick="${e.txHash?.length>10?`window.open('https://mempool.space/tx/${e.txHash}','_blank')`:''}">
       <div class="log-badge lb-${e.signalType}">${e.badge}</div>
       <div class="log-mid">
-        <div class="log-name">${esc(e.entity)} <span style="font-size:9px;color:var(--muted);font-weight:400">${e.type}</span></div>
+        <div class="log-name">${esc(e.entity)} <span style="font-size:9px;color:var(--muted);font-weight:400">${e.type}</span>
+          ${e.source&&e.source!=='ws'?`<span style="font-size:8px;color:var(--dim);font-family:monospace"> [${e.source}]</span>`:''}
+        </div>
         <div class="log-sum">${esc(e.summary)}</div>
         <div class="log-meta">${timeAgo(e.t)}${e.txHash?.length>10?' · <a href="https://mempool.space/tx/'+e.txHash+'" target="_blank">'+e.txHash.slice(0,10)+'…↗</a>':''}</div>
       </div>
@@ -873,10 +1160,20 @@ function clearLog(){
   renderLog();
 }
 
-// ── HELPERS
+function renderStatsBar(){
+  const counts={};
+  for(const cat of Object.keys(CAT_META)) counts[cat]=RAW[cat].length;
+  const bar=document.getElementById('stats-bar');
+  bar.innerHTML=Object.entries(CAT_META).map(([cat,meta])=>
+    `<div class="stat-pill">${meta.emoji} ${meta.label} <span>${counts[cat]}</span></div>`
+  ).join('');
+}
+
+// ═══════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════
 function fmtUSD(v){if(v>=1e9)return(v/1e9).toFixed(2)+'B';if(v>=1e6)return(v/1e6).toFixed(2)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return v.toFixed(0);}
 function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'sn önce';if(s<3600)return Math.floor(s/60)+'dk önce';return Math.floor(s/3600)+'sa önce';}
-function timeNow(){return new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function setStatus(t){document.getElementById('status').textContent=t;}
@@ -894,15 +1191,26 @@ function toast(msg,type=''){
 // ═══════════════════════════════════════════
 async function init(){
   setStatus('Başlıyor…');
-  document.getElementById('s-total').textContent=ALL_ADDRS.length;
+  document.getElementById('s-total').textContent = ALL_ADDRS.length;
   renderStatsBar();
+  renderApiGrid();
+  renderWsPanel();
+
   document.getElementById('q-addr').addEventListener('keydown',e=>{if(e.key==='Enter')queryAddr();});
 
   await fetchPrice();
-  setInterval(fetchPrice,60000);
+  setInterval(fetchPrice, 60000);
 
-  setupWebSocket(); // Gerçek zamanlı WebSocket
-  runPolling();     // REST fallback (90s interval)
+  // 3 paralel WebSocket → 120 adres gerçek zamanlı
+  buildWsConnections();
+
+  // 6 API worker paralel → 130 adres ~6x hızlı REST poll
+  startMultiApiPolling();
+
+  // Her 5 saniyede UI refresh
+  setInterval(()=>{ renderApiGrid(); renderWsPanel(); }, 5000);
+
+  setStatus(`${ALL_ADDRS.length} adres · 6 API · 3 WS`);
 }
 
 init();

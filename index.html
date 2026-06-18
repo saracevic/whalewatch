@@ -3,193 +3,121 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BTC Cüzdan Takip</title>
+<title>BTC Whale Watch</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Inter', system-ui, sans-serif; background: #07090f; color: #c8cedd; min-height: 100vh; font-size: 13px; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#07090f;color:#c8cedd;min-height:100vh;font-size:14px}
 
 /* TOPBAR */
-.bar { position: sticky; top: 0; z-index: 100; height: 50px; padding: 0 20px;
-  display: flex; align-items: center; justify-content: space-between;
-  background: rgba(7,9,15,.97); border-bottom: 1px solid rgba(255,255,255,.08); }
-.logo { font-size: 15px; font-weight: 800; }
-.logo em { color: #f7931a; font-style: normal; }
-.bar-r { display: flex; align-items: center; gap: 8px; }
-.price-pill { font-family: monospace; font-size: 12px; font-weight: 700; color: #f7931a;
-  background: rgba(247,147,26,.07); border: 1px solid rgba(247,147,26,.2); padding: 4px 12px; border-radius: 20px; }
-.live { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #22c55e;
-  background: rgba(34,197,94,.06); border: 1px solid rgba(34,197,94,.15); padding: 4px 10px; border-radius: 20px; }
-.dot { width: 6px; height: 6px; border-radius: 50%; background: #22c55e; animation: blink 1.8s infinite; }
-@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.15} }
+.bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+  padding:0 16px;height:50px;background:rgba(7,9,15,.97);border-bottom:1px solid rgba(255,255,255,.07)}
+.logo{font-weight:800;font-size:15px}
+.logo em{color:#f7931a;font-style:normal}
+.bar-r{display:flex;align-items:center;gap:8px}
+.price{font-family:monospace;font-weight:700;color:#f7931a;font-size:13px;
+  background:rgba(247,147,26,.07);border:1px solid rgba(247,147,26,.2);padding:4px 10px;border-radius:20px}
+.live{display:flex;align-items:center;gap:5px;font-size:11px;color:#22c55e;
+  background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.15);padding:3px 9px;border-radius:20px}
+.dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink 1.8s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.12}}
 
-.wrap { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+.wrap{max-width:680px;margin:0 auto;padding:14px 12px 60px}
 
-/* SİNYAL BANNER */
-#sig-bar { display: none; border-radius: 8px; padding: 12px 16px; margin-bottom: 14px; border: 1px solid; }
-#sig-bar.buy  { background: rgba(22,163,74,.1);  border-color: rgba(22,163,74,.4); }
-#sig-bar.sell { background: rgba(220,38,38,.1);  border-color: rgba(220,38,38,.4); }
-#sig-bar.move { background: rgba(245,158,11,.08); border-color: rgba(245,158,11,.3); }
-.sig-row { display: flex; align-items: flex-start; gap: 14px; flex-wrap: wrap; }
-.sig-badge { font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: 20px; white-space: nowrap; }
-.badge-buy  { background: rgba(22,163,74,.2);  color: #4ade80; border: 1px solid rgba(22,163,74,.4); }
-.badge-sell { background: rgba(220,38,38,.2);  color: #f87171; border: 1px solid rgba(220,38,38,.4); }
-.badge-move { background: rgba(245,158,11,.15); color: #fcd34d; border: 1px solid rgba(245,158,11,.35); }
-.sig-main { flex: 1; }
-.sig-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-.sig-text  { font-size: 12px; color: #8892aa; line-height: 1.5; }
-.sig-amt   { font-family: monospace; font-size: 18px; font-weight: 700; white-space: nowrap; text-align: right; }
-.amt-buy  { color: #4ade80; }
-.amt-sell { color: #f87171; }
-.amt-move { color: #fcd34d; }
-.sig-usd  { font-size: 10px; color: #4a5068; text-align: right; }
-.sig-close { background: none; border: 1px solid rgba(255,255,255,.1); color: #4a5068;
-  padding: 3px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; align-self: flex-start; }
-.sig-close:hover { color: #f87171; border-color: rgba(220,38,38,.4); }
-
-/* CÜZDAN EKLE */
-.add-box { background: #0e1118; border: 1px solid rgba(255,255,255,.07); border-radius: 8px;
-  padding: 14px 16px; margin-bottom: 14px; }
-.add-box h3 { font-size: 11px; text-transform: uppercase; letter-spacing: .7px; color: #4a5068; margin-bottom: 10px; }
-.add-row { display: flex; gap: 8px; flex-wrap: wrap; }
-.add-row input { flex: 1; min-width: 200px; background: #07090f; border: 1px solid rgba(255,255,255,.1);
-  color: #c8cedd; padding: 7px 11px; border-radius: 6px; font-family: monospace; font-size: 12px; outline: none; }
-.add-row input:focus { border-color: #f7931a; }
-.add-row input::placeholder { color: #3d4460; }
-.btn { padding: 7px 16px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; }
-.btn-o { background: #f7931a; color: #000; }
-.btn-o:hover { background: #e08010; }
-.btn-g { background: none; border: 1px solid rgba(255,255,255,.1); color: #c8cedd; }
-.btn-g:hover { border-color: #f7931a; color: #f7931a; }
+/* SON SİNYAL KARTI — ana ekran */
+#signal-card{display:none;border-radius:10px;padding:14px 16px;margin-bottom:12px;border:1px solid}
+#signal-card.buy {background:rgba(22,163,74,.08); border-color:rgba(22,163,74,.35)}
+#signal-card.sell{background:rgba(220,38,38,.08); border-color:rgba(220,38,38,.35)}
+#signal-card.move{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.28)}
+.sc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.sc-badge{font-size:11px;font-weight:800;padding:3px 10px;border-radius:20px}
+.badge-buy {background:rgba(22,163,74,.2); color:#4ade80;border:1px solid rgba(22,163,74,.4)}
+.badge-sell{background:rgba(220,38,38,.2); color:#f87171;border:1px solid rgba(220,38,38,.4)}
+.badge-move{background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.35)}
+.sc-time{font-size:11px;color:#3d4460}
+.sc-entity{font-size:16px;font-weight:800;margin-bottom:3px}
+.sc-amount{font-family:monospace;font-size:22px;font-weight:800;margin-bottom:6px}
+.sc-summary{font-size:13px;color:#8892aa;line-height:1.55;margin-bottom:8px}
+.sc-link{font-size:11px;color:#4a5068;font-family:monospace;text-decoration:none}
+.sc-link:hover{color:#f7931a}
 
 /* STATS */
-.stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 14px; }
-.stat { background: #0e1118; border: 1px solid rgba(255,255,255,.06); border-radius: 8px; padding: 10px 13px; }
-.stat-l { font-size: 9px; text-transform: uppercase; letter-spacing: .7px; color: #4a5068; margin-bottom: 3px; }
-.stat-v { font-size: 20px; font-weight: 800; font-family: monospace; }
-.c-o { color: #f7931a; } .c-g { color: #22c55e; } .c-r { color: #ef4444; } .c-y { color: #fbbf24; }
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:#0e1118;border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:10px 12px;text-align:center}
+.stat-l{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:#4a5068;margin-bottom:4px}
+.stat-v{font-size:22px;font-weight:800;font-family:monospace}
+.cg{color:#22c55e}.cr{color:#ef4444}.co{color:#f7931a}
 
-/* LOG */
-.log-panel { background: #0e1118; border: 1px solid rgba(255,255,255,.06); border-radius: 8px; overflow: hidden; margin-bottom: 14px; }
-.log-header { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; justify-content: space-between; }
-.log-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: #5e6882; }
-.log-clear { font-size: 10px; color: #4a5068; cursor: pointer; background: none; border: none; }
-.log-clear:hover { color: #ef4444; }
-.log-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 14px; border-bottom: 1px solid rgba(255,255,255,.04); animation: fadeIn .3s ease; }
-.log-item:last-child { border-bottom: none; }
-@keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:none; } }
-.log-dir { font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
-.ld-buy  { background: rgba(22,163,74,.15);  color: #4ade80; border: 1px solid rgba(22,163,74,.3); }
-.ld-sell { background: rgba(220,38,38,.15);  color: #f87171; border: 1px solid rgba(220,38,38,.3); }
-.ld-move { background: rgba(245,158,11,.12); color: #fcd34d; border: 1px solid rgba(245,158,11,.3); }
-.log-body { flex: 1; min-width: 0; }
-.log-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
-.log-sum  { font-size: 11px; color: #8892aa; line-height: 1.5; margin-bottom: 2px; }
-.log-meta { font-size: 10px; color: #3d4460; }
-.log-amt  { text-align: right; flex-shrink: 0; }
-.log-btc  { font-family: monospace; font-size: 13px; font-weight: 700; }
-.log-usd  { font-size: 9px; color: #3d4460; margin-top: 2px; }
-.empty-msg { text-align: center; padding: 24px; color: #3d4460; font-size: 12px; }
+/* SİNYAL GEÇMİŞİ */
+.section{background:#0e1118;border:1px solid rgba(255,255,255,.06);border-radius:8px;overflow:hidden;margin-bottom:12px}
+.sec-h{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
+.sec-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:#4a5068}
+.sec-btn{font-size:10px;color:#4a5068;background:none;border:none;cursor:pointer}
+.sec-btn:hover{color:#ef4444}
 
-/* CÜZDAN LİSTESİ */
-.wallets { background: #0e1118; border: 1px solid rgba(255,255,255,.06); border-radius: 8px; overflow: hidden; }
-.wallet-item { display: grid; grid-template-columns: 40px 1fr auto auto auto; align-items: center; gap: 12px;
-  padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,.04); transition: background .15s; }
-.wallet-item:last-child { border-bottom: none; }
-.wallet-item:hover { background: rgba(255,255,255,.015); }
-.w-rank { font-family: monospace; font-size: 11px; color: #3d4460; }
-.w-info { min-width: 0; }
-.w-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
-.w-addr { font-family: monospace; font-size: 10px; color: #4a5068; }
-.w-addr a { color: #4a5068; text-decoration: none; }
-.w-addr a:hover { color: #f7931a; }
-.w-type { font-size: 9px; color: #4a5068; margin-top: 2px; }
-.w-bal  { text-align: right; font-family: monospace; }
-.w-btc  { font-size: 12px; font-weight: 700; color: #f7931a; }
-.w-usd  { font-size: 9px; color: #4a5068; margin-top: 1px; }
-.w-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-.w-del  { background: none; border: 1px solid rgba(255,255,255,.06); color: #4a5068;
-  padding: 2px 7px; border-radius: 5px; cursor: pointer; font-size: 10px; }
-.w-del:hover { border-color: rgba(220,38,38,.4); color: #ef4444; }
-.w-sig-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.log-item{display:flex;gap:10px;align-items:flex-start;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.04)}
+.log-item:last-child{border-bottom:none}
+.log-dir{font-size:9px;font-weight:800;padding:2px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
+.d-buy {background:rgba(22,163,74,.15); color:#4ade80;border:1px solid rgba(22,163,74,.3)}
+.d-sell{background:rgba(220,38,38,.15); color:#f87171;border:1px solid rgba(220,38,38,.3)}
+.d-move{background:rgba(245,158,11,.12);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
+.log-body{flex:1;min-width:0}
+.log-name{font-size:12px;font-weight:700;margin-bottom:2px}
+.log-sum{font-size:11px;color:#8892aa;line-height:1.5}
+.log-meta{font-size:10px;color:#3d4460;margin-top:3px}
+.log-amt{text-align:right;flex-shrink:0}
+.log-btc{font-family:monospace;font-size:13px;font-weight:700}
+.log-usd{font-size:9px;color:#3d4460;margin-top:1px}
+.empty{text-align:center;padding:20px;color:#3d4460;font-size:12px}
 
-/* TOASTS */
-#toasts { position: fixed; bottom: 16px; right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 6px; pointer-events: none; }
-.toast { background: #161923; border: 1px solid rgba(255,255,255,.1); border-radius: 8px;
-  padding: 9px 14px; font-size: 12px; max-width: 340px; animation: tin .2s ease; pointer-events: auto; line-height: 1.5; }
-.toast.buy  { border-color: rgba(22,163,74,.5);  color: #4ade80; font-weight: 600; }
-.toast.sell { border-color: rgba(220,38,38,.5);  color: #f87171; font-weight: 600; }
-.toast.ok   { border-color: rgba(34,197,94,.3); }
-.toast.err  { border-color: rgba(220,38,38,.3);  color: #f87171; }
-@keyframes tin { from { transform: translateX(10px); opacity: 0; } to { transform: none; opacity: 1; } }
-
-.spin { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(255,255,255,.1);
-  border-top-color: #f7931a; border-radius: 50%; animation: sp .7s linear infinite; }
-@keyframes sp { to { transform: rotate(360deg); } }
-
-@media(max-width:700px) { .stats { grid-template-columns: repeat(2,1fr); } .wallet-item { grid-template-columns: 1fr auto auto; } .w-rank,.w-bal { display: none; } }
+/* TOAST */
+#toasts{position:fixed;bottom:14px;right:12px;z-index:999;display:flex;flex-direction:column;gap:5px;pointer-events:none;max-width:300px}
+.toast{background:#161923;border:1px solid rgba(255,255,255,.1);border-radius:8px;
+  padding:8px 12px;font-size:12px;animation:tin .2s ease;pointer-events:auto;line-height:1.5}
+.toast.buy {border-color:rgba(22,163,74,.5); color:#4ade80;font-weight:600}
+.toast.sell{border-color:rgba(220,38,38,.5); color:#f87171;font-weight:600}
+.toast.ok  {border-color:rgba(34,197,94,.3)}
+.toast.err {border-color:rgba(220,38,38,.3);color:#f87171}
+@keyframes tin{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 
 <div class="bar">
-  <div class="logo">🐋 BTC <em>Whale</em> Watch</div>
+  <div class="logo">🐋 <em>BTC</em> Watch</div>
   <div class="bar-r">
-    <div class="price-pill" id="price-pill">Yükleniyor…</div>
-    <div class="live"><div class="dot"></div><span id="status-lbl">Hazırlanıyor</span></div>
+    <div class="price" id="price-pill">—</div>
+    <div class="live"><div class="dot"></div><span id="status">Başlıyor</span></div>
   </div>
 </div>
 
 <div class="wrap">
 
-  <!-- SİNYAL BANNER -->
-  <div id="sig-bar">
-    <div class="sig-row">
-      <div class="sig-badge" id="sig-badge">—</div>
-      <div class="sig-main">
-        <div class="sig-title" id="sig-title">—</div>
-        <div class="sig-text"  id="sig-text">—</div>
-      </div>
-      <div>
-        <div class="sig-amt" id="sig-amt">—</div>
-        <div class="sig-usd" id="sig-usd">—</div>
-      </div>
-      <button class="sig-close" onclick="document.getElementById('sig-bar').style.display='none'">✕</button>
+  <!-- SON SİNYAL — ANA KART -->
+  <div id="signal-card">
+    <div class="sc-top">
+      <div class="sc-badge" id="sc-badge">—</div>
+      <div class="sc-time" id="sc-time">—</div>
     </div>
-  </div>
-
-  <!-- CÜZDAN EKLE -->
-  <div class="add-box">
-    <h3>Cüzdan Ekle</h3>
-    <div class="add-row">
-      <input id="in-addr" placeholder="BTC adresi (1… 3… bc1…)" />
-      <input id="in-name" placeholder="Şirket / Etiket" style="max-width:180px" />
-      <input id="in-type" placeholder="Tür: Borsa / Kurum / Miner…" style="max-width:160px" />
-      <button class="btn btn-o" onclick="addWallet()">+ Ekle</button>
-      <button class="btn btn-g" onclick="refreshAll()">↺ Güncelle</button>
-    </div>
+    <div class="sc-entity" id="sc-entity">—</div>
+    <div class="sc-amount" id="sc-amount">—</div>
+    <div class="sc-summary" id="sc-summary">—</div>
+    <a class="sc-link" id="sc-link" href="#" target="_blank">TX: —</a>
   </div>
 
   <!-- STATS -->
   <div class="stats">
-    <div class="stat"><div class="stat-l">BTC Fiyat</div><div class="stat-v c-o" id="s-price">—</div></div>
-    <div class="stat"><div class="stat-l">🟢 Giriş (Alış)</div><div class="stat-v c-g" id="s-buy">0</div></div>
-    <div class="stat"><div class="stat-l">🔴 Çıkış (Satış)</div><div class="stat-v c-r" id="s-sell">0</div></div>
-    <div class="stat"><div class="stat-l">⚡ Toplam Sinyal</div><div class="stat-v c-y" id="s-total">0</div></div>
+    <div class="stat"><div class="stat-l">BTC Fiyat</div><div class="stat-v co" id="s-price">—</div></div>
+    <div class="stat"><div class="stat-l">🟢 Birikim</div><div class="stat-v cg" id="s-buy">0</div></div>
+    <div class="stat"><div class="stat-l">🔴 Satış</div><div class="stat-v cr" id="s-sell">0</div></div>
   </div>
 
-  <!-- SINYAL LOG -->
-  <div class="log-panel">
-    <div class="log-header">
-      <span class="log-title">⚡ Sinyal Geçmişi</span>
-      <button class="log-clear" onclick="clearLog()">Temizle</button>
+  <!-- SİNYAL GEÇMİŞİ -->
+  <div class="section">
+    <div class="sec-h">
+      <span class="sec-title">⚡ Sinyal Geçmişi</span>
+      <button class="sec-btn" onclick="clearLog()">Temizle</button>
     </div>
-    <div id="log-body"><div class="empty-msg">Henüz sinyal yok — cüzdanlar izleniyor…</div></div>
-  </div>
-
-  <!-- CÜZDAN LİSTESİ -->
-  <div class="wallets" id="wallet-list">
-    <div class="log-header"><span class="log-title">📋 İzlenen Cüzdanlar</span></div>
-    <div id="wallet-rows"><div class="empty-msg">Henüz cüzdan eklenmedi.</div></div>
+    <div id="log-body"><div class="empty">İzleniyor… sinyal bekleniyor</div></div>
   </div>
 
 </div>
@@ -197,535 +125,326 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #07090f; color: 
 <div id="toasts"></div>
 
 <script>
-// ═══════════════════════════════════════════════
-// AYARLAR — manuel değiştir
-// ═══════════════════════════════════════════════
-const MIN_BTC_ALERT = 1;   // kaç BTC üstünde uyar
-const CHECK_INTERVAL = 60; // saniye (Mempool API ücretsiz limitine göre)
+// ══════════════════════════════════════════════════════════════
+//  CÜZDAN LİSTESİ
+//  Format: "Şirket Adı; adres1; adres2; adres3"
+//  Yeni adres eklemek için satırın sonuna ;yeni_adres ekle
+// ══════════════════════════════════════════════════════════════
+const WALLET_LIST = `
+Strategy Inc.       ; Özel Şirket ; bc1q0cau4jfzqjpcsne6sq0lk6gx6vl8jk29zuy7tj ; bc1qdnf34kltjxm6p56pgeulx6vkxzuatmjndjy0cw ; 3LRW2jFyNL6rCp4SnFyDHpSXtLMnM1ZPt2
+Binance             ; Borsa       ; 34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo ; 3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6 ; bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h ; 1P5ZEDWTKTFGxQjZphgWPQUpe554WKDfHQ
+Coinbase            ; Borsa       ; bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh ; 3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr ; bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2
+BlackRock IBIT      ; ETF         ; bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3 ; bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g
+Fidelity FBTC       ; ETF         ; bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40 ; 3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B ; 12XqeqZRVkBDgmPLVY4ZC6Y4ruUUEug8Fx
+Tether              ; Özel Şirket ; 1KAt6STtisWMMVo5XGdos9DtWXGMkuXAaD ; 3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8
+ABD Hükümeti        ; Hükümet     ; bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt ; 1HQ3Go3ggs8pFnXuHVHRytPCq5fGG8Hbhx
+İngiltere Hükümeti  ; Hükümet     ; 1FszNJQy53p2uyy3jb1MTCvyqRb5GsmUbP ; 17A16QmavnUfCW11DAApiJxp7ARnxN5pGX
+Çin Hükümeti        ; Hükümet     ; 1LruNZjwamWJXThX2Y8C2d47QqhAkkc5os ; 38DN2uFMZPiHLHJigfv4kWC9JWJrNnhLcn
+MARA Holdings       ; Miner       ; bc1q2wcsxqq5xpd7k7h6k3wdz4ywms5f9x6pzqjwz2 ; 3Kzh9QAQgHkXDAX1RArMJdJAZU5rPZmFYo ; 19dSFkYFnQNkBpZsuF4XbPVDJGHMBCPmjz
+Riot Platforms      ; Miner       ; 3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh ; bc1qc2xvy7k3x97f8y4g5c6m9ynkv3j0l6pzyrscpf
+CleanSpark          ; Miner       ; 3JqJufFZmkEP97xrmfD1KkMMjUYR4A9BCn ; bc1q6q7mmvqxap5qkdm8h9cxjts87vhh3jjt2aqyz9
+Hut 8 Mining        ; Miner       ; 3BqTvMfz6YVkA7kL0JjHFNj2eJe0PcHgBC ; 1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F
+Twenty One Capital  ; Özel Şirket ; 3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a
+Tesla               ; Özel Şirket ; bc1q4t7tazl59kmhyxjy56yzw84j23a79xkepn6hlt ; 3PW8tHhiBiEBbA3GhRjhCBhvY7DmNS2gKj
+Galaxy Digital      ; Özel Şirket ; bc1qfyzpg0h4fjnl4e44zhqzrww30y72z24rnmyvxs ; 3E5JunJqkJPi2hKbp5DxoJ5Lnusg3fVGwA
+Bitfinex            ; Borsa       ; bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97 ; 3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r
+Upbit               ; Borsa       ; bc1q2md2m2h2n0xnvj4g5k7v2c5jymhpjg5m7kk4mz
+Kraken              ; Borsa       ; 3FupZp77ySr7jwoLYEJ9Ro4i7ksepjta8r ; 1FuppPFSAVwepKPLbbGZfPo8q3bNABFbcv
+OKX                 ; Borsa       ; 3LqJPuT5NkHfPoVgkCYcMm7hJEVZyFEEHy ; 37Nt3z9dMdFeMPXJfzXCTxGTdvdGLHpJBz
+Bybit               ; Borsa       ; bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz ; 3DPfHGHPcCJMnBCMBqjq6zHY8TcXLCuYDc
+Gemini              ; Borsa       ; 1FeguRrKnSBxqjMaKNiT2w7GE7E7pBwqPf
+KuCoin              ; Borsa       ; 3GNpfCMr34CMpEXBqJeGP7y3vxYZkRR7Bx
+Block Inc.          ; Özel Şirket ; 3PbJsbiT3cTPdkU9L6qS7L2jCzF4B81Jfk
+Satoshi Nakamoto    ; Genesis     ; 1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa
+`;
 
-// ═══════════════════════════════════════════════
-// KURUMSAL CÜZDAN LİSTESİ
-// Yeni adres eklemek için bu listeye satır ekle:
-// { addr:'...', name:'...', type:'...' }
-// type örnekleri: 'Borsa', 'ETF', 'Miner', 'Hükümet', 'Özel Şirket'
-// ═══════════════════════════════════════════════
-const PRESET_WALLETS = [
-  // ── STRATEGY (MicroStrategy) ──
-  { addr:'bc1q0cau4jfzqjpcsne6sq0lk6gx6vl8jk29zuy7tj', name:'Strategy Inc.', type:'Özel Şirket' },
-  { addr:'bc1qdnf34kltjxm6p56pgeulx6vkxzuatmjndjy0cw', name:'Strategy Inc.', type:'Özel Şirket' },
-  { addr:'3LRW2jFyNL6rCp4SnFyDHpSXtLMnM1ZPt2',         name:'Strategy Inc.', type:'Özel Şirket' },
-
-  // ── BİNANCE ──
-  { addr:'34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo',         name:'Binance', type:'Borsa' },
-  { addr:'3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6',         name:'Binance', type:'Borsa' },
-  { addr:'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h', name:'Binance', type:'Borsa' },
-  { addr:'38UmuUqPCrFmQo4khkomQwZ4VbY2nZMJ67',         name:'Binance', type:'Borsa' },
-  { addr:'3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb',         name:'Binance', type:'Borsa' },
-  { addr:'1P5ZEDWTKTFGxQjZphgWPQUpe554WKDfHQ',         name:'Binance', type:'Borsa' },
-
-  // ── COİNBASE ──
-  { addr:'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', name:'Coinbase', type:'Borsa' },
-  { addr:'3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr',         name:'Coinbase', type:'Borsa' },
-  { addr:'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2', name:'Coinbase', type:'Borsa' },
-  { addr:'bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g', name:'Coinbase / BlackRock IBIT', type:'Borsa/ETF' },
-
-  // ── BLACKROCK IBIT ──
-  { addr:'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3', name:'BlackRock IBIT', type:'ETF' },
-
-  // ── FİDELİTY FBTC ──
-  { addr:'bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40', name:'Fidelity FBTC', type:'ETF' },
-  { addr:'3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B',         name:'Fidelity FBTC', type:'ETF' },
-  { addr:'12XqeqZRVkBDgmPLVY4ZC6Y4ruUUEug8Fx',         name:'Fidelity FBTC', type:'ETF' },
-
-  // ── TETHER ──
-  { addr:'1KAt6STtisWMMVo5XGdos9DtWXGMkuXAaD',         name:'Tether', type:'Özel Şirket' },
-  { addr:'3NukJ6fYZJ5Kk8bPjycAnruZkE5Q7UW7i8',         name:'Tether', type:'Özel Şirket' },
-  { addr:'15aibZQkmDh4BSRR1hpkhBBmfQ7RVaAJhf',         name:'Tether', type:'Özel Şirket' },
-
-  // ── ABD HÜKÜMETİ ──
-  { addr:'bc1qazcm763858nkj2dj986etajv6wquslv8uxwczt', name:'ABD Hükümeti (FBI)', type:'Hükümet' },
-  { addr:'1HQ3Go3ggs8pFnXuHVHRytPCq5fGG8Hbhx',         name:'ABD Hükümeti (FBI)', type:'Hükümet' },
-
-  // ── İNGİLTERE HÜKÜMETİ ──
-  { addr:'1FszNJQy53p2uyy3jb1MTCvyqRb5GsmUbP',         name:'İngiltere Hükümeti (NCA)', type:'Hükümet' },
-  { addr:'17A16QmavnUfCW11DAApiJxp7ARnxN5pGX',         name:'İngiltere Hükümeti (NCA)', type:'Hükümet' },
-
-  // ── ÇİN HÜKÜMETİ ──
-  { addr:'1LruNZjwamWJXThX2Y8C2d47QqhAkkc5os',         name:'Çin Hükümeti', type:'Hükümet' },
-  { addr:'38DN2uFMZPiHLHJigfv4kWC9JWJrNnhLcn',         name:'Çin Hükümeti', type:'Hükümet' },
-
-  // ── MARA HOLDİNGS ──
-  { addr:'bc1q2wcsxqq5xpd7k7h6k3wdz4ywms5f9x6pzqjwz2', name:'MARA Holdings', type:'Miner' },
-  { addr:'3Kzh9QAQgHkXDAX1RArMJdJAZU5rPZmFYo',          name:'MARA Holdings', type:'Miner' },
-  { addr:'19dSFkYFnQNkBpZsuF4XbPVDJGHMBCPmjz',          name:'MARA Holdings', type:'Miner' },
-
-  // ── RİOT PLATFORMS ──
-  { addr:'3LCGsSmfr24demGvriN4e3ft8wEcDuHFqh',         name:'Riot Platforms', type:'Miner' },
-  { addr:'bc1qc2xvy7k3x97f8y4g5c6m9ynkv3j0l6pzyrscpf', name:'Riot Platforms', type:'Miner' },
-
-  // ── CLEANSPARK ──
-  { addr:'3JqJufFZmkEP97xrmfD1KkMMjUYR4A9BCn',         name:'CleanSpark', type:'Miner' },
-  { addr:'bc1q6q7mmvqxap5qkdm8h9cxjts87vhh3jjt2aqyz9', name:'CleanSpark', type:'Miner' },
-
-  // ── HUT 8 MİNİNG ──
-  { addr:'3BqTvMfz6YVkA7kL0JjHFNj2eJe0PcHgBC',         name:'Hut 8 Mining', type:'Miner' },
-  { addr:'1AJbsFZ64EpEfS5UAjAfcUG8pH8Jn3rn1F',         name:'Hut 8 Mining', type:'Miner' },
-
-  // ── TWENTY ONE CAPİTAL ──
-  { addr:'3LQUu4v9z6KNch71j7kbj8GPeAGUo1FW6a',         name:'Twenty One Capital', type:'Özel Şirket' },
-
-  // ── TESLA ──
-  { addr:'bc1q4t7tazl59kmhyxjy56yzw84j23a79xkepn6hlt', name:'Tesla', type:'Özel Şirket' },
-  { addr:'3PW8tHhiBiEBbA3GhRjhCBhvY7DmNS2gKj',         name:'Tesla', type:'Özel Şirket' },
-
-  // ── GALAXY DİGİTAL ──
-  { addr:'bc1qfyzpg0h4fjnl4e44zhqzrww30y72z24rnmyvxs', name:'Galaxy Digital', type:'Özel Şirket' },
-  { addr:'3E5JunJqkJPi2hKbp5DxoJ5Lnusg3fVGwA',         name:'Galaxy Digital', type:'Özel Şirket' },
-
-  // ── BİTFİNEX ──
-  { addr:'bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97', name:'Bitfinex', type:'Borsa' },
-  { addr:'3D2oetdNuZUqQHPJmcMDDHYoqkyNVsFk9r',         name:'Bitfinex', type:'Borsa' },
-
-  // ── UPBIT ──
-  { addr:'bc1q2md2m2h2n0xnvj4g5k7v2c5jymhpjg5m7kk4mz', name:'Upbit', type:'Borsa' },
-
-  // ── KRAKEN ──
-  { addr:'3FupZp77ySr7jwoLYEJ9Ro4i7ksepjta8r',         name:'Kraken', type:'Borsa' },
-  { addr:'1FuppPFSAVwepKPLbbGZfPo8q3bNABFbcv',         name:'Kraken', type:'Borsa' },
-
-  // ── OKX ──
-  { addr:'3LqJPuT5NkHfPoVgkCYcMm7hJEVZyFEEHy',         name:'OKX', type:'Borsa' },
-  { addr:'37Nt3z9dMdFeMPXJfzXCTxGTdvdGLHpJBz',         name:'OKX', type:'Borsa' },
-
-  // ── BYBIT ──
-  { addr:'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz', name:'Bybit', type:'Borsa' },
-  { addr:'3DPfHGHPcCJMnBCMBqjq6zHY8TcXLCuYDc',         name:'Bybit', type:'Borsa' },
-
-  // ── GEMİNİ ──
-  { addr:'1FeguRrKnSBxqjMaKNiT2w7GE7E7pBwqPf',         name:'Gemini', type:'Borsa' },
-
-  // ── KUCOİN ──
-  { addr:'3GNpfCMr34CMpEXBqJeGP7y3vxYZkRR7Bx',         name:'KuCoin', type:'Borsa' },
-
-  // ── ROBİNHOOD ──
-  { addr:'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2', name:'Robinhood', type:'Borsa' },
-
-  // ── BLOCK INC. ──
-  { addr:'3PbJsbiT3cTPdkU9L6qS7L2jCzF4B81Jfk',         name:'Block Inc.', type:'Özel Şirket' },
-
-  // ── SATOSHİ NAKAMOTO ──
-  { addr:'1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa',         name:'Satoshi Nakamoto', type:'Genesis / Bilinmiyor' },
-];
-
-// ═══════════════════════════════════════════════
-// BİLİNEN BORSA ADRESLERİ — sinyal üretimi için
-// ═══════════════════════════════════════════════
-const EXCHANGE_ADDRS = new Set([
-  '34xp4vrocgjym3xr7ycvpfhocnxv4twseo',
-  '3m219kr5venenb47ewrpfwyb5jq2djxrp6',
-  'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h',
-  '38umuuqpcrfmqo4khkomqwz4vby2nzmj67',
-  '3lyjfcfhpxyjremsask2jkn69lweykazexb',
-  '1p5zedwtkfgxqjzphgwpqupe554wkdfhq',
-  'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-  '3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr',
-  'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2',
-  'bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g',
+// ══════════════════════════════════════════════════════════════
+//  BİLİNEN BORSA ADRESLERİ (küçük harf)
+// ══════════════════════════════════════════════════════════════
+const EXCHANGES = new Set([
+  '34xp4vrocgjym3xr7ycvpfhocnxv4twseo','3m219kr5venenb47ewrpfwyb5jq2djxrp6',
+  'bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h','1p5zedwtkfgxqjzphgwpqupe554wkdfhq',
+  'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh','3fpykxnmx5pvefvtlp5sgjbecmzpoxpxzr',
+  'bc1ql49ydapnjafl5t2cp9zqpjwe6pdgmxy98859v2','bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g',
   'bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3',
-  '3lqjput5nkhfpovgkcycmm7hje7ze7pfby',
-  '37nt3z9dmdfepmxjfzxctxgtdvdglhpjbz',
-  'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz',
-  '3dpfhghpcckjmnbcmbqjq6zhytctxlcuydcs',
-  '1fegurkknsbxqjmakniit2w7ge7e7pbwqpf',
-  '3gnpfcmr34cmpeхбqjegp7y3vxyzkrr7bx',
-  '3fupzp77ysr7jwolye j9ro4i7ksepjta8r',
-  '1fuppffsavwepkplbbgzfpo8q3bnabfbcv',
-  'bc1q2md2m2h2n0xnvj4g5k7v2c5jymhpjg5m7kk4mz',
-  '3lqjput5nkhfpovgkcycmm7hje7ze7zfby',
+  '3lqjput5nkhfpovgkcycmm7hje7ze7zfby','37nt3z9dmdfepmxjfzxctxgtdvdglhpjbz',
+  'bc1qek9yjh5p5ejy9jpjws6k77qqaglfvtvhgkm8pz','3dpfhghpccjmnbcmbqjq6zhytctxlcuydcs',
+  '1fegurkknsbxqjmakniit2w7ge7e7pbwqpf','3gnpfcmr34cmpexbqjegp7y3vxyzkrr7bx',
+  '3fupzp77ysr7jwolye j9ro4i7ksepjta8r','1fuppffsavwepkplbbgzfpo8q3bnabfbcv',
+  'bc1q2md2m2h2n0xnvj4g5k7v2c5jymhpjg5m7kk4mz','3lqjput5nkhfpovgkcycmm7hje7ze7zfby',
+  '3lqjput5nkhfpovgkcycmm7hje7ze7pfby','bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97',
 ]);
 
-// ═══════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════
-let wallets = [];   // { addr, name, type, bal, lastTxHash, lastCheck }
-let signalLog = [];
-let btcPrice = 0;
-let sBuy = 0, sSell = 0, sTotal = 0;
-let checkQueue = [];
-let checking = false;
-
-// ═══════════════════════════════════════════════
-// BAŞLAT
-// ═══════════════════════════════════════════════
-async function init() {
-  // LocalStorage'dan yükle (önceden eklenenler)
-  const saved = JSON.parse(localStorage.getItem('btc_wallets') || '[]');
-  wallets = saved;
-
-  // Preset listesini ekle (kayıtlı olmayanları)
-  for (const p of PRESET_WALLETS) {
-    if (!wallets.find(w => w.addr === p.addr)) {
-      wallets.push({ addr: p.addr, name: p.name, type: p.type, bal: null, lastTxHash: null, lastCheck: null });
-    }
-  }
-  saveWallets();
-  renderWallets();
-
-  fetchPrice();
-  setInterval(fetchPrice, 60000);
-
-  // İlk kontrol
-  await checkAll();
-  // Periyodik kontrol
-  setInterval(checkAll, CHECK_INTERVAL * 1000);
-
-  document.getElementById('in-addr').addEventListener('keydown', e => { if (e.key === 'Enter') addWallet(); });
+// ══════════════════════════════════════════════════════════════
+//  PARSE — WALLET_LIST string'ini nesnelere çevir
+// ══════════════════════════════════════════════════════════════
+function parseWallets() {
+  const result = [];
+  const addrIndex = {}; // adres → entity objesi
+  WALLET_LIST.trim().split('\n').forEach(line => {
+    line = line.trim();
+    if (!line) return;
+    const parts = line.split(';').map(p => p.trim()).filter(Boolean);
+    if (parts.length < 3) return;
+    const name = parts[0];
+    const type = parts[1];
+    const addrs = parts.slice(2);
+    const entity = { name, type, addrs, bal: null, lastTxHash: null, lastCheck: null };
+    result.push(entity);
+    addrs.forEach(a => { addrIndex[a.toLowerCase()] = entity; });
+  });
+  return { entities: result, addrIndex };
 }
 
-// ═══════════════════════════════════════════════
-// FİYAT
-// ═══════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════════════════════════
+let { entities, addrIndex } = parseWallets();
+let signalLog = [];
+let btcPrice = 0;
+let sBuy = 0, sSell = 0;
+const MIN_BTC = 0.5; // minimum uyarı eşiği
+const INTERVAL = 90; // saniye
+
+// ══════════════════════════════════════════════════════════════
+//  BAŞLAT
+// ══════════════════════════════════════════════════════════════
+async function init() {
+  setStatus('Başlatılıyor…');
+  fetchPrice();
+  setInterval(fetchPrice, 60000);
+  await runChecks();
+  setInterval(runChecks, INTERVAL * 1000);
+}
+
+// ══════════════════════════════════════════════════════════════
+//  FİYAT
+// ══════════════════════════════════════════════════════════════
 async function fetchPrice() {
   try {
     const r = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');
-    const d = await r.json();
-    btcPrice = d.bitcoin.usd;
-    document.getElementById('price-pill').textContent = '$' + btcPrice.toLocaleString('en-US');
-    document.getElementById('s-price').textContent = '$' + btcPrice.toLocaleString('en-US');
+    btcPrice = (await r.json()).bitcoin.usd;
   } catch {
     try {
       const r = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');
-      const d = await r.json();
-      btcPrice = parseFloat(d.price);
-      document.getElementById('price-pill').textContent = '$' + btcPrice.toLocaleString('en-US');
-      document.getElementById('s-price').textContent = '$' + btcPrice.toLocaleString('en-US');
+      btcPrice = parseFloat((await r.json()).price);
     } catch {}
   }
-}
-
-// ═══════════════════════════════════════════════
-// TÜM CÜZDANLARI KONTROL ET
-// Mempool.space API — tamamen ücretsiz, kayıt yok
-// ═══════════════════════════════════════════════
-async function checkAll() {
-  document.getElementById('status-lbl').textContent = 'Kontrol ediliyor…';
-  let i = 0;
-  for (const w of wallets) {
-    i++;
-    document.getElementById('status-lbl').textContent = `Kontrol: ${i}/${wallets.length}`;
-    await checkWallet(w);
-    await sleep(400); // rate limit için küçük bekleme
+  if (btcPrice) {
+    document.getElementById('price-pill').textContent = '$' + btcPrice.toLocaleString('en-US');
+    document.getElementById('s-price').textContent = '$' + (btcPrice/1000).toFixed(1) + 'K';
   }
-  document.getElementById('status-lbl').textContent = wallets.length + ' cüzdan aktif';
-  renderWallets();
 }
 
-async function checkWallet(w) {
+// ══════════════════════════════════════════════════════════════
+//  TÜM ENTİTYLERİ KONTROL ET
+// ══════════════════════════════════════════════════════════════
+async function runChecks() {
+  let i = 0;
+  for (const entity of entities) {
+    i++;
+    setStatus(`${i}/${entities.length} kontrol ediliyor`);
+    for (const addr of entity.addrs) {
+      await checkAddr(entity, addr);
+      await sleep(300);
+    }
+  }
+  setStatus(`${entities.length} cüzdan aktif — son: ${timeNow()}`);
+}
+
+async function checkAddr(entity, addr) {
   try {
-    // Mempool.space — ücretsiz, CORS destekli
-    const r = await fetch(`https://mempool.space/api/address/${w.addr}`);
-    if (!r.ok) return;
-    const d = await r.json();
+    // 1) Adres bilgisi
+    const r1 = await fetch(`https://mempool.space/api/address/${addr}`);
+    if (!r1.ok) return;
+    const info = await r1.json();
+    const bal = (info.chain_stats.funded_txo_sum - info.chain_stats.spent_txo_sum) / 1e8;
 
-    const newBal = (d.chain_stats.funded_txo_sum - d.chain_stats.spent_txo_sum) / 1e8;
-    const totalTx = d.chain_stats.tx_count + d.mempool_stats.tx_count;
+    // 2) Son TX listesi
+    const r2 = await fetch(`https://mempool.space/api/address/${addr}/txs`);
+    if (!r2.ok) return;
+    const txs = await r2.json();
+    if (!txs || txs.length === 0) { entity.bal = bal; return; }
 
-    // Son TX hash'ini al
-    const txR = await fetch(`https://mempool.space/api/address/${w.addr}/txs`);
-    if (!txR.ok) return;
-    const txs = await txR.json();
-    if (!txs || txs.length === 0) { w.bal = newBal; w.lastCheck = Date.now(); return; }
+    const latest = txs[0];
 
-    const latestTx = txs[0];
-    const latestHash = latestTx.txid;
-
-    // Bakiye ve TX bilgisini güncelle
-    w.bal = newBal;
-    w.lastCheck = Date.now();
-
-    // Eğer yeni TX varsa sinyal üret
-    if (w.lastTxHash && w.lastTxHash !== latestHash) {
-      await analyzeNewTx(w, latestTx);
+    // İlk yüklemede sadece hash kaydet, sinyal üretme
+    if (!entity.lastTxHash) {
+      entity.bal = bal;
+      entity.lastTxHash = latest.txid;
+      return;
     }
 
-    w.lastTxHash = latestHash;
-  } catch (e) {
-    // sessiz fail
-  }
+    // Yeni TX var mı?
+    if (entity.lastTxHash !== latest.txid) {
+      entity.bal = bal;
+      entity.lastTxHash = latest.txid;
+      await analyzeTx(entity, addr, latest);
+    }
+  } catch {}
 }
 
-// ═══════════════════════════════════════════════
-// TX ANALİZİ — giriş mi çıkış mı, borsa mı?
-// ═══════════════════════════════════════════════
-async function analyzeNewTx(wallet, tx) {
-  // Bu cüzdana gelen mi giden mi hesapla
+// ══════════════════════════════════════════════════════════════
+//  TX ANALİZİ
+// ══════════════════════════════════════════════════════════════
+async function analyzeTx(entity, watchedAddr, tx) {
+  // Net değişim hesapla
   let received = 0, sent = 0;
+  const counterAddrs = [];
 
   for (const vin of (tx.vin || [])) {
-    if (vin.prevout?.scriptpubkey_address === wallet.addr) {
-      sent += vin.prevout.value;
-    }
+    const a = vin.prevout?.scriptpubkey_address;
+    if (a === watchedAddr) sent += vin.prevout.value;
+    else if (a) counterAddrs.push(a);
   }
   for (const vout of (tx.vout || [])) {
-    if (vout.scriptpubkey_address === wallet.addr) {
-      received += vout.value;
-    }
+    const a = vout.scriptpubkey_address;
+    if (a === watchedAddr) received += vout.value;
+    else if (a) counterAddrs.push(a);
   }
 
-  const netSat = received - sent;
-  const netBtc = netSat / 1e8;
-  if (Math.abs(netBtc) < MIN_BTC_ALERT) return;
+  const netBtc = (received - sent) / 1e8;
+  if (Math.abs(netBtc) < MIN_BTC) return;
 
-  // Karşı taraf adreslerini topla
-  const counterAddrs = [];
-  if (netBtc > 0) {
-    // Giriş: parayı gönderen adresleri topla
-    for (const vin of (tx.vin || [])) {
-      if (vin.prevout?.scriptpubkey_address && vin.prevout.scriptpubkey_address !== wallet.addr) {
-        counterAddrs.push(vin.prevout.scriptpubkey_address);
-      }
-    }
-  } else {
-    // Çıkış: paranın gittiği adresleri topla
-    for (const vout of (tx.vout || [])) {
-      if (vout.scriptpubkey_address && vout.scriptpubkey_address !== wallet.addr) {
-        counterAddrs.push(vout.scriptpubkey_address);
-      }
-    }
-  }
+  // Karşı taraf analizi
+  const counterIsExchange = counterAddrs.some(a => EXCHANGES.has(a.toLowerCase()));
+  const counterEntity = counterAddrs.map(a => addrIndex[a.toLowerCase()]).find(Boolean);
+  const counterName = counterEntity ? counterEntity.name
+    : counterIsExchange ? 'Borsa Adresi' : null;
 
-  // Karşı taraf borsa mı?
-  const counterIsExchange = counterAddrs.some(a => EXCHANGE_ADDRS.has(a.toLowerCase()));
-  const counterIsTracked = wallets.find(w => counterAddrs.includes(w.addr));
-
-  // Sinyal türünü belirle + özet metin yaz
-  let signal, summary, signalType;
+  // ── SİNYAL KARAR MANTIĞI ──
+  let signalType, badge, summary;
+  const btcAbs = Math.abs(netBtc);
+  const usd = btcAbs * btcPrice;
+  const btcStr = btcAbs.toFixed(4) + ' BTC';
+  const usdStr = usd > 0 ? ' ($' + fmtUSD(usd) + ')' : '';
 
   if (netBtc > 0) {
-    // Para GELDİ (received)
+    // Para GELDİ bu adrese
     if (counterIsExchange) {
-      signal = '🔴 SATIŞ SİNYALİ';
       signalType = 'sell';
-      summary = `${wallet.name} (${wallet.type}), bilinen bir BORSA adresinden ${Math.abs(netBtc).toFixed(4)} BTC aldı. `
-              + `Bu genellikle borsadan çekim — birikim veya güvenli saklama anlamına gelir. `
-              + (wallet.type === 'Borsa' ? `Borsa→Borsa transferi, iç hareket olabilir.` : `Kurumsal alış sinyali olarak değerlendirilebilir.`);
-    } else if (counterIsTracked) {
-      signal = '🟡 TRANSFER';
+      badge = '🔴 SATIŞ HAZIRLIĞI';
+      summary = `${entity.name}, bir BORSA adresinden ${btcStr}${usdStr} çekti. `
+              + `Borsa çıkışı genellikle uzun vadeli saklama (birikim) ya da OTC alış anlamına gelir. `
+              + `${entity.type === 'Borsa' ? 'Borsa arası iç transfer olabilir.' : 'Bullish sinyal olarak değerlendirilebilir.'}`;
+    } else if (counterEntity) {
       signalType = 'move';
-      summary = `${wallet.name}, takip listenizdeki başka bir cüzdandan ${Math.abs(netBtc).toFixed(4)} BTC aldı. `
-              + `Kurumlar arası transfer veya iç hareket.`;
+      badge = '🟡 KURUM ARASI';
+      summary = `${entity.name}, ${counterName} adresinden ${btcStr}${usdStr} transfer aldı. Kurumlar arası hareket.`;
     } else {
-      signal = '🟢 GİRİŞ';
       signalType = 'buy';
-      summary = `${wallet.name} (${wallet.type}) cüzdanına ${Math.abs(netBtc).toFixed(4)} BTC GİRDİ. `
-              + `Gönderen adres bilinmiyor — OTC alım, miner ödülü veya özel transfer olabilir.`;
+      badge = '🟢 GİRİŞ';
+      summary = `${entity.name} cüzdanına ${btcStr}${usdStr} GİRDİ. Kaynak adres takip listesinde yok — OTC alım, miner ödülü veya bilinmeyen kaynak.`;
     }
   } else {
-    // Para GİTTİ (sent)
+    // Para GİTTİ bu adresten
     if (counterIsExchange) {
-      signal = '🔴 SATIŞ SİNYALİ';
       signalType = 'sell';
-      summary = `${wallet.name} (${wallet.type}), BORSA adresine ${Math.abs(netBtc).toFixed(4)} BTC GÖNDERDİ. `
-              + `Bu klasik satış hazırlığı sinyalidir — kurumsal cüzdandan borsaya transfer, yakın vadede satış baskısı yaratabilir. `
-              + (wallet.type === 'Miner' ? `Miner satışı — üretim maliyeti karşılama amacıyla olabilir.` : '');
-    } else if (counterIsTracked) {
-      signal = '🟡 TRANSFER';
+      badge = '🔴 SATIŞ SİNYALİ';
+      summary = `${entity.name} (${entity.type}), BORSA adresine ${btcStr}${usdStr} GÖNDERDİ. `
+              + `Kurumsal cüzdandan borsaya transfer — yakın vadede satış baskısı yaratabilir. `
+              + `${entity.type === 'Miner' ? 'Miner üretim maliyeti satışı olabilir.' : ''}`;
+    } else if (counterEntity) {
       signalType = 'move';
-      summary = `${wallet.name}, takip listenizdeki başka bir cüzdana ${Math.abs(netBtc).toFixed(4)} BTC gönderdi. `
-              + `İç hareket veya kurumlar arası transfer.`;
+      badge = '🟡 TRANSFER';
+      summary = `${entity.name}, ${counterName} adresine ${btcStr}${usdStr} gönderdi. Takip listesindeki başka bir kurum.`;
     } else {
-      signal = '🟢 ÇIKIŞ';
       signalType = 'buy';
-      summary = `${wallet.name} (${wallet.type}) cüzdanından ${Math.abs(netBtc).toFixed(4)} BTC ÇIKTI. `
-              + `Hedef adres bilinmiyor — OTC satış, bağış veya özel transfer olabilir.`;
+      badge = '🟢 ÇIKIŞ';
+      summary = `${entity.name} cüzdanından ${btcStr}${usdStr} çıktı. Hedef adres bilinmiyor — OTC veya soğuk cüzdan transferi.`;
     }
   }
 
   const entry = {
-    time: Date.now(),
-    walletName: wallet.name,
-    walletType: wallet.type,
-    walletAddr: wallet.addr,
-    txHash: tx.txid,
-    btc: netBtc,
-    usd: Math.abs(netBtc) * btcPrice,
-    signal, signalType, summary,
-    counterIsExchange,
+    t: Date.now(), entity: entity.name, type: entity.type,
+    btc: netBtc, usd, badge, signalType, summary, txHash: tx.txid,
   };
 
   signalLog.unshift(entry);
-  if (signalLog.length > 50) signalLog.pop();
+  if (signalLog.length > 40) signalLog.pop();
 
   if (signalType === 'sell') { sSell++; document.getElementById('s-sell').textContent = sSell; }
   else if (signalType === 'buy') { sBuy++; document.getElementById('s-buy').textContent = sBuy; }
-  sTotal++;
-  document.getElementById('s-total').textContent = sTotal;
 
-  showBanner(entry);
+  showSignalCard(entry);
   renderLog();
-  playToast(entry);
+  toast(badge + '\n' + entity.name + ' — ' + btcStr, signalType);
 }
 
-// ═══════════════════════════════════════════════
-// BANNER
-// ═══════════════════════════════════════════════
-function showBanner(e) {
-  const bar = document.getElementById('sig-bar');
-  bar.className = e.signalType;
-  bar.style.display = 'block';
+// ══════════════════════════════════════════════════════════════
+//  ANA SİNYAL KARTI
+// ══════════════════════════════════════════════════════════════
+function showSignalCard(e) {
+  const card = document.getElementById('signal-card');
+  card.className = e.signalType;
+  card.style.display = 'block';
 
-  const badge = document.getElementById('sig-badge');
-  badge.textContent = e.signal;
-  badge.className = 'sig-badge badge-' + e.signalType;
+  const badge = document.getElementById('sc-badge');
+  badge.textContent = e.badge;
+  badge.className = 'sc-badge badge-' + e.signalType;
 
-  document.getElementById('sig-title').textContent = e.walletName + ' — ' + e.walletType;
-  document.getElementById('sig-title').style.color = e.signalType === 'sell' ? '#f87171' : e.signalType === 'buy' ? '#4ade80' : '#fcd34d';
-  document.getElementById('sig-text').textContent = e.summary;
+  document.getElementById('sc-time').textContent = timeAgo(e.t);
+  document.getElementById('sc-entity').textContent = e.entity + ' · ' + e.type;
+  document.getElementById('sc-entity').style.color = e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d';
 
-  const amt = document.getElementById('sig-amt');
-  amt.textContent = (e.btc > 0 ? '+' : '') + e.btc.toFixed(4) + ' BTC';
-  amt.className = 'sig-amt amt-' + e.signalType;
+  const amt = document.getElementById('sc-amount');
+  amt.textContent = (e.btc > 0 ? '+' : '') + e.btc.toFixed(4) + ' BTC' + (e.usd ? ' ≈ $' + fmtUSD(e.usd) : '');
+  amt.style.color = e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d';
 
-  document.getElementById('sig-usd').textContent = e.usd ? '≈ $' + fmtUSD(e.usd) : '';
+  document.getElementById('sc-summary').textContent = e.summary;
+  const link = document.getElementById('sc-link');
+  link.href = 'https://mempool.space/tx/' + e.txHash;
+  link.textContent = 'TX: ' + e.txHash.slice(0,16) + '… ↗';
 }
 
-// ═══════════════════════════════════════════════
-// LOG RENDER
-// ═══════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+//  LOG RENDER
+// ══════════════════════════════════════════════════════════════
 function renderLog() {
   const el = document.getElementById('log-body');
-  if (!signalLog.length) { el.innerHTML = '<div class="empty-msg">Henüz sinyal yok — cüzdanlar izleniyor…</div>'; return; }
+  if (!signalLog.length) {
+    el.innerHTML = '<div class="empty">İzleniyor… sinyal bekleniyor</div>';
+    return;
+  }
   el.innerHTML = signalLog.map(e => `
     <div class="log-item">
-      <div class="log-dir ld-${e.signalType}">${e.signal}</div>
+      <div class="log-dir d-${e.signalType}">${e.badge}</div>
       <div class="log-body">
-        <div class="log-name">${e.walletName} <span style="font-size:9px;color:#4a5068;font-weight:400">${e.walletType}</span></div>
+        <div class="log-name">${esc(e.entity)} <span style="font-size:9px;color:#4a5068;font-weight:400">${e.type}</span></div>
         <div class="log-sum">${e.summary}</div>
-        <div class="log-meta">
-          ${timeAgo(e.time)} ·
-          <a href="https://mempool.space/tx/${e.txHash}" target="_blank" style="color:#4a5068;text-decoration:none;font-family:monospace">${e.txHash.slice(0,12)}…↗</a>
-        </div>
+        <div class="log-meta">${timeAgo(e.t)} · <a href="https://mempool.space/tx/${e.txHash}" target="_blank" style="color:#4a5068;font-family:monospace;text-decoration:none">${e.txHash.slice(0,12)}…↗</a></div>
       </div>
       <div class="log-amt">
         <div class="log-btc" style="color:${e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d'}">${(e.btc>0?'+':'')+e.btc.toFixed(4)}</div>
-        <div style="font-size:9px;color:#f7931a;font-weight:600">BTC</div>
+        <div style="font-size:9px;color:#f7931a">BTC</div>
         <div class="log-usd">${e.usd?'$'+fmtUSD(e.usd):''}</div>
       </div>
     </div>`).join('');
 }
 
 function clearLog() {
-  signalLog = []; sBuy = 0; sSell = 0; sTotal = 0;
-  ['s-buy','s-sell','s-total'].forEach(id => document.getElementById(id).textContent = '0');
-  document.getElementById('sig-bar').style.display = 'none';
+  signalLog = []; sBuy = 0; sSell = 0;
+  document.getElementById('s-buy').textContent = '0';
+  document.getElementById('s-sell').textContent = '0';
+  document.getElementById('signal-card').style.display = 'none';
   renderLog();
 }
 
-// ═══════════════════════════════════════════════
-// CÜZDAN LIST RENDER
-// ═══════════════════════════════════════════════
-function renderWallets() {
-  const el = document.getElementById('wallet-rows');
-  if (!wallets.length) { el.innerHTML = '<div class="empty-msg">Henüz cüzdan eklenmedi.</div>'; return; }
-  el.innerHTML = wallets.map((w, i) => {
-    const bal = w.bal != null ? w.bal.toFixed(4) + ' BTC' : '…';
-    const usd = w.bal != null && btcPrice ? '$' + fmtUSD(w.bal * btcPrice) : '';
-    const short = w.addr.length > 20 ? w.addr.slice(0,8) + '…' + w.addr.slice(-6) : w.addr;
-    const typeColor = w.type === 'Borsa' ? '#60a5fa'
-      : w.type === 'ETF' ? '#a78bfa'
-      : w.type === 'Miner' ? '#fbbf24'
-      : w.type === 'Hükümet' ? '#f87171'
-      : '#94a3b8';
-    return `<div class="wallet-item">
-      <div class="w-rank">#${i+1}</div>
-      <div class="w-info">
-        <div class="w-name">${esc(w.name)}</div>
-        <div class="w-addr"><a href="https://mempool.space/address/${w.addr}" target="_blank">${short}</a></div>
-        <div class="w-type" style="color:${typeColor}">${w.type}</div>
-      </div>
-      <div class="w-bal">
-        <div class="w-btc">${bal}</div>
-        <div class="w-usd">${usd}</div>
-      </div>
-      <div class="w-status" style="background:${w.lastCheck ? '#22c55e' : '#3d4460'}"></div>
-      <button class="w-del" onclick="removeWallet('${w.addr}')">✕</button>
-    </div>`;
-  }).join('');
-}
-
-// ═══════════════════════════════════════════════
-// CÜZDAN EKLE / KALDIR
-// ═══════════════════════════════════════════════
-function addWallet() {
-  const addr = document.getElementById('in-addr').value.trim();
-  const name = document.getElementById('in-name').value.trim() || shortAddr(addr);
-  const type = document.getElementById('in-type').value.trim() || 'Bilinmiyor';
-  if (!addr) { toast('Adres boş', 'err'); return; }
-  if (!isValidBTC(addr)) { toast('Geçersiz BTC adresi', 'err'); return; }
-  if (wallets.find(w => w.addr === addr)) { toast('Bu adres zaten listede', 'err'); return; }
-  wallets.push({ addr, name, type, bal: null, lastTxHash: null, lastCheck: null });
-  saveWallets(); renderWallets();
-  document.getElementById('in-addr').value = '';
-  document.getElementById('in-name').value = '';
-  document.getElementById('in-type').value = '';
-  toast(name + ' eklendi', 'ok');
-  // Hemen kontrol et
-  const w = wallets[wallets.length - 1];
-  checkWallet(w).then(() => renderWallets());
-}
-
-function removeWallet(addr) {
-  wallets = wallets.filter(w => w.addr !== addr);
-  saveWallets(); renderWallets();
-}
-
-async function refreshAll() {
-  toast('Güncelleniyor…', 'ok');
-  await checkAll();
-  toast('Tamamlandı', 'ok');
-}
-
-function saveWallets() {
-  localStorage.setItem('btc_wallets', JSON.stringify(wallets));
-}
-
-// ═══════════════════════════════════════════════
-// TOAST & SES
-// ═══════════════════════════════════════════════
-function playToast(e) {
-  const msg = e.signal + '\n' + e.walletName + ' — ' + Math.abs(e.btc).toFixed(4) + ' BTC';
-  toast(msg, e.signalType === 'sell' ? 'sell' : 'buy');
-}
-
-function toast(msg, type = '') {
-  const t = document.createElement('div');
-  t.className = 'toast ' + type;
-  t.innerHTML = msg.replace(/\n/g, '<br>');
+// ══════════════════════════════════════════════════════════════
+//  HELPERS
+// ══════════════════════════════════════════════════════════════
+function fmtUSD(v){if(v>=1e9)return(v/1e9).toFixed(2)+'B';if(v>=1e6)return(v/1e6).toFixed(2)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return v.toFixed(0);}
+function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'sn önce';if(s<3600)return Math.floor(s/60)+'dk önce';return Math.floor(s/3600)+'sa önce';}
+function timeNow(){return new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+function setStatus(t){document.getElementById('status').textContent=t;}
+function toast(msg,type=''){
+  const t=document.createElement('div');t.className='toast '+type;
+  t.innerHTML=msg.replace(/\n/g,'<br>');
   document.getElementById('toasts').appendChild(t);
-  setTimeout(() => t.remove(), type === 'sell' || type === 'buy' ? 9000 : 3500);
+  setTimeout(()=>t.remove(),type==='sell'||type==='buy'?9000:3500);
 }
-
-// ═══════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════
-function fmtUSD(v) {
-  if (v >= 1e9) return (v/1e9).toFixed(2) + 'B';
-  if (v >= 1e6) return (v/1e6).toFixed(2) + 'M';
-  if (v >= 1e3) return (v/1e3).toFixed(1) + 'K';
-  return v.toFixed(0);
-}
-function shortAddr(a) { return a.slice(0,6) + '…' + a.slice(-4); }
-function timeAgo(ts) {
-  const s = Math.floor((Date.now() - ts) / 1000);
-  if (s < 60) return s + 'sn önce';
-  if (s < 3600) return Math.floor(s/60) + 'dk önce';
-  return Math.floor(s/3600) + 'sa önce';
-}
-function isValidBTC(a) {
-  return /^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a) || /^bc1[a-z0-9]{39,87}$/i.test(a);
-}
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 init();
 </script>

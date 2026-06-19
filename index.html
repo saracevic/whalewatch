@@ -738,19 +738,44 @@ async function restPollLoop(){
 //  YENİDEN TARA MODALI
 // ═══════════════════════════════════════════
 let rescanResolve=null;
+let rescanCountdownTimer=null;
+let rescanCountdownSec=10;
 
 function askRescan(scannedCount,loopNum){
   return new Promise(resolve=>{
     rescanResolve=resolve;
-    document.getElementById('rescan-desc').innerHTML=
-      `Tur #${loopNum} tamamlandı. <b>${scannedCount}</b> adres tarandı.<br><br>`+
-      `0.5 BTC üstü veya altında herhangi bir transfer tespit edilmedi.<br><br>`+
-      `Yeniden tarama başlatmak ister misin?`;
+    rescanCountdownSec=10;
     document.getElementById('rescan-modal').classList.add('show');
+    _renderRescanDesc(scannedCount,loopNum,rescanCountdownSec);
+
+    // Geri sayım
+    rescanCountdownTimer=setInterval(()=>{
+      rescanCountdownSec--;
+      _renderRescanDesc(scannedCount,loopNum,rescanCountdownSec);
+      // Geri sayım bitti → otomatik "Evet"
+      if(rescanCountdownSec<=0){
+        clearInterval(rescanCountdownTimer);
+        rescanCountdownTimer=null;
+        confirmRescan(true);
+      }
+    },1000);
   });
 }
 
+function _renderRescanDesc(scannedCount,loopNum,sec){
+  const pct=Math.round((10-sec)/10*100);
+  document.getElementById('rescan-desc').innerHTML=
+    `Tur #${loopNum} tamamlandı. <b>${scannedCount}</b> adres tarandı.<br><br>`+
+    `0.5 BTC üstü veya altında herhangi bir transfer tespit edilmedi.<br><br>`+
+    `Yeniden tarama başlatmak ister misin?<br><br>`+
+    `<div style="background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;height:4px;margin-bottom:6px">`+
+    `<div style="height:4px;background:var(--orange);border-radius:8px;transition:width .9s linear;width:${pct}%"></div></div>`+
+    `<span style="font-size:11px;color:var(--muted);font-family:monospace">`+
+    `${sec > 0 ? `${sec} saniye içinde otomatik yeniden tarama başlayacak…` : 'Başlatılıyor…'}</span>`;
+}
+
 function confirmRescan(yes){
+  if(rescanCountdownTimer){clearInterval(rescanCountdownTimer);rescanCountdownTimer=null;}
   document.getElementById('rescan-modal').classList.remove('show');
   if(rescanResolve) rescanResolve(yes);
   rescanResolve=null;

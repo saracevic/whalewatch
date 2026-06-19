@@ -179,6 +179,25 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .toast.err {border-color:rgba(239,68,68,.3);color:#f87171}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
+/* ── INLINE TICKER (kategori barı yerine) ── */
+.inline-ticker-wrap{overflow:hidden;margin-bottom:8px;height:28px;display:flex;align-items:center;position:relative}
+.inline-ticker-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:32px;
+  background:linear-gradient(to right,transparent,var(--bg));pointer-events:none;z-index:2}
+.ticker-track{display:flex;align-items:center;white-space:nowrap;animation:tickerScroll 36s linear infinite;gap:6px}
+.ticker-track:hover{animation-play-state:paused}
+.ticker-item{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;
+  border:1px solid var(--border);background:var(--card);flex-shrink:0}
+.ticker-name{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.4px;font-family:monospace}
+.ticker-price{font-size:10px;font-weight:700;color:var(--txt);font-family:'SF Mono',monospace}
+.ticker-chg{font-size:9px;font-weight:700}
+.ticker-up{color:#22c55e}
+.ticker-dn{color:#ef4444}
+.ticker-dot{width:4px;height:4px;border-radius:50%;flex-shrink:0}
+.ticker-dot-up{background:#22c55e;box-shadow:0 0 4px #22c55e80}
+.ticker-dot-dn{background:#ef4444;box-shadow:0 0 4px #ef444480}
+.ticker-dot-na{background:var(--muted)}
+@keyframes tickerScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
 .alert-banner{display:none;position:fixed;top:80px;left:0;right:0;z-index:40;
   padding:10px 16px;text-align:center;font-size:13px;font-weight:700;animation:flashin .3s ease}
 .alert-banner.sell{background:rgba(239,68,68,.95);color:#fff}
@@ -230,7 +249,9 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div class="stat"><div class="stat-l">🔴 Satış</div><div class="stat-v cr" id="s-sell">0</div><div class="stat-sub">sinyal</div></div>
   </div>
 
-  <div class="stats-bar" id="stats-bar"></div>
+  <div class="inline-ticker-wrap">
+    <div class="ticker-track" id="ticker-track"></div>
+  </div>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
@@ -954,6 +975,105 @@ function isValidBTC(a){return/^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a)||/^bc1[a-
 function toast(msg,type=''){const t=document.createElement('div');t.className='toast '+type;t.innerHTML=msg.replace(/\n/g,'<br>');document.getElementById('toasts').appendChild(t);setTimeout(()=>t.remove(),type==='sell'||type==='buy'?10000:3500);}
 
 // ═══════════════════════════════════════════
+//  KAYAN FİYAT ŞERİDİ
+//  BTC · ETH · Nasdaq · Gold
+// ═══════════════════════════════════════════
+const TICKER_ASSETS=[
+  {id:'bitcoin',       label:'BTC',    symbol:'₿',  coingecko:'bitcoin',   isCrypto:true},
+  {id:'ethereum',      label:'ETH',    symbol:'Ξ',  coingecko:'ethereum',  isCrypto:true},
+  {id:'nasdaq',        label:'NASDAQ', symbol:'',   coingecko:null,        isCrypto:false},
+  {id:'gold',          label:'GOLD',   symbol:'',   coingecko:null,        isCrypto:false},
+];
+
+// Fiyat + 24s değişim deposu
+const tickerData={};
+
+async function fetchTickerCrypto(){
+  try{
+    const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+    const d=await r.json();
+    if(d.bitcoin){tickerData['bitcoin']={price:d.bitcoin.usd,chg:d.bitcoin.usd_24h_change};}
+    if(d.ethereum){tickerData['ethereum']={price:d.ethereum.usd,chg:d.ethereum.usd_24h_change};}
+  }catch{
+    // Binance fallback — sadece fiyat, değişim yok
+    try{
+      const [br,er]=await Promise.all([
+        fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT'),
+        fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT'),
+      ]);
+      const bd=await br.json(),ed=await er.json();
+      tickerData['bitcoin']={price:parseFloat(bd.lastPrice),chg:parseFloat(bd.priceChangePercent)};
+      tickerData['ethereum']={price:parseFloat(ed.lastPrice),chg:parseFloat(ed.priceChangePercent)};
+    }catch{}
+  }
+}
+
+async function fetchTickerMarkets(){
+  // Yahoo Finance üzerinden Nasdaq (^IXIC) ve Gold (GC=F)
+  // CORS sorununu aşmak için allorigins proxy kullanılıyor
+  const symbols=[
+    {key:'nasdaq', sym:'%5EIXIC'},  // ^IXIC URL-encoded
+    {key:'gold',   sym:'GC%3DF'},   // GC=F URL-encoded
+  ];
+  for(const {key,sym} of symbols){
+    try{
+      const url=`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=2d`;
+      const proxy=`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      const r=await fetch(proxy,{signal:AbortSignal.timeout(8000)});
+      const d=await r.json();
+      const meta=d?.chart?.result?.[0]?.meta;
+      if(meta){
+        const price=meta.regularMarketPrice;
+        const prev=meta.chartPreviousClose||meta.previousClose;
+        const chg=prev?((price-prev)/prev*100):null;
+        tickerData[key]={price,chg};
+      }
+    }catch{}
+  }
+}
+
+function fmtTickerPrice(val,id){
+  if(val===undefined||val===null)return '—';
+  if(id==='bitcoin')return '$'+Math.round(val).toLocaleString('en-US');
+  if(id==='ethereum')return '$'+Math.round(val).toLocaleString('en-US');
+  if(id==='gold')return '$'+val.toFixed(1);
+  if(id==='nasdaq')return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  return val.toFixed(2);
+}
+
+function buildTickerHTML(){
+  return TICKER_ASSETS.map(a=>{
+    const d=tickerData[a.id]||{};
+    const price=d.price!=null?fmtTickerPrice(d.price,a.id):'—';
+    const chg=d.chg!=null?d.chg:null;
+    const up=chg!=null?chg>=0:null;
+    const chgStr=chg!=null?(up?'▲':'▼')+Math.abs(chg).toFixed(2)+'%':'—';
+    const chgCls=chg!=null?(up?'ticker-up':'ticker-dn'):'';
+    const dotCls=chg!=null?(up?'ticker-dot-up':'ticker-dot-dn'):'ticker-dot-na';
+    return `<div class="ticker-item">
+      <div class="ticker-dot ${dotCls}"></div>
+      <span class="ticker-name">${a.label}</span>
+      <span class="ticker-price">${price}</span>
+      <span class="ticker-chg ${chgCls}">${chgStr}</span>
+    </div>`;
+  }).join('');
+}
+
+function renderTicker(){
+  const html=buildTickerHTML();
+  // Sonsuz döngü için 2× kopya
+  document.getElementById('ticker-track').innerHTML=html+html;
+}
+
+async function tickerInit(){
+  await Promise.all([fetchTickerCrypto(),fetchTickerMarkets()]);
+  renderTicker();
+  // BTC/ETH her 30sn, piyasa verileri her 90sn güncellenir
+  setInterval(async()=>{await fetchTickerCrypto();renderTicker();},30000);
+  setInterval(async()=>{await fetchTickerMarkets();renderTicker();},90000);
+}
+
+// ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
 async function init(){
@@ -966,6 +1086,7 @@ async function init(){
   await fetchPrice();
   setInterval(fetchPrice,60000);
   setInterval(renderStatusBar,4000);
+  tickerInit();              // Kayan fiyat şeridi
   buildWsConnections();   // 5 WS → tüm adresler anlık kapsanıyor
   restPollLoop();         // Baseline + sessiz adres taraması
 }

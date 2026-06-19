@@ -408,10 +408,15 @@ const APIS=[
     txUrl:   a=>`https://blockstream.info/api/address/${a}/txs`,
     parseAddr: d=>({bal:(d.chain_stats.funded_txo_sum-d.chain_stats.spent_txo_sum)/1e8,txCount:d.chain_stats.tx_count}),
     parseTxs: txs=>txs,
-    rateMs:1400,   // nazik hız: rate limit (429) tetiklenmesin diye yavaş
+    // Rate limit (429) yememek için istek aralığı 1.5sn'ye sabitlendi.
+    // Döngü mekanizmasındaki tüm sleep() çağrıları bu değeri baz alır.
+    rateMs:1500,
     ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   }
 ];
+// Not: mempool.space artık sadece WS (WebSocket) ve dış linkler (tx görüntüleme)
+// için kullanılıyor. REST taramada veya manuel sorguda KULLANILMIYOR — sertifika
+// hatasını (ERR_CERT_AUTHORITY_INVALID) bu kaynak verdiği için bilerek izole edildi.
 
 // ── STATE
 let signalLog=[],btcPrice=0,sBuy=0,sSell=0;

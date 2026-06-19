@@ -512,7 +512,7 @@ function renderStatusBar(){
     parts.push(`<div class="chip ${cls}"><div class="chip-dot ${dotCls}"></div>${label} ·${api.reqCount}</div>`);
   }
   if(USE_PROXY){
-    parts.push(`<div class="chip chip-slow"><div class="chip-dot dot-slow"></div>🔁 proxy modu</div>`);
+    parts.push(`<div class="chip chip-slow"><div class="chip-dot dot-slow"></div>🔁 proxy ${activeProxyIdx>=0?'#'+(activeProxyIdx+1):'deneniyor'}</div>`);
   }
   bar.innerHTML=parts.join('');
 }
@@ -565,26 +565,46 @@ function createWsConn(chunk,idx){
 //  Tüm 130+ adresi tek API ile, yavaş ama
 //  hatasız şekilde tarar.
 // ═══════════════════════════════════════════
-// CORS proxy fallback: bazı mobil tarayıcı/origin kombinasyonlarında
+// CORS proxy fallback zinciri: bazı mobil tarayıcı/origin kombinasyonlarında
 // blockstream.info CORS header'ı dönmeyebiliyor. Doğrudan istek başarısız
-// olursa otomatik olarak allorigins proxy üzerinden tekrar dener.
-let USE_PROXY=false; // ilk doğrudan denemede false, hata alınca true'ya döner
-function proxify(url){return 'https://api.allorigins.win/raw?url='+encodeURIComponent(url);}
+// olursa sırayla farklı proxy servisleri denenir; çalışan bulunduğunda
+// o proxy "yapışkan" hale gelir (her seferinde baştan denenmez).
+const PROXIES=[
+  u=>'https://corsproxy.io/?url='+encodeURIComponent(u),
+  u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
+  u=>'https://thingproxy.freeboard.io/fetch/'+u,
+];
+let activeProxyIdx=-1; // -1 = doğrudan istek modu, 0+ = PROXIES içindeki sabitlenmiş proxy
+let USE_PROXY=false; // status bar göstergesi için
 
 async function fetchSafe(url,timeoutMs=9000){
-  if(!USE_PROXY){
+  // 1) Doğrudan istek (henüz bir proxy'ye sabitlenmediysek dene)
+  if(activeProxyIdx===-1){
     try{
       const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
       if(!r.ok)throw new Error('HTTP '+r.status);
       return await r.json();
-    }catch(e){
-      // Doğrudan istek başarısız oldu → proxy moduna geç ve bir kez proxy ile dene
-      USE_PROXY=true;
-    }
+    }catch(e){ /* doğrudan başarısız → proxy denemesine geç */ }
   }
-  const r2=await fetch(proxify(url),{signal:AbortSignal.timeout(timeoutMs+4000)});
-  if(!r2.ok)throw new Error('Proxy HTTP '+r2.status);
-  return r2.json();
+  // 2) Zaten sabitlenmiş bir proxy varsa direkt onu kullan
+  if(activeProxyIdx>=0){
+    const r=await fetch(PROXIES[activeProxyIdx](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
+    if(!r.ok)throw new Error('Proxy HTTP '+r.status);
+    USE_PROXY=true;
+    return r.json();
+  }
+  // 3) Henüz sabitlenmemiş proxy: hepsini sırayla dene, ilk çalışanı sabitle
+  let lastErr;
+  for(let i=0;i<PROXIES.length;i++){
+    try{
+      const r=await fetch(PROXIES[i](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
+      if(!r.ok)throw new Error('Proxy HTTP '+r.status);
+      const data=await r.json();
+      activeProxyIdx=i;USE_PROXY=true;
+      return data;
+    }catch(e){lastErr=e;}
+  }
+  throw lastErr||new Error('Tüm proxyler başarısız');
 }
 async function pollOneAddr(api,addr){
   const known=KNOWN_MAP[addr.toLowerCase()];if(!known)return;

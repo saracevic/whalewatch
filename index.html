@@ -576,6 +576,7 @@ const PROXIES=[
 ];
 let activeProxyIdx=-1; // -1 = doğrudan istek modu, 0+ = PROXIES içindeki sabitlenmiş proxy
 let USE_PROXY=false; // status bar göstergesi için
+let LAST_ERR=''; // ekranda gösterilecek son hata mesajı (debug için)
 
 async function fetchSafe(url,timeoutMs=9000){
   // 1) Doğrudan istek (henüz bir proxy'ye sabitlenmediysek dene)
@@ -584,14 +585,16 @@ async function fetchSafe(url,timeoutMs=9000){
       const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
       if(!r.ok)throw new Error('HTTP '+r.status);
       return await r.json();
-    }catch(e){ /* doğrudan başarısız → proxy denemesine geç */ }
+    }catch(e){ LAST_ERR='direkt: '+(e.name||'')+' '+(e.message||e); }
   }
   // 2) Zaten sabitlenmiş bir proxy varsa direkt onu kullan
   if(activeProxyIdx>=0){
-    const r=await fetch(PROXIES[activeProxyIdx](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
-    if(!r.ok)throw new Error('Proxy HTTP '+r.status);
-    USE_PROXY=true;
-    return r.json();
+    try{
+      const r=await fetch(PROXIES[activeProxyIdx](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
+      if(!r.ok)throw new Error('Proxy HTTP '+r.status);
+      USE_PROXY=true;
+      return await r.json();
+    }catch(e){LAST_ERR='proxy#'+(activeProxyIdx+1)+': '+(e.name||'')+' '+(e.message||e);throw e;}
   }
   // 3) Henüz sabitlenmemiş proxy: hepsini sırayla dene, ilk çalışanı sabitle
   let lastErr;
@@ -602,7 +605,7 @@ async function fetchSafe(url,timeoutMs=9000){
       const data=await r.json();
       activeProxyIdx=i;USE_PROXY=true;
       return data;
-    }catch(e){lastErr=e;}
+    }catch(e){lastErr=e;LAST_ERR='proxy#'+(i+1)+': '+(e.name||'')+' '+(e.message||e);}
   }
   throw lastErr||new Error('Tüm proxyler başarısız');
 }

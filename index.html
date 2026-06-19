@@ -443,7 +443,7 @@ const wsStats=Array.from({length:WS_COUNT},(_,i)=>({id:i,connected:false,trackCo
 
 // REST yardımcıları
 const REST_RATE_MS=900;           // 900ms → ~110 req/dk, 429 yok
-const WS_SILENCE_THRESHOLD=25*60*1000; // 25 dakika sessizse REST tarar
+const WS_SILENCE_THRESHOLD=3*60*1000; // 3 dakika sessizse REST tarar
 const wsLastMsg={};               // addr → timestamp (son WS mesajı)
 
 // Tarama durumu
@@ -667,6 +667,20 @@ async function restBaseline(){
 
 async function restPollLoop(){
   await restBaseline();
+
+  // WS'in bağlanıp adres takibine başlaması için 3 dakika bekle.
+  // Bu sürede WS mesaj gönderdiği adresler wsLastMsg'e kaydedilir,
+  // REST döngüsü yalnızca gerçekten sessiz kalanları tarar.
+  document.getElementById('s-sub').textContent='WS ısınıyor (3dk)…';
+  document.getElementById('progress-label').textContent='WS bağlantıları yerleşiyor, 3 dakika bekleniyor…';
+  for(let i=180;i>0;i--){
+    await sleep(1000);
+    const wsOn=wsStats.filter(w=>w.connected).length;
+    const covered=Object.keys(wsLastMsg).length;
+    document.getElementById('progress-label').textContent=
+      `WS ısınıyor: ${180-i}s geçti · ${wsOn}/${WS_COUNT} bağlı · ${covered} adres aktif`;
+    if(i%10===0) renderStatusBar();
+  }
 
   while(true){
     restLoopCount++;

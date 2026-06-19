@@ -511,6 +511,9 @@ function renderStatusBar(){
     else{cls='chip-ok';dotCls='dot-ok';label=api.name+(age!==null?' '+age+'s':'');}
     parts.push(`<div class="chip ${cls}"><div class="chip-dot ${dotCls}"></div>${label} ·${api.reqCount}</div>`);
   }
+  if(USE_PROXY){
+    parts.push(`<div class="chip chip-slow"><div class="chip-dot dot-slow"></div>🔁 proxy modu</div>`);
+  }
   bar.innerHTML=parts.join('');
 }
 
@@ -562,12 +565,27 @@ function createWsConn(chunk,idx){
 //  Tüm 130+ adresi tek API ile, yavaş ama
 //  hatasız şekilde tarar.
 // ═══════════════════════════════════════════
-async function fetchSafe(url,timeoutMs=9000){
-  const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
-  if(!r.ok)throw new Error('HTTP '+r.status);
-  return r.json();
-}
+// CORS proxy fallback: bazı mobil tarayıcı/origin kombinasyonlarında
+// blockstream.info CORS header'ı dönmeyebiliyor. Doğrudan istek başarısız
+// olursa otomatik olarak allorigins proxy üzerinden tekrar dener.
+let USE_PROXY=false; // ilk doğrudan denemede false, hata alınca true'ya döner
+function proxify(url){return 'https://api.allorigins.win/raw?url='+encodeURIComponent(url);}
 
+async function fetchSafe(url,timeoutMs=9000){
+  if(!USE_PROXY){
+    try{
+      const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return await r.json();
+    }catch(e){
+      // Doğrudan istek başarısız oldu → proxy moduna geç ve bir kez proxy ile dene
+      USE_PROXY=true;
+    }
+  }
+  const r2=await fetch(proxify(url),{signal:AbortSignal.timeout(timeoutMs+4000)});
+  if(!r2.ok)throw new Error('Proxy HTTP '+r2.status);
+  return r2.json();
+}
 async function pollOneAddr(api,addr){
   const known=KNOWN_MAP[addr.toLowerCase()];if(!known)return;
   const t0=Date.now();

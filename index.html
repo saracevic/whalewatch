@@ -7,7 +7,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#07090f;--card:#0d1017;--card2:#111520;--border:rgba(255,255,255,.07);
+  --bg:#07090f;--card:#0d1017;--border:rgba(255,255,255,.07);
   --txt:#c8cedd;--muted:#4a5068;--dim:#2a2f40;
   --orange:#f7931a;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;
   --safe-bottom:env(safe-area-inset-bottom,0px);
@@ -22,39 +22,33 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .bar-r{display:flex;align-items:center;gap:6px}
 .price-pill{font-family:'SF Mono',monospace;font-weight:700;color:var(--orange);font-size:13px;
   background:rgba(247,147,26,.1);border:1px solid rgba(247,147,26,.25);padding:5px 10px;border-radius:20px}
-
-/* Mini status row under bar */
-.bar-status{display:flex;align-items:center;gap:6px;padding:4px 14px 5px;overflow-x:auto;scrollbar-width:none}
+.bar-status{display:flex;align-items:center;gap:5px;padding:4px 14px 6px;overflow-x:auto;scrollbar-width:none}
 .bar-status::-webkit-scrollbar{display:none}
-.status-chip{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700;
-  padding:3px 7px;border-radius:20px;border:1px solid;white-space:nowrap;flex-shrink:0}
-.chip-ok  {background:rgba(34,197,94,.08); border-color:rgba(34,197,94,.3); color:#4ade80}
-.chip-err {background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.3); color:#f87171}
-.chip-slow{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:#fcd34d}
-.chip-idle{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:var(--muted)}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;
+  padding:3px 8px;border-radius:20px;border:1px solid;white-space:nowrap;flex-shrink:0;font-family:monospace}
+.chip-ws-on {background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.35);color:#c4b5fd}
+.chip-ws-off{background:rgba(100,100,100,.08);border-color:rgba(100,100,100,.2);color:var(--muted)}
+.chip-ok   {background:rgba(34,197,94,.08); border-color:rgba(34,197,94,.3); color:#4ade80}
+.chip-slow {background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:#fcd34d}
+.chip-idle {background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:var(--muted)}
 .chip-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
-.chip-dot.ok  {background:#22c55e;box-shadow:0 0 4px #22c55e}
-.chip-dot.err {background:#ef4444}
-.chip-dot.slow{background:#f59e0b}
-.chip-dot.idle{background:var(--muted)}
-.chip-ws{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:#a78bfa}
-.chip-dot.ws{background:#a78bfa;box-shadow:0 0 4px #a78bfa;animation:blink 1.8s infinite}
-.chip-dot.ws-off{background:var(--dim)}
+.dot-ws {background:#a78bfa;box-shadow:0 0 5px #a78bfa80;animation:pulse 1.8s infinite}
+.dot-off{background:var(--dim)}
+.dot-ok {background:#22c55e;box-shadow:0 0 4px #22c55e80}
+.dot-slow{background:#f59e0b}
+.dot-idle{background:var(--muted)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
-.sound-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;
-  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;font-size:15px;color:var(--txt);transition:all .2s}
+.sound-btn,.notif-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;font-size:15px;color:var(--txt)}
 .sound-btn.on{border-color:rgba(247,147,26,.4);background:rgba(247,147,26,.08);color:var(--orange)}
 .sound-btn.off{opacity:.4}
-.notif-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;
-  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;font-size:14px;color:var(--txt);transition:all .2s}
 .notif-btn.on{border-color:rgba(167,139,250,.4);background:rgba(167,139,250,.08);color:#a78bfa}
 
 /* ── PAGE ── */
 .page{max-width:480px;margin:0 auto;padding:10px 10px calc(24px + var(--safe-bottom))}
-
-/* Banner */
 #banner{display:none;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid}
 #banner.buy {background:rgba(34,197,94,.07); border-color:rgba(34,197,94,.3)}
 #banner.sell{background:rgba(239,68,68,.07); border-color:rgba(239,68,68,.3)}
@@ -69,33 +63,23 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .bn-amount{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-.5px}
 .bn-summary{font-size:12px;color:#8892aa;line-height:1.6;margin-bottom:8px}
 .bn-link{font-size:10px;color:var(--muted);font-family:monospace;text-decoration:none}
-
-/* Stats grid */
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
 .stat-l{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:5px}
 .stat-v{font-size:20px;font-weight:800;font-family:'SF Mono',monospace;letter-spacing:-.5px}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .co{color:var(--orange)}.cg{color:var(--green)}.cr{color:var(--red)}
-
-/* Category pills */
-.stats-bar{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.stats-bar{display:flex;gap:5px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
 .stats-bar::-webkit-scrollbar{display:none}
-.stat-pill{font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;
+.cat-pill{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;
   border:1px solid var(--border);background:var(--card);color:var(--muted)}
-.stat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
-
-/* Progress */
+.cat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
 .progress-bar{height:2px;background:rgba(255,255,255,.05);margin-bottom:10px;border-radius:1px;overflow:hidden}
 .progress-fill{height:2px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:1px;transition:width .3s;width:0%}
-
-/* Sections */
 .section{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
 .sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
 .sec-act{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;font-weight:600}
-
-/* Query box */
 .qbox{padding:12px}
 .qrow{margin-bottom:8px}
 .qrow input{width:100%;background:var(--bg);border:1px solid rgba(255,255,255,.1);color:var(--txt);
@@ -131,8 +115,8 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .tx-item{display:flex;align-items:flex-start;gap:8px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04)}
 .tx-item:last-child{border-bottom:none}
 .tx-dir{font-size:9px;font-weight:800;padding:3px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:1px}
-.d-in {background:rgba(34,197,94,.13); color:#4ade80;border:1px solid rgba(34,197,94,.3)}
-.d-out{background:rgba(239,68,68,.13); color:#f87171;border:1px solid rgba(239,68,68,.3)}
+.d-in{background:rgba(34,197,94,.13);color:#4ade80;border:1px solid rgba(34,197,94,.3)}
+.d-out{background:rgba(239,68,68,.13);color:#f87171;border:1px solid rgba(239,68,68,.3)}
 .tx-body{flex:1;min-width:0}
 .tx-sum{font-size:11px;color:#8892aa;line-height:1.5}
 .tx-meta{font-size:9px;color:var(--dim);margin-top:2px}
@@ -146,8 +130,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .sl-med  {background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
 .sl-high {background:rgba(239,68,68,.15); color:#f87171;border:1px solid rgba(239,68,68,.3)}
 .sl-vhigh{background:rgba(239,68,68,.3);  color:#fca5a5;border:1px solid rgba(239,68,68,.5)}
-
-/* Log */
 .log-item{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .15s}
 .log-item:hover{background:rgba(255,255,255,.02)}
 .log-item:last-child{border-bottom:none}
@@ -166,30 +148,25 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .empty{text-align:center;padding:28px 16px;color:var(--dim);font-size:11px;line-height:1.8}
 .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.08);border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
 @keyframes sp{to{transform:rotate(360deg)}}
-
-/* Toasts */
 #toasts{position:fixed;bottom:calc(16px + var(--safe-bottom));left:50%;transform:translateX(-50%);z-index:999;
   display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;width:90%;max-width:380px}
 .toast{background:#161923;border:1px solid rgba(255,255,255,.1);border-radius:10px;
   padding:10px 16px;font-size:12px;animation:tin .25s ease;line-height:1.5;text-align:center;width:100%;font-weight:500}
-.toast.buy{border-color:rgba(34,197,94,.5);color:#4ade80;font-weight:700}
+.toast.buy {border-color:rgba(34,197,94,.5);color:#4ade80;font-weight:700}
 .toast.sell{border-color:rgba(239,68,68,.6);color:#f87171;font-weight:700;background:#1a0d0d}
 .toast.warn{border-color:rgba(245,158,11,.5);color:#fcd34d;font-weight:700}
-.toast.ok{border-color:rgba(34,197,94,.25)}
-.toast.err{border-color:rgba(239,68,68,.3);color:#f87171}
+.toast.ok  {border-color:rgba(34,197,94,.25)}
+.toast.err {border-color:rgba(239,68,68,.3);color:#f87171}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-.alert-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:40;
-  padding:10px 16px;text-align:center;font-size:13px;font-weight:700;animation:flashin .3s ease;margin-top:96px}
+.alert-banner{display:none;position:fixed;top:80px;left:0;right:0;z-index:40;
+  padding:10px 16px;text-align:center;font-size:13px;font-weight:700;animation:flashin .3s ease}
 .alert-banner.sell{background:rgba(239,68,68,.95);color:#fff}
-.alert-banner.buy{background:rgba(34,197,94,.9);color:#000}
+.alert-banner.buy {background:rgba(34,197,94,.9); color:#000}
 @keyframes flashin{0%{opacity:0;transform:translateY(-6px)}100%{opacity:1;transform:none}}
 </style>
 </head>
 <body>
-
 <div class="alert-banner" id="alert-banner"></div>
-
 <div class="bar">
   <div class="bar-main">
     <div class="logo">🐋 <em>BTC</em> Watch</div>
@@ -199,19 +176,12 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
       <div class="price-pill" id="price-pill">—</div>
     </div>
   </div>
-  <!-- Mini status şeridi -->
-  <div class="bar-status" id="bar-status">
-    <div class="status-chip chip-idle"><div class="chip-dot idle"></div>yükleniyor…</div>
-  </div>
+  <div class="bar-status" id="bar-status"></div>
 </div>
 
 <div class="page">
-
   <div id="banner">
-    <div class="bn-top">
-      <div class="bn-badge" id="bn-badge">—</div>
-      <div class="bn-time" id="bn-time">—</div>
-    </div>
+    <div class="bn-top"><div class="bn-badge" id="bn-badge">—</div><div class="bn-time" id="bn-time">—</div></div>
     <div class="bn-entity" id="bn-entity">—</div>
     <div class="bn-amount" id="bn-amount">—</div>
     <div class="bn-summary" id="bn-summary">—</div>
@@ -219,38 +189,19 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
   </div>
 
   <div class="stats">
-    <div class="stat">
-      <div class="stat-l">₿ BTC Fiyat</div>
-      <div class="stat-v co" id="s-price">—</div>
-    </div>
-    <div class="stat">
-      <div class="stat-l">🔍 İzlenen</div>
-      <div class="stat-v" id="s-total" style="color:#60a5fa">—</div>
-      <div class="stat-sub" id="s-cycle-sub">başlıyor…</div>
-    </div>
-    <div class="stat">
-      <div class="stat-l">🟢 Birikim</div>
-      <div class="stat-v cg" id="s-buy">0</div>
-      <div class="stat-sub">sinyal</div>
-    </div>
-    <div class="stat">
-      <div class="stat-l">🔴 Satış</div>
-      <div class="stat-v cr" id="s-sell">0</div>
-      <div class="stat-sub">sinyal</div>
-    </div>
+    <div class="stat"><div class="stat-l">₿ BTC Fiyat</div><div class="stat-v co" id="s-price">—</div></div>
+    <div class="stat"><div class="stat-l">🔍 İzlenen</div><div class="stat-v" id="s-total" style="color:#60a5fa">—</div><div class="stat-sub" id="s-sub">başlıyor…</div></div>
+    <div class="stat"><div class="stat-l">🟢 Birikim</div><div class="stat-v cg" id="s-buy">0</div><div class="stat-sub">sinyal</div></div>
+    <div class="stat"><div class="stat-l">🔴 Satış</div><div class="stat-v cr" id="s-sell">0</div><div class="stat-sub">sinyal</div></div>
   </div>
 
   <div class="stats-bar" id="stats-bar"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
   <div class="section">
-    <div class="sec-h">
-      <span class="sec-title">🔍 Adres Sorgula</span>
-    </div>
+    <div class="sec-h"><span class="sec-title">🔍 Adres Sorgula</span></div>
     <div class="qbox">
-      <div class="qrow">
-        <input id="q-addr" placeholder="BTC adresi yapıştır (1… 3… bc1…)" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" inputmode="text"/>
-      </div>
+      <div class="qrow"><input id="q-addr" placeholder="BTC adresi yapıştır (1… 3… bc1…)" autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off" inputmode="text"/></div>
       <div class="qrow2">
         <input id="q-name" placeholder="Etiket (opsiyonel)" autocapitalize="words"/>
         <button class="qbtn qbtn-p" onclick="queryAddr()">Sorgula</button>
@@ -260,24 +211,17 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
   </div>
 
   <div class="section">
-    <div class="sec-h">
-      <span class="sec-title">⚡ Son Hareketler</span>
-      <button class="sec-act" onclick="clearLog()">Temizle</button>
-    </div>
-    <div id="log-body">
-      <div class="empty">İzleniyor…<br>Balina hareketi bekleniyor 🐋</div>
-    </div>
+    <div class="sec-h"><span class="sec-title">⚡ Son Hareketler</span><button class="sec-act" onclick="clearLog()">Temizle</button></div>
+    <div id="log-body"><div class="empty">İzleniyor…<br>Balina hareketi bekleniyor 🐋</div></div>
   </div>
-
 </div>
-
 <div id="toasts"></div>
 
 <script>
 // ═══════════════════════════════════════════
 //  VERİ
 // ═══════════════════════════════════════════
-const RAW = {
+const RAW={
   exchange:[
     ["1PJiGp2yDLvUgqeBsuZVCBADArNsk6XEiw","Binance - Treasury"],
     ["34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo","Binance - Cold Wallet"],
@@ -446,75 +390,43 @@ for(const [cat,entries] of Object.entries(RAW)){
 const ALL_ADDRS=Object.keys(KNOWN_MAP);
 
 // ═══════════════════════════════════════════
-//  ÇOK-API TANIMLAMALARI
+//  CORS'U DESTEKLEYEN 3 API (test edildi ✅)
+//  mempool.space  — ana kaynak, tam TX detayı
+//  blockstream    — mempool mirror, yedek
+//  blockcypher    — 200 req/saat ücretsiz
 // ═══════════════════════════════════════════
 const APIS=[
   {
     id:'mempool', name:'mempool',
     addrUrl: a=>`https://mempool.space/api/address/${a}`,
     txUrl:   a=>`https://mempool.space/api/address/${a}/txs`,
-    parseAddr: d=>({bal:(d.chain_stats.funded_txo_sum-d.chain_stats.spent_txo_sum)/1e8, txCount:d.chain_stats.tx_count}),
-    parseTxs: txs=>txs,
-    rateMs:400,
+    parseAddr: d=>({bal:(d.chain_stats.funded_txo_sum-d.chain_stats.spent_txo_sum)/1e8,txCount:d.chain_stats.tx_count}),
+    parseTxs: txs=>txs,   // zaten mempool formatında
+    rateMs:450,
     ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   },
   {
-    id:'blockchain', name:'blockchain',
-    addrUrl: a=>`https://blockchain.info/rawaddr/${a}?limit=5&cors=true`,
-    txUrl:   null,
-    parseAddr: d=>({bal:d.final_balance/1e8, txCount:d.n_tx}),
-    parseTxs: d=>(d.txs||[]).slice(0,5).map(tx=>({
-      txid:tx.hash,
-      vin:(tx.inputs||[]).map(i=>({prevout:{scriptpubkey_address:i.prev_out?.addr,value:i.prev_out?.value||0}})),
-      vout:(tx.out||[]).map(o=>({scriptpubkey_address:o.addr,value:o.value||0})),
-      status:{block_time:tx.time}
-    })),
+    id:'blockstream', name:'blockstream',
+    addrUrl: a=>`https://blockstream.info/api/address/${a}`,
+    txUrl:   a=>`https://blockstream.info/api/address/${a}/txs`,
+    parseAddr: d=>({bal:(d.chain_stats.funded_txo_sum-d.chain_stats.spent_txo_sum)/1e8,txCount:d.chain_stats.tx_count}),
+    parseTxs: txs=>txs,   // mempool ile aynı format
     rateMs:500,
-    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
-  },
-  {
-    id:'blockchair', name:'blockchair',
-    addrUrl: a=>`https://api.blockchair.com/bitcoin/dashboards/address/${a}?limit=5`,
-    txUrl:   null,
-    parseAddr: d=>{
-      const info=d.data[Object.keys(d.data)[0]]?.address;
-      return info?{bal:info.balance/1e8,txCount:info.transaction_count}:null;
-    },
-    parseTxs: d=>{
-      const key=Object.keys(d.data)[0];
-      return (d.data[key]?.transactions||[]).slice(0,5).map(txid=>({txid,vin:[],vout:[],status:{}}));
-    },
-    rateMs:600,
     ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   },
   {
     id:'blockcypher', name:'blockcypher',
-    addrUrl: a=>`https://api.blockcypher.com/v1/btc/main/addrs/${a}?limit=5`,
+    // tek endpoint'te hem bakiye hem son txrefs geliyor
+    addrUrl: a=>`https://api.blockcypher.com/v1/btc/main/addrs/${a}?limit=5&includeHex=false`,
     txUrl:   null,
     parseAddr: d=>({bal:(d.balance||0)/1e8, txCount:d.n_tx||0}),
-    parseTxs: d=>(d.txrefs||[]).slice(0,5).map(tx=>({
-      txid:tx.tx_hash, vin:[], vout:[],
-      status:{block_time:tx.confirmed?Math.floor(new Date(tx.confirmed).getTime()/1000):undefined}
+    // blockcypher txrefs → minimal uyumlu format
+    // TX detayı eksik; yeni hash tespit edilirse mempool'dan tam tx çekilir
+    parseTxs: d=>(d.txrefs||[]).slice(0,5).map(t=>({
+      txid:t.tx_hash, vin:[], vout:[],
+      status:{block_time:t.confirmed?Math.floor(new Date(t.confirmed).getTime()/1000):undefined}
     })),
-    rateMs:500,
-    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
-  },
-  {
-    id:'bitaps', name:'bitaps',
-    addrUrl: a=>`https://api.bitaps.com/btc/v1/blockchain/address/state/${a}`,
-    txUrl:   a=>`https://api.bitaps.com/btc/v1/blockchain/address/transactions/${a}`,
-    parseAddr: d=>d.data?{bal:(d.data.balance||0)/1e8,txCount:d.data.tx_count||0}:null,
-    parseTxs: d=>(d.data?.list||[]).slice(0,5).map(tx=>({txid:tx.tx_hash,vin:[],vout:[],status:{block_time:tx.time}})),
-    rateMs:700,
-    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
-  },
-  {
-    id:'chainso', name:'chain.so',
-    addrUrl: a=>`https://chain.so/api/v2/get_address_balance/BTC/${a}`,
-    txUrl:   a=>`https://chain.so/api/v2/get_tx_received/BTC/${a}`,
-    parseAddr: d=>d.status==='success'?{bal:parseFloat(d.data?.confirmed_balance||0),txCount:0}:null,
-    parseTxs: d=>(d.data?.txs||[]).slice(0,5).map(tx=>({txid:tx.txid,vin:[],vout:[],status:{}})),
-    rateMs:700,
+    rateMs:600,
     ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   }
 ];
@@ -525,57 +437,35 @@ let lastTxHashes={};
 let soundEnabled=true,notifEnabled=false;
 let audioCtx=null;
 
-// WS durum
-const WS_BATCH=40, WS_COUNT=3;
+// WS
+const WS_BATCH=45, WS_COUNT=3;
 const wsConns=[];
 const wsStats=Array.from({length:WS_COUNT},(_,i)=>({id:i,connected:false,trackCount:0,rxCount:0}));
 
 // ═══════════════════════════════════════════
 //  SES
 // ═══════════════════════════════════════════
-function getAudioCtx(){
-  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-  return audioCtx;
-}
+function getAudioCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();return audioCtx;}
 function playAlert(type){
   if(!soundEnabled)return;
   try{
-    const ctx=getAudioCtx();
-    if(ctx.state==='suspended')ctx.resume();
+    const ctx=getAudioCtx();if(ctx.state==='suspended')ctx.resume();
     if(type==='sell'){
-      [0,.25,.5].forEach(d=>{
-        const o=ctx.createOscillator(),g=ctx.createGain();
-        o.connect(g);g.connect(ctx.destination);
-        o.type='square';
-        o.frequency.setValueAtTime(880,ctx.currentTime+d);
-        o.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+d+.15);
-        g.gain.setValueAtTime(.35,ctx.currentTime+d);
-        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.15);
-        o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.15);
-      });
+      [0,.25,.5].forEach(d=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);
+        o.type='square';o.frequency.setValueAtTime(880,ctx.currentTime+d);o.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+d+.15);
+        g.gain.setValueAtTime(.35,ctx.currentTime+d);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.15);
+        o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.15);});
     }else if(type==='buy'){
-      [[523,0],[659,.18],[784,.36]].forEach(([f,d])=>{
-        const o=ctx.createOscillator(),g=ctx.createGain();
-        o.connect(g);g.connect(ctx.destination);
-        o.type='sine';o.frequency.setValueAtTime(f,ctx.currentTime+d);
-        g.gain.setValueAtTime(.3,ctx.currentTime+d);
-        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.2);
-        o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.2);
-      });
-    }else{
-      const o=ctx.createOscillator(),g=ctx.createGain();
-      o.connect(g);g.connect(ctx.destination);
-      o.frequency.value=600;
-      g.gain.setValueAtTime(.2,ctx.currentTime);
-      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.2);
-      o.start(ctx.currentTime);o.stop(ctx.currentTime+.2);
-    }
+      [[523,0],[659,.18],[784,.36]].forEach(([f,d])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);
+        o.type='sine';o.frequency.setValueAtTime(f,ctx.currentTime+d);g.gain.setValueAtTime(.3,ctx.currentTime+d);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.2);o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.2);});
+    }else{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=600;g.gain.setValueAtTime(.2,ctx.currentTime);g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.2);
+      o.start(ctx.currentTime);o.stop(ctx.currentTime+.2);}
   }catch(e){}
 }
 document.addEventListener('touchstart',()=>{try{getAudioCtx();}catch(e){}},{once:true});
-function toggleSound(){
-  soundEnabled=!soundEnabled;
-  const b=document.getElementById('sound-btn');
+function toggleSound(){soundEnabled=!soundEnabled;const b=document.getElementById('sound-btn');
   if(soundEnabled){b.textContent='🔊';b.className='sound-btn on';playAlert('move');toast('Ses AÇık','ok');}
   else{b.textContent='🔇';b.className='sound-btn off';toast('Ses KAPALI','warn');}
 }
@@ -584,23 +474,16 @@ function toggleSound(){
 //  BİLDİRİM
 // ═══════════════════════════════════════════
 async function toggleNotif(){
-  if(!('Notification' in window)){toast('Bildirim desteklenmiyor','err');return;}
+  if(!('Notification'in window)){toast('Bildirim desteklenmiyor','err');return;}
   if(notifEnabled){notifEnabled=false;document.getElementById('notif-btn').className='notif-btn';toast('Bildirim KAPALI','warn');return;}
   const p=await Notification.requestPermission();
-  if(p==='granted'){
-    notifEnabled=true;
-    document.getElementById('notif-btn').className='notif-btn on';
-    new Notification('BTC Whale Watch',{body:'Bildirimler aktif 🔔'});
-    toast('Bildirim AÇık ✅','ok');
-  }else toast('İzin reddedildi','err');
+  if(p==='granted'){notifEnabled=true;document.getElementById('notif-btn').className='notif-btn on';
+    new Notification('BTC Whale Watch',{body:'Bildirimler aktif 🔔'});toast('Bildirim AÇık ✅','ok');}
+  else toast('İzin reddedildi','err');
 }
-function showDesktopNotif(title,body,type){
-  if(!notifEnabled||Notification.permission!=='granted')return;
-  new Notification(title,{body,tag:type+Date.now()});
-}
+function showDesktopNotif(title,body,type){if(!notifEnabled||Notification.permission!=='granted')return;new Notification(title,{body,tag:type+Date.now()});}
 function showAlertBanner(text,type){
-  const b=document.getElementById('alert-banner');
-  b.textContent=text;b.className='alert-banner '+type;b.style.display='block';
+  const b=document.getElementById('alert-banner');b.textContent=text;b.className='alert-banner '+type;b.style.display='block';
   setTimeout(()=>{b.style.display='none';},6000);
 }
 
@@ -610,98 +493,87 @@ function showAlertBanner(text,type){
 async function fetchPrice(){
   try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');btcPrice=(await r.json()).bitcoin.usd;}
   catch{try{const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');btcPrice=parseFloat((await r.json()).price);}catch{}}
-  if(btcPrice){
-    document.getElementById('price-pill').textContent='$'+btcPrice.toLocaleString('en-US');
-    document.getElementById('s-price').textContent='$'+(btcPrice/1000).toFixed(1)+'K';
-  }
+  if(btcPrice){document.getElementById('price-pill').textContent='$'+btcPrice.toLocaleString('en-US');
+    document.getElementById('s-price').textContent='$'+(btcPrice/1000).toFixed(1)+'K';}
 }
 
 // ═══════════════════════════════════════════
-//  STATUS BAR (üst chip'ler)
+//  STATUS BAR — üst şerit
 // ═══════════════════════════════════════════
 function renderStatusBar(){
-  const bar=document.getElementById('bar-status');
-  if(!bar)return;
-  const chips=[];
+  const bar=document.getElementById('bar-status');if(!bar)return;
+  const parts=[];
 
-  // WS chips
-  const wsOk=wsStats.filter(w=>w.connected).length;
-  const wsTotal=wsStats.length;
-  chips.push(`<div class="status-chip ${wsOk>0?'chip-ws':'chip-err'}">
-    <div class="chip-dot ${wsOk>0?'ws':'err'}"></div>
-    WS ${wsOk}/${wsTotal}
-  </div>`);
-
-  // API chips
-  for(const api of APIS){
-    const age=api.lastOkTime?Math.floor((Date.now()-api.lastOkTime)/1000):null;
-    let cls,dotCls,label;
-    if(!api.ok||api.errors>=3){cls='chip-err';dotCls='err';label=api.name+' ✕';}
-    else if(api.reqCount===0){cls='chip-idle';dotCls='idle';label=api.name;}
-    else if(api.lastMs>2000){cls='chip-slow';dotCls='slow';label=api.name+' ~'+Math.round(api.lastMs/100)/10+'s';}
-    else{cls='chip-ok';dotCls='ok';label=api.name+(age!==null?' '+age+'s':'');}
-    chips.push(`<div class="status-chip ${cls}"><div class="chip-dot ${dotCls}"></div>${label}</div>`);
+  // WebSocket toplamı
+  const wsOn=wsStats.filter(w=>w.connected).length;
+  const wsTotalAddr=wsStats.reduce((s,w)=>s+(w.connected?w.trackCount:0),0);
+  const wsRx=wsStats.reduce((s,w)=>s+w.rxCount,0);
+  if(wsOn>0){
+    parts.push(`<div class="chip chip-ws-on"><div class="chip-dot dot-ws"></div>WS ${wsOn}/${WS_COUNT} · ${wsTotalAddr} adres · ${wsRx} msg</div>`);
+  }else{
+    parts.push(`<div class="chip chip-ws-off"><div class="chip-dot dot-off"></div>WS bağlanıyor…</div>`);
   }
-  bar.innerHTML=chips.join('');
+
+  // REST API'ler
+  for(const api of APIS){
+    const age=api.lastOkTime?Math.round((Date.now()-api.lastOkTime)/1000):null;
+    let cls,dotCls,label;
+    if(api.reqCount===0){cls='chip-idle';dotCls='dot-idle';label=api.name+' —';}
+    else if(!api.ok||api.errors>=4){cls='chip-idle';dotCls='dot-idle';label=api.name+' zzz';}
+    else if(api.lastMs>2500){cls='chip-slow';dotCls='dot-slow';label=api.name+' '+api.lastMs+'ms';}
+    else{cls='chip-ok';dotCls='dot-ok';label=api.name+(age!==null?' '+age+'s':'');}
+    parts.push(`<div class="chip ${cls}"><div class="chip-dot ${dotCls}"></div>${label} ·${api.reqCount}</div>`);
+  }
+  bar.innerHTML=parts.join('');
 }
 
 // ═══════════════════════════════════════════
-//  WEBSOCKET — 3 paralel × 40 adres = 120 gerçek zamanlı
+//  WEBSOCKET — 3 paralel bağlantı
+//  Her biri 45 adres → 135 adres tam kapsam
 // ═══════════════════════════════════════════
 function buildWsConnections(){
   for(let i=0;i<WS_COUNT;i++){
     const chunk=ALL_ADDRS.slice(i*WS_BATCH,(i+1)*WS_BATCH);
-    if(chunk.length) createWsConn(chunk,i);
+    if(chunk.length)createWsConn(chunk,i);
   }
 }
-
 function createWsConn(chunk,idx){
   try{
     const ws=new WebSocket('wss://ws.mempool.space/api/v1/ws');
     wsConns[idx]=ws;
-
     ws.onopen=()=>{
       wsStats[idx].connected=true;
       wsStats[idx].trackCount=chunk.length;
       ws.send(JSON.stringify({'track-addresses':chunk}));
       renderStatusBar();
     };
-
     ws.onmessage=async(ev)=>{
       try{
         const data=JSON.parse(ev.data);
         wsStats[idx].rxCount++;
         if(data['multi-address-transactions']){
           for(const [addr,txData] of Object.entries(data['multi-address-transactions'])){
-            const known=KNOWN_MAP[addr.toLowerCase()];
-            if(!known)continue;
+            const known=KNOWN_MAP[addr.toLowerCase()];if(!known)continue;
             const txs=txData.mempool||txData.confirmed||[];
             for(const tx of txs){
               if(lastTxHashes[addr]===tx.txid)continue;
               lastTxHashes[addr]=tx.txid;
-              await analyzeTx(addr,known,tx,'ws');
+              await analyzeTx(addr,known,tx,'⚡ws');
             }
           }
         }
         renderStatusBar();
       }catch(e){}
     };
-
-    ws.onclose=()=>{
-      wsStats[idx].connected=false;
-      renderStatusBar();
-      setTimeout(()=>createWsConn(chunk,idx),12000);
-    };
+    ws.onclose=()=>{wsStats[idx].connected=false;renderStatusBar();setTimeout(()=>createWsConn(chunk,idx),12000);};
     ws.onerror=()=>{wsStats[idx].connected=false;ws.close();};
-  }catch(e){
-    wsStats[idx].connected=false;
-  }
+  }catch(e){wsStats[idx].connected=false;}
 }
 
 // ═══════════════════════════════════════════
 //  MULTI-API REST POLL
-//  Adresler 6 API'ye round-robin dağıtılır.
-//  Her API kendi grubunu paralel döngüde tarar.
+//  3 API → her biri ~43 adres tarar (paralel)
+//  mempool + blockstream + blockcypher hepsi CORS'u destekliyor
 // ═══════════════════════════════════════════
 function splitAddrs(addrs,n){
   const g=Array.from({length:n},()=>[]);
@@ -709,30 +581,24 @@ function splitAddrs(addrs,n){
   return g;
 }
 
-async function fetchWithApi(api,url){
-  const t0=Date.now();
-  const r=await fetch(url,{signal:AbortSignal.timeout(9000)});
+async function fetchSafe(url,timeoutMs=9000){
+  const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
   if(!r.ok)throw new Error('HTTP '+r.status);
-  const data=await r.json();
-  api.lastMs=Date.now()-t0;
-  api.lastOkTime=Date.now();
-  api.errors=Math.max(0,api.errors-1);
-  api.reqCount++;
-  api.ok=true;
-  return data;
+  return r.json();
 }
 
 async function pollOneAddr(api,addr){
-  const known=KNOWN_MAP[addr.toLowerCase()];
-  if(!known)return;
+  const known=KNOWN_MAP[addr.toLowerCase()];if(!known)return;
+  const t0=Date.now();
   try{
-    const raw=await fetchWithApi(api,api.addrUrl(addr));
-    const parsed=api.parseAddr(raw);
-    if(!parsed)return;
+    const raw=await fetchSafe(api.addrUrl(addr));
+    const parsed=api.parseAddr(raw);if(!parsed)return;
+    api.lastMs=Date.now()-t0;api.lastOkTime=Date.now();api.ok=true;
+    api.errors=Math.max(0,api.errors-1);api.reqCount++;
 
     let txs=[];
     if(api.txUrl){
-      const txRaw=await fetchWithApi(api,api.txUrl(addr));
+      const txRaw=await fetchSafe(api.txUrl(addr));
       txs=api.parseTxs(txRaw);
     }else{
       txs=api.parseTxs(raw);
@@ -744,11 +610,9 @@ async function pollOneAddr(api,addr){
     if(!prev){lastTxHashes[addr]=latest;return;}
     if(prev!==latest){
       lastTxHashes[addr]=latest;
+      // Tam TX detayını mempool'dan çek
       let fullTx=txs[0];
-      try{
-        const r2=await fetch(`https://mempool.space/api/tx/${latest}`,{signal:AbortSignal.timeout(6000)});
-        if(r2.ok)fullTx=await r2.json();
-      }catch{}
+      try{fullTx=await fetchSafe(`https://mempool.space/api/tx/${latest}`,6000);}catch{}
       await analyzeTx(addr,known,fullTx,api.id);
     }
   }catch(e){
@@ -758,23 +622,23 @@ async function pollOneAddr(api,addr){
 }
 
 async function runApiWorker(api,group){
-  // İlk geçiş: baseline TX hash'leri topla (sinyal üretme)
+  // Baseline: ilk geçişte hash topla, sinyal çıkartma
   for(const addr of group){
     try{
-      const raw=await fetchWithApi(api,api.addrUrl(addr));
-      const parsed=api.parseAddr(raw);
-      if(!parsed)continue;
+      const raw=await fetchSafe(api.addrUrl(addr));
+      const parsed=api.parseAddr(raw);if(!parsed){await sleep(api.rateMs);continue;}
+      api.lastMs=0;api.lastOkTime=Date.now();api.ok=true;api.reqCount++;
       let txs=[];
-      if(api.txUrl){const r2=await fetchWithApi(api,api.txUrl(addr));txs=api.parseTxs(r2);}
+      if(api.txUrl){try{const r2=await fetchSafe(api.txUrl(addr));txs=api.parseTxs(r2);}catch{}}
       else txs=api.parseTxs(raw);
       if(txs.length&&!lastTxHashes[addr])lastTxHashes[addr]=txs[0].txid;
-    }catch{}
+    }catch(e){api.errors++;if(api.errors>=5)api.ok=false;}
     await sleep(api.rateMs);
     renderStatusBar();
   }
-  document.getElementById('s-cycle-sub').textContent=`${group.length} adres / ${api.name}`;
+  document.getElementById('s-sub').textContent=`baseline tamam · ${api.name}`;
 
-  // Sonsuz döngü: değişim var mı?
+  // Sonsuz döngü
   while(true){
     const t0=Date.now();
     let done=0;
@@ -782,18 +646,16 @@ async function runApiWorker(api,group){
       await sleep(api.rateMs);
       await pollOneAddr(api,addr);
       done++;
-      const pct=Math.round(done/group.length*100);
-      document.getElementById('progress-fill').style.width=pct+'%';
-      renderStatusBar();
+      document.getElementById('progress-fill').style.width=Math.round(done/group.length*100)+'%';
+      if(done%5===0)renderStatusBar();
     }
     document.getElementById('progress-fill').style.width='0%';
-    document.getElementById('s-cycle-sub').textContent=`döngü ${Math.round((Date.now()-t0)/1000)}s · ${api.name}`;
-    const wait=Math.max(0,60000-(Date.now()-t0));
-    if(wait>0)await sleep(wait);
+    document.getElementById('s-sub').textContent=`döngü ${Math.round((Date.now()-t0)/1000)}s · ${api.name}`;
+    await sleep(Math.max(0,30000-(Date.now()-t0)));
   }
 }
 
-function startMultiApiPolling(){
+function startRestPolling(){
   const groups=splitAddrs(ALL_ADDRS,APIS.length);
   APIS.forEach((api,i)=>{if(groups[i].length)runApiWorker(api,groups[i]);});
 }
@@ -802,31 +664,31 @@ function startMultiApiPolling(){
 //  TX ANALİZİ
 // ═══════════════════════════════════════════
 async function analyzeTx(watchAddr,known,tx,source){
-  let recv=0,spentAmt=0;
-  const counterAddrs=[];
+  let recv=0,spent=0;
+  const cAddrs=[];
   (tx.vin||[]).forEach(v=>{
-    if(v.prevout?.scriptpubkey_address===watchAddr)spentAmt+=v.prevout.value;
-    else if(v.prevout?.scriptpubkey_address)counterAddrs.push(v.prevout.scriptpubkey_address);
+    if(v.prevout?.scriptpubkey_address===watchAddr)spent+=v.prevout.value;
+    else if(v.prevout?.scriptpubkey_address)cAddrs.push(v.prevout.scriptpubkey_address);
   });
   (tx.vout||[]).forEach(v=>{
     if(v.scriptpubkey_address===watchAddr)recv+=v.value;
-    else if(v.scriptpubkey_address)counterAddrs.push(v.scriptpubkey_address);
+    else if(v.scriptpubkey_address)cAddrs.push(v.scriptpubkey_address);
   });
-  const netBtc=(recv-spentAmt)/1e8;
+  const netBtc=(recv-spent)/1e8;
   if(Math.abs(netBtc)<0.5)return;
 
-  const counterEx=counterAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
-  const counterEnt=counterAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
+  const cEx=cAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
+  const cEnt=cAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
   const btcAbs=Math.abs(netBtc),usd=btcAbs*btcPrice;
   let signalType,badge,summary;
 
   if(netBtc>0){
-    if(counterEx){signalType='buy';badge='🟢 BİRİKİM';summary=`${known.name}, borsadan ${btcAbs.toFixed(4)} BTC çekti → soğuk cüzdan birikim sinyali.`;}
-    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'dan ${btcAbs.toFixed(4)} BTC aldı.`;}
+    if(cEx){signalType='buy';badge='🟢 BİRİKİM';summary=`${known.name}, borsadan ${btcAbs.toFixed(4)} BTC çekti → soğuk cüzdan birikim sinyali.`;}
+    else if(cEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${cEnt.name}'dan ${btcAbs.toFixed(4)} BTC aldı.`;}
     else{signalType='buy';badge='🟢 GİRİŞ';summary=`${known.name} cüzdanına ${btcAbs.toFixed(4)} BTC girdi.`;}
   }else{
-    if(counterEx){signalType='sell';badge='🔴 SATIŞ';summary=`${known.name}, borsaya ${btcAbs.toFixed(4)} BTC gönderdi! Satış hazırlığı uyarısı.`;}
-    else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'a ${btcAbs.toFixed(4)} BTC gönderdi.`;}
+    if(cEx){signalType='sell';badge='🔴 SATIŞ';summary=`${known.name}, borsaya ${btcAbs.toFixed(4)} BTC gönderdi! Satış hazırlığı uyarısı.`;}
+    else if(cEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${cEnt.name}'a ${btcAbs.toFixed(4)} BTC gönderdi.`;}
     else{signalType='move';badge='🟡 ÇIKIŞ';summary=`${known.name} cüzdanından ${btcAbs.toFixed(4)} BTC çıktı.`;}
   }
 
@@ -836,15 +698,9 @@ async function analyzeTx(watchAddr,known,tx,source){
   else if(signalType==='buy'){sBuy++;document.getElementById('s-buy').textContent=sBuy;}
 
   playAlert(signalType);
-  if(signalType==='sell'){
-    showAlertBanner('🚨 SATIŞ: '+known.name+' — '+btcAbs.toFixed(4)+' BTC borsaya gönderildi!','sell');
-    showDesktopNotif('🔴 Balina Satışı!',known.name+' → '+btcAbs.toFixed(4)+' BTC borsaya','sell');
-  }else if(signalType==='buy'){
-    showAlertBanner('💚 BİRİKİM: '+known.name+' — '+btcAbs.toFixed(4)+' BTC çekildi','buy');
-    showDesktopNotif('🟢 Balina Birikimi',known.name+' → '+btcAbs.toFixed(4)+' BTC çekildi','buy');
-  }
-  showBanner(entry);
-  renderLog();
+  if(signalType==='sell'){showAlertBanner('🚨 SATIŞ: '+known.name+' — '+btcAbs.toFixed(4)+' BTC borsaya gönderildi!','sell');showDesktopNotif('🔴 Balina Satışı!',known.name+' → '+btcAbs.toFixed(4)+' BTC borsaya','sell');}
+  else if(signalType==='buy'){showAlertBanner('💚 BİRİKİM: '+known.name+' — '+btcAbs.toFixed(4)+' BTC çekildi','buy');showDesktopNotif('🟢 Balina Birikimi',known.name+' → '+btcAbs.toFixed(4)+' BTC çekildi','buy');}
+  showBanner(entry);renderLog();
   toast(badge+'\n'+known.name+' — '+btcAbs.toFixed(4)+' BTC',signalType==='sell'?'sell':'buy');
 }
 
@@ -852,21 +708,18 @@ async function analyzeTx(watchAddr,known,tx,source){
 //  UI
 // ═══════════════════════════════════════════
 function showBanner(e){
-  const b=document.getElementById('banner');
-  b.className=e.signalType;b.style.display='block';
-  const badge=document.getElementById('bn-badge');
-  badge.textContent=e.badge;badge.className='bn-badge bb-'+e.signalType;
+  const b=document.getElementById('banner');b.className=e.signalType;b.style.display='block';
+  const bdg=document.getElementById('bn-badge');bdg.textContent=e.badge;bdg.className='bn-badge bb-'+e.signalType;
   document.getElementById('bn-time').textContent=timeAgo(e.t);
-  const ent=document.getElementById('bn-entity');
-  ent.textContent=e.entity+' · '+e.type;
+  const ent=document.getElementById('bn-entity');ent.textContent=e.entity+' · '+e.type;
   ent.style.color=e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d';
   const amt=document.getElementById('bn-amount');
   amt.textContent=(e.btc>0?'+':'')+e.btc.toFixed(4)+' BTC'+(e.usd?' ≈ $'+fmtUSD(e.usd):'');
   amt.style.color=e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d';
   document.getElementById('bn-summary').textContent=e.summary;
-  const link=document.getElementById('bn-link');
-  if(e.txHash?.length>10){link.href='https://mempool.space/tx/'+e.txHash;link.textContent='TX: '+e.txHash.slice(0,16)+'… ↗';}
-  else{link.href='#';link.textContent='';}
+  const lnk=document.getElementById('bn-link');
+  if(e.txHash?.length>10){lnk.href='https://mempool.space/tx/'+e.txHash;lnk.textContent='TX: '+e.txHash.slice(0,16)+'… ↗';}
+  else{lnk.href='#';lnk.textContent='';}
 }
 
 function renderLog(){
@@ -877,7 +730,7 @@ function renderLog(){
       <div class="log-badge lb-${e.signalType}">${e.badge}</div>
       <div class="log-mid">
         <div class="log-name">${esc(e.entity)} <span style="font-size:9px;color:var(--muted);font-weight:400">${e.type}</span>
-          ${e.source&&e.source!=='ws'?`<span style="font-size:8px;color:var(--dim);font-family:monospace;margin-left:3px">[${e.source}]</span>`:'<span style="font-size:8px;color:#a78bfa;font-family:monospace;margin-left:3px">⚡ws</span>'}
+          <span style="font-size:8px;color:${e.source==='⚡ws'?'#a78bfa':'var(--dim)'};font-family:monospace;margin-left:3px">${esc(e.source||'')}</span>
         </div>
         <div class="log-sum">${esc(e.summary)}</div>
         <div class="log-meta">${timeAgo(e.t)}${e.txHash?.length>10?' · <a href="https://mempool.space/tx/'+e.txHash+'" target="_blank">'+e.txHash.slice(0,10)+'…↗</a>':''}</div>
@@ -890,49 +743,19 @@ function renderLog(){
     </div>`).join('');
 }
 
-function clearLog(){
-  signalLog=[];sBuy=0;sSell=0;
-  document.getElementById('s-buy').textContent='0';
-  document.getElementById('s-sell').textContent='0';
-  document.getElementById('banner').style.display='none';
-  renderLog();
-}
+function clearLog(){signalLog=[];sBuy=0;sSell=0;
+  document.getElementById('s-buy').textContent='0';document.getElementById('s-sell').textContent='0';
+  document.getElementById('banner').style.display='none';renderLog();}
 
 function renderStatsBar(){
-  const bar=document.getElementById('stats-bar');
-  bar.innerHTML=Object.entries(CAT_META).map(([cat,m])=>
-    `<div class="stat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
+  document.getElementById('stats-bar').innerHTML=Object.entries(CAT_META).map(([cat,m])=>
+    `<div class="cat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
 }
 
 // ── ADRES SORGULA
-function addrType(a){
-  if(a.startsWith('bc1p'))return'Taproot';
-  if(a.startsWith('bc1q')&&a.length>50)return'SegWit Long';
-  if(a.startsWith('bc1q'))return'SegWit';
-  if(a.startsWith('3'))return'P2SH';
-  if(a.startsWith('1'))return'Legacy';
-  return'?';
-}
-function scoreLabel(s){
-  if(s<35)return{text:'LOW',cls:'sl-low',color:'#4ade80'};
-  if(s<55)return{text:'MED',cls:'sl-med',color:'#fcd34d'};
-  if(s<75)return{text:'HIGH',cls:'sl-high',color:'#f87171'};
-  return{text:'V.HIGH',cls:'sl-vhigh',color:'#fca5a5'};
-}
-function computeScore(addr,known){
-  let s=20;
-  if(addr.startsWith('bc1p'))s+=10;
-  else if(addr.startsWith('bc1q')&&addr.length>50)s+=8;
-  else if(addr.startsWith('bc1q'))s+=5;
-  else if(addr.startsWith('3'))s+=15;
-  else if(addr.startsWith('1'))s+=20;
-  if(known){
-    const t=known.cat;
-    if(t==='exchange')s+=30;else if(t==='etf')s+=25;else if(t==='gov')s+=35;
-    else if(t==='legendary')s+=40;else if(t==='miner')s+=20;else s+=15;
-  }else s+=Math.abs(hashStr(addr))%25;
-  return Math.min(s,99);
-}
+function addrType(a){return a.startsWith('bc1p')?'Taproot':a.startsWith('bc1q')&&a.length>50?'SegWit Long':a.startsWith('bc1q')?'SegWit':a.startsWith('3')?'P2SH':a.startsWith('1')?'Legacy':'?';}
+function scoreLabel(s){if(s<35)return{text:'LOW',cls:'sl-low',color:'#4ade80'};if(s<55)return{text:'MED',cls:'sl-med',color:'#fcd34d'};if(s<75)return{text:'HIGH',cls:'sl-high',color:'#f87171'};return{text:'V.HIGH',cls:'sl-vhigh',color:'#fca5a5'};}
+function computeScore(addr,known){let s=20;if(addr.startsWith('bc1p'))s+=10;else if(addr.startsWith('bc1q')&&addr.length>50)s+=8;else if(addr.startsWith('bc1q'))s+=5;else if(addr.startsWith('3'))s+=15;else if(addr.startsWith('1'))s+=20;if(known){const t=known.cat;if(t==='exchange')s+=30;else if(t==='etf')s+=25;else if(t==='gov')s+=35;else if(t==='legendary')s+=40;else if(t==='miner')s+=20;else s+=15;}else s+=Math.abs(hashStr(addr))%25;return Math.min(s,99);}
 function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
 
 async function queryAddr(){
@@ -940,82 +763,57 @@ async function queryAddr(){
   const label=document.getElementById('q-name').value.trim();
   if(!addr){toast('Adres boş','err');return;}
   if(!isValidBTC(addr)){toast('Geçersiz BTC adresi','err');return;}
-  const res=document.getElementById('qr');
-  res.style.display='block';
+  const res=document.getElementById('qr');res.style.display='block';
   res.innerHTML='<div style="padding:20px;text-align:center"><div class="spin"></div><br><span style="font-size:11px;color:var(--muted);margin-top:8px;display:block">Sorgulanıyor…</span></div>';
   try{
-    const r1=await fetch(`https://mempool.space/api/address/${addr}`);
-    if(!r1.ok)throw new Error('mempool.space yanıt vermedi');
-    const info=await r1.json();
-    const funded=info.chain_stats.funded_txo_sum,spent=info.chain_stats.spent_txo_sum;
-    const bal=(funded-spent)/1e8,totalReceived=funded/1e8,totalSent=spent/1e8;
-    const totalTx=info.chain_stats.tx_count;
-    const r2=await fetch(`https://mempool.space/api/address/${addr}/txs`);
-    const txs=r2.ok?(await r2.json()).slice(0,6):[];
+    const r1=await fetchSafe(`https://mempool.space/api/address/${addr}`);
+    const funded=r1.chain_stats.funded_txo_sum,spent2=r1.chain_stats.spent_txo_sum;
+    const bal=(funded-spent2)/1e8,totalRec=funded/1e8,totalSnt=spent2/1e8,totalTx=r1.chain_stats.tx_count;
+    const txs=(await fetchSafe(`https://mempool.space/api/address/${addr}/txs`)).slice(0,6);
     const known=KNOWN_MAP[addr.toLowerCase()];
-    const dName=label||known?.name||'Bilinmeyen Adres';
-    const dType=known?.type||'—',tColor=known?.color||'#94a3b8';
+    const dName=label||known?.name||'Bilinmeyen Adres',dType=known?.type||'—',tClr=known?.color||'#94a3b8';
     const score=computeScore(addr,known),sl=scoreLabel(score);
-    const totalVol=totalReceived+totalSent;
-    const rBTC=v=>{if(v===0)return'0';if(v<1)return v.toFixed(2);if(v<10)return(Math.round(v*10)/10).toString();return Math.round(v).toLocaleString('tr-TR');};
-    const rUSD=v=>{if(v===0)return'$0';if(v<1e6)return'$'+(v/1e3).toFixed(0)+'K';if(v<1e9)return'$'+(v/1e6).toFixed(2)+'M';return'$'+(v/1e9).toFixed(2)+'B';};
+    const totVol=totalRec+totalSnt;
+    const rB=v=>{if(!v)return'0';if(v<1)return v.toFixed(2);if(v<10)return(Math.round(v*10)/10).toString();return Math.round(v).toLocaleString('tr-TR');};
+    const rU=v=>{if(!v)return'$0';if(v<1e6)return'$'+(v/1e3).toFixed(0)+'K';if(v<1e9)return'$'+(v/1e6).toFixed(2)+'M';return'$'+(v/1e9).toFixed(2)+'B';};
     const txRows=txs.map(tx=>{
       let r=0,s2=0;
       (tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address===addr)s2+=v.prevout.value;});
       (tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address===addr)r+=v.value;});
       const net=(r-s2)/1e8,isIn=net>0;
-      const cAddrs=[];
-      if(isIn)(tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address&&v.prevout.scriptpubkey_address!==addr)cAddrs.push(v.prevout.scriptpubkey_address);});
-      else(tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address&&v.scriptpubkey_address!==addr)cAddrs.push(v.scriptpubkey_address);});
-      const cEx=cAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
-      const cKn=cAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
-      let sum2;
-      if(isIn){if(cEx)sum2='Borsadan çekildi → soğuk cüzdana';else if(cKn)sum2=cKn.name+' adresinden transfer';else sum2='Bilinmeyen kaynaktan giriş';}
-      else{if(cEx)sum2='Borsaya gönderildi ⚠';else if(cKn)sum2=cKn.name+' adresine gönderildi';else sum2='Bilinmeyen adrese çıkış';}
+      const ca=[];
+      if(isIn)(tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address&&v.prevout.scriptpubkey_address!==addr)ca.push(v.prevout.scriptpubkey_address);});
+      else(tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address&&v.scriptpubkey_address!==addr)ca.push(v.scriptpubkey_address);});
+      const cEx2=ca.some(a=>EXCHANGES.has(a.toLowerCase())),cKn=ca.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
+      const sum2=isIn?(cEx2?'Borsadan çekildi → soğuk cüzdana':cKn?cKn.name+' adresinden transfer':'Bilinmeyen kaynaktan giriş'):(cEx2?'Borsaya gönderildi ⚠':cKn?cKn.name+' adresine gönderildi':'Bilinmeyen adrese çıkış');
       const when=tx.status?.block_time?timeAgo(tx.status.block_time*1000):'Bekliyor';
       return`<div class="tx-item"><div class="tx-dir ${isIn?'d-in':'d-out'}">${isIn?'↓ GİRDİ':'↑ ÇIKTI'}</div>
-        <div class="tx-body"><div class="tx-sum">${sum2}</div>
-        <div class="tx-meta">${when} · <a href="https://mempool.space/tx/${tx.txid}" target="_blank">${tx.txid.slice(0,10)}…↗</a></div></div>
+        <div class="tx-body"><div class="tx-sum">${sum2}</div><div class="tx-meta">${when} · <a href="https://mempool.space/tx/${tx.txid}" target="_blank">${tx.txid.slice(0,10)}…↗</a></div></div>
         <div class="tx-amt" style="color:${isIn?'#4ade80':'#f87171'}">${(isIn?'+':'')+net.toFixed(4)}<br><span style="font-size:8px;color:var(--orange)">BTC</span></div></div>`;
     }).join('');
-    res.innerHTML=`
-      <div class="qr-top"><div style="min-width:0">
-        <div class="qr-name">${esc(dName)}</div>
-        <div class="qr-type" style="color:${tColor}">${dType} · ${addrType(addr)}</div>
-        <div class="qr-addr"><a href="https://mempool.space/address/${addr}" target="_blank" style="color:var(--orange)">${addr.slice(0,14)}…${addr.slice(-5)} ↗</a></div>
-      </div><div class="qr-bal">
-        <div class="qr-btc">${bal.toFixed(4)}</div>
-        <div style="font-size:8px;color:var(--orange);font-weight:700;margin-top:1px">BTC</div>
-        <div class="qr-usd">${btcPrice?'$'+fmtUSD(bal*btcPrice):''}</div>
-      </div></div>
-      <div class="score-box"><div>
-        <div style="font-size:8px;color:var(--muted);margin-bottom:3px;font-weight:700">EXPOSURE SCORE</div>
-        <div class="score-num" style="color:${sl.color}">${score}</div>
-      </div><span class="score-label ${sl.cls}">${sl.text}</span>
+    res.innerHTML=`<div class="qr-top"><div style="min-width:0"><div class="qr-name">${esc(dName)}</div>
+      <div class="qr-type" style="color:${tClr}">${dType} · ${addrType(addr)}</div>
+      <div class="qr-addr"><a href="https://mempool.space/address/${addr}" target="_blank" style="color:var(--orange)">${addr.slice(0,14)}…${addr.slice(-5)} ↗</a></div>
+      </div><div class="qr-bal"><div class="qr-btc">${bal.toFixed(4)}</div>
+      <div style="font-size:8px;color:var(--orange);font-weight:700;margin-top:1px">BTC</div>
+      <div class="qr-usd">${btcPrice?'$'+fmtUSD(bal*btcPrice):''}</div></div></div>
+      <div class="score-box"><div><div style="font-size:8px;color:var(--muted);margin-bottom:3px;font-weight:700">EXPOSURE SCORE</div>
+      <div class="score-num" style="color:${sl.color}">${score}</div></div>
+      <span class="score-label ${sl.cls}">${sl.text}</span>
       <div style="flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin:0 8px">
-        <div style="height:4px;border-radius:2px;background:${sl.color};width:${score}%"></div>
-      </div></div>
+      <div style="height:4px;border-radius:2px;background:${sl.color};width:${score}%"></div></div></div>
       <div class="summary-box"><div class="summary-title">📊 Özet</div>
-        <div class="summary-row"><span class="summary-label">Toplam İşlem</span><div class="summary-vals"><div class="summary-btc" style="color:var(--txt)">${totalTx.toLocaleString('tr-TR')}</div></div></div>
-        <div class="summary-row"><span class="summary-label">Toplam Giriş</span><div class="summary-vals"><div class="summary-btc" style="color:#4ade80">+ ${rBTC(totalReceived)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(totalReceived*btcPrice)}</div>`:''}</div></div>
-        <div class="summary-row"><span class="summary-label">Toplam Çıkış</span><div class="summary-vals"><div class="summary-btc" style="color:#f87171">– ${rBTC(totalSent)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(totalSent*btcPrice)}</div>`:''}</div></div>
-        <div class="summary-row"><span class="summary-label">Toplam Hacim</span><div class="summary-vals"><div class="summary-btc" style="color:var(--orange)">${rBTC(totalVol)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(totalVol*btcPrice)}</div>`:''}</div></div>
-        <div class="summary-row"><span class="summary-label">Güncel Bakiye</span><div class="summary-vals"><div class="summary-btc">${rBTC(bal)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(bal*btcPrice)}</div>`:''}</div></div>
-      </div>
+      <div class="summary-row"><span class="summary-label">Toplam İşlem</span><div class="summary-vals"><div class="summary-btc" style="color:var(--txt)">${totalTx.toLocaleString('tr-TR')}</div></div></div>
+      <div class="summary-row"><span class="summary-label">Toplam Giriş</span><div class="summary-vals"><div class="summary-btc" style="color:#4ade80">+ ${rB(totalRec)} BTC</div>${btcPrice?`<div class="summary-usd">${rU(totalRec*btcPrice)}</div>`:''}</div></div>
+      <div class="summary-row"><span class="summary-label">Toplam Çıkış</span><div class="summary-vals"><div class="summary-btc" style="color:#f87171">– ${rB(totalSnt)} BTC</div>${btcPrice?`<div class="summary-usd">${rU(totalSnt*btcPrice)}</div>`:''}</div></div>
+      <div class="summary-row"><span class="summary-label">Toplam Hacim</span><div class="summary-vals"><div class="summary-btc" style="color:var(--orange)">${rB(totVol)} BTC</div>${btcPrice?`<div class="summary-usd">${rU(totVol*btcPrice)}</div>`:''}</div></div>
+      <div class="summary-row"><span class="summary-label">Güncel Bakiye</span><div class="summary-vals"><div class="summary-btc">${rB(bal)} BTC</div>${btcPrice?`<div class="summary-usd">${rU(bal*btcPrice)}</div>`:''}</div></div></div>
       ${txs.length?`<div class="qr-tx-title">Son ${txs.length} İşlem</div>${txRows}`:'<div style="font-size:11px;color:var(--muted);padding:6px 0">İşlem bulunamadı</div>'}
-      <div class="qr-actions">
-        <button class="qbtn qbtn-s" style="flex:1" onclick="closeQR()">✕ Kapat</button>
-        <a href="https://mempool.space/address/${addr}" target="_blank" class="qbtn qbtn-s" style="text-decoration:none;text-align:center;flex:1">mempool ↗</a>
-      </div>`;
-  }catch(e){
-    res.innerHTML=`<div style="padding:16px;color:#f87171;font-size:12px">Hata: ${esc(e.message)}</div>`;
-  }
+      <div class="qr-actions"><button class="qbtn qbtn-s" style="flex:1" onclick="closeQR()">✕ Kapat</button>
+      <a href="https://mempool.space/address/${addr}" target="_blank" class="qbtn qbtn-s" style="text-decoration:none;text-align:center;flex:1">mempool ↗</a></div>`;
+  }catch(e){res.innerHTML=`<div style="padding:16px;color:#f87171;font-size:12px">Hata: ${esc(e.message)}</div>`;}
 }
-function closeQR(){
-  document.getElementById('qr').style.display='none';
-  document.getElementById('q-addr').value='';
-  document.getElementById('q-name').value='';
-}
+function closeQR(){document.getElementById('qr').style.display='none';document.getElementById('q-addr').value='';document.getElementById('q-name').value='';}
 
 // ── HELPERS
 function fmtUSD(v){if(v>=1e9)return(v/1e9).toFixed(2)+'B';if(v>=1e6)return(v/1e6).toFixed(2)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return v.toFixed(0);}
@@ -1023,27 +821,22 @@ function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function isValidBTC(a){return/^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a)||/^bc1[a-z0-9]{39,87}$/i.test(a)||a.length>=26;}
-function toast(msg,type=''){
-  const t=document.createElement('div');
-  t.className='toast '+type;
-  t.innerHTML=msg.replace(/\n/g,'<br>');
-  document.getElementById('toasts').appendChild(t);
-  setTimeout(()=>t.remove(),type==='sell'||type==='buy'?10000:3500);
-}
+function toast(msg,type=''){const t=document.createElement('div');t.className='toast '+type;t.innerHTML=msg.replace(/\n/g,'<br>');document.getElementById('toasts').appendChild(t);setTimeout(()=>t.remove(),type==='sell'||type==='buy'?10000:3500);}
 
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
 async function init(){
   document.getElementById('s-total').textContent=ALL_ADDRS.length;
-  renderStatsBar();
+  document.getElementById('stats-bar').innerHTML=Object.entries(CAT_META).map(([cat,m])=>
+    `<div class="cat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
   renderStatusBar();
   document.getElementById('q-addr').addEventListener('keydown',e=>{if(e.key==='Enter')queryAddr();});
   await fetchPrice();
   setInterval(fetchPrice,60000);
-  buildWsConnections();
-  startMultiApiPolling();
-  setInterval(renderStatusBar,3000);
+  buildWsConnections();   // 3 WS bağlantısı → ~135 adres gerçek zamanlı
+  startRestPolling();     // mempool + blockstream + blockcypher → kalan adresleri kapsar
+  setInterval(renderStatusBar,4000);
 }
 init();
 </script>

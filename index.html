@@ -14,7 +14,6 @@
 }
 html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;font-size:14px;min-height:100vh;overscroll-behavior:none}
 
-/* ── TOP BAR ── */
 .bar{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.98);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);padding-top:env(safe-area-inset-top,0)}
 .bar-main{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:50px}
 .logo{font-weight:800;font-size:16px;display:flex;align-items:center;gap:6px;letter-spacing:-.3px}
@@ -25,7 +24,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .bar-status{display:flex;align-items:center;gap:5px;padding:4px 14px 6px;overflow-x:auto;scrollbar-width:none}
 .bar-status::-webkit-scrollbar{display:none}
 
-/* chips */
 .chip{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;
   padding:3px 8px;border-radius:20px;border:1px solid;white-space:nowrap;flex-shrink:0;font-family:monospace}
 .chip-ws-on {background:rgba(167,139,250,.1);border-color:rgba(167,139,250,.35);color:#c4b5fd}
@@ -49,8 +47,8 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .sound-btn.off{opacity:.4}
 .notif-btn.on{border-color:rgba(167,139,250,.4);background:rgba(167,139,250,.08);color:#a78bfa}
 
-/* ── PAGE ── */
 .page{max-width:480px;margin:0 auto;padding:10px 10px calc(24px + var(--safe-bottom))}
+
 #banner{display:none;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid}
 #banner.buy {background:rgba(34,197,94,.07); border-color:rgba(34,197,94,.3)}
 #banner.sell{background:rgba(239,68,68,.07); border-color:rgba(239,68,68,.3)}
@@ -65,19 +63,25 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .bn-amount{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-.5px}
 .bn-summary{font-size:12px;color:#8892aa;line-height:1.6;margin-bottom:8px}
 .bn-link{font-size:10px;color:var(--muted);font-family:monospace;text-decoration:none}
+
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
 .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
 .stat-l{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:5px}
 .stat-v{font-size:20px;font-weight:800;font-family:'SF Mono',monospace;letter-spacing:-.5px}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .co{color:var(--orange)}.cg{color:var(--green)}.cr{color:var(--red)}
+
 .stats-bar{display:flex;gap:5px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
 .stats-bar::-webkit-scrollbar{display:none}
 .cat-pill{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;
   border:1px solid var(--border);background:var(--card);color:var(--muted)}
 .cat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
-.progress-bar{height:2px;background:rgba(255,255,255,.05);margin-bottom:10px;border-radius:1px;overflow:hidden}
-.progress-fill{height:2px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:1px;transition:width .3s;width:0%}
+
+.progress-wrap{margin-bottom:10px}
+.progress-bar{height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.progress-fill{height:3px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:2px;transition:width .3s;width:0%}
+.progress-label{font-size:9px;color:var(--muted);font-family:monospace;margin-top:4px;text-align:right}
+
 .section{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
 .sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
@@ -132,6 +136,7 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .sl-med  {background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
 .sl-high {background:rgba(239,68,68,.15); color:#f87171;border:1px solid rgba(239,68,68,.3)}
 .sl-vhigh{background:rgba(239,68,68,.3);  color:#fca5a5;border:1px solid rgba(239,68,68,.5)}
+
 .log-item{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .15s}
 .log-item:hover{background:rgba(255,255,255,.02)}
 .log-item:last-child{border-bottom:none}
@@ -147,9 +152,22 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .log-right{text-align:right;flex-shrink:0}
 .log-btc{font-family:'SF Mono',monospace;font-size:13px;font-weight:700}
 .log-usd{font-size:9px;color:var(--muted);margin-top:2px}
+
 .empty{text-align:center;padding:28px 16px;color:var(--dim);font-size:11px;line-height:1.8}
 .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.08);border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* ── Yeniden Tara Modal ── */
+.rescan-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(7,9,15,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center}
+.rescan-modal.show{display:flex}
+.rescan-box{background:#0d1017;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:24px;max-width:320px;width:90%;text-align:center}
+.rescan-icon{font-size:36px;margin-bottom:12px}
+.rescan-title{font-size:15px;font-weight:800;margin-bottom:8px;color:var(--txt)}
+.rescan-desc{font-size:12px;color:#8892aa;line-height:1.7;margin-bottom:20px}
+.rescan-btns{display:flex;gap:10px}
+.rescan-yes{flex:1;padding:12px;border:none;border-radius:10px;background:var(--orange);color:#000;font-weight:800;font-size:13px;cursor:pointer}
+.rescan-no{flex:1;padding:12px;border:1px solid rgba(255,255,255,.15);border-radius:10px;background:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer}
+
 #toasts{position:fixed;bottom:calc(16px + var(--safe-bottom));left:50%;transform:translateX(-50%);z-index:999;
   display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;width:90%;max-width:380px}
 .toast{background:#161923;border:1px solid rgba(255,255,255,.1);border-radius:10px;
@@ -160,6 +178,7 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .toast.ok  {border-color:rgba(34,197,94,.25)}
 .toast.err {border-color:rgba(239,68,68,.3);color:#f87171}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
 .alert-banner{display:none;position:fixed;top:80px;left:0;right:0;z-index:40;
   padding:10px 16px;text-align:center;font-size:13px;font-weight:700;animation:flashin .3s ease}
 .alert-banner.sell{background:rgba(239,68,68,.95);color:#fff}
@@ -169,6 +188,20 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 </head>
 <body>
 <div class="alert-banner" id="alert-banner"></div>
+
+<!-- Yeniden Tara Modal -->
+<div class="rescan-modal" id="rescan-modal">
+  <div class="rescan-box">
+    <div class="rescan-icon">🔍</div>
+    <div class="rescan-title">Tarama Tamamlandı</div>
+    <div class="rescan-desc" id="rescan-desc">Bu turda 0.5 BTC üstü veya altında herhangi bir transfer tespit edilmedi.<br><br>Yeniden tarama başlatmak ister misin?</div>
+    <div class="rescan-btns">
+      <button class="rescan-yes" onclick="confirmRescan(true)">✅ Evet, Tara</button>
+      <button class="rescan-no" onclick="confirmRescan(false)">✕ Hayır</button>
+    </div>
+  </div>
+</div>
+
 <div class="bar">
   <div class="bar-main">
     <div class="logo">🐋 <em>BTC</em> Watch</div>
@@ -198,7 +231,11 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
   </div>
 
   <div class="stats-bar" id="stats-bar"></div>
-  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-label" id="progress-label">—</div>
+  </div>
 
   <div class="section">
     <div class="sec-h"><span class="sec-title">🔍 Adres Sorgula</span></div>
@@ -392,42 +429,35 @@ for(const [cat,entries] of Object.entries(RAW)){
 const ALL_ADDRS=Object.keys(KNOWN_MAP);
 
 // ═══════════════════════════════════════════
-//  TEK GÜVENİLİR REST API — blockstream.info
-//  Neden tek API: mempool.space bazı ağlarda
-//  sertifika hatası (ERR_CERT_AUTHORITY_INVALID)
-//  veriyor, blockcypher ücretsiz planda hem CORS
-//  hem 429 sorunu çıkarıyor. Tek API + yavaş ve
-//  nazik istek hızı = hatasız ve kararlı çalışma.
-//  (mempool.space sadece manuel sorgu ve WS için
-//  hâlâ kullanılıyor, REST taramada kullanılmıyor)
+//  STATE
 // ═══════════════════════════════════════════
-const APIS=[
-  {
-    id:'blockstream', name:'blockstream',
-    addrUrl: a=>`https://blockstream.info/api/address/${a}`,
-    txUrl:   a=>`https://blockstream.info/api/address/${a}/txs`,
-    parseAddr: d=>({bal:(d.chain_stats.funded_txo_sum-d.chain_stats.spent_txo_sum)/1e8,txCount:d.chain_stats.tx_count}),
-    parseTxs: txs=>txs,
-    // Rate limit (429) yememek için istek aralığı 1.5sn'ye sabitlendi.
-    // Döngü mekanizmasındaki tüm sleep() çağrıları bu değeri baz alır.
-    rateMs:1500,
-    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
-  }
-];
-// Not: mempool.space artık sadece WS (WebSocket) ve dış linkler (tx görüntüleme)
-// için kullanılıyor. REST taramada veya manuel sorguda KULLANILMIYOR — sertifika
-// hatasını (ERR_CERT_AUTHORITY_INVALID) bu kaynak verdiği için bilerek izole edildi.
-
-// ── STATE
 let signalLog=[],btcPrice=0,sBuy=0,sSell=0;
-let lastTxHashes={};
+let lastTxHashes={};       // addr → last known txid (baseline)
 let soundEnabled=true,notifEnabled=false;
 let audioCtx=null;
 
-// WS
-const WS_BATCH=45, WS_COUNT=3;
+// WS: 5 bağlantı × 34 adres = 170 slot → tüm adresler kapsanıyor
+const WS_BATCH=34, WS_COUNT=5;
 const wsConns=[];
 const wsStats=Array.from({length:WS_COUNT},(_,i)=>({id:i,connected:false,trackCount:0,rxCount:0}));
+
+// REST yardımcıları
+const REST_RATE_MS=900;           // 900ms → ~110 req/dk, 429 yok
+const WS_SILENCE_THRESHOLD=25*60*1000; // 25 dakika sessizse REST tarar
+const wsLastMsg={};               // addr → timestamp (son WS mesajı)
+
+// Tarama durumu
+let baselineDone=false;
+let restLoopCount=0;
+let restSignalsThisLoop=0;        // her tur kaç sinyal bulundu
+
+// Proxy zinciri (CORS sorununda fallback)
+const PROXIES=[
+  u=>'https://corsproxy.io/?url='+encodeURIComponent(u),
+  u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
+];
+let activeProxyIdx=-1;
+let USE_PROXY=false;
 
 // ═══════════════════════════════════════════
 //  SES
@@ -485,13 +515,11 @@ async function fetchPrice(){
 }
 
 // ═══════════════════════════════════════════
-//  STATUS BAR — üst şerit
+//  STATUS BAR
 // ═══════════════════════════════════════════
 function renderStatusBar(){
   const bar=document.getElementById('bar-status');if(!bar)return;
   const parts=[];
-
-  // WebSocket toplamı
   const wsOn=wsStats.filter(w=>w.connected).length;
   const wsTotalAddr=wsStats.reduce((s,w)=>s+(w.connected?w.trackCount:0),0);
   const wsRx=wsStats.reduce((s,w)=>s+w.rxCount,0);
@@ -500,33 +528,32 @@ function renderStatusBar(){
   }else{
     parts.push(`<div class="chip chip-ws-off"><div class="chip-dot dot-off"></div>WS bağlanıyor…</div>`);
   }
-
-  // REST API'ler
-  for(const api of APIS){
-    const age=api.lastOkTime?Math.round((Date.now()-api.lastOkTime)/1000):null;
-    let cls,dotCls,label;
-    if(api.reqCount===0 && api.errors===0){cls='chip-idle';dotCls='dot-idle';label=api.name+' başlıyor…';}
-    else if(!api.ok||api.errors>=5){cls='chip-err';dotCls='dot-err';label=api.name+' hata!';}
-    else if(api.lastMs>2500){cls='chip-slow';dotCls='dot-slow';label=api.name+' '+api.lastMs+'ms';}
-    else{cls='chip-ok';dotCls='dot-ok';label=api.name+(age!==null?' '+age+'s':'');}
-    parts.push(`<div class="chip ${cls}"><div class="chip-dot ${dotCls}"></div>${label} ·${api.reqCount}</div>`);
+  // REST durumu
+  if(!baselineDone){
+    parts.push(`<div class="chip chip-idle"><div class="chip-dot dot-idle"></div>REST baseline…</div>`);
+  } else {
+    const silentCount=getSilentAddrs().length;
+    const cls=silentCount>0?'chip-slow':'chip-ok';
+    const dotCls=silentCount>0?'dot-slow':'dot-ok';
+    parts.push(`<div class="chip ${cls}"><div class="chip-dot ${dotCls}"></div>REST tur#${restLoopCount} · ${silentCount} sessiz adres</div>`);
   }
   if(USE_PROXY){
-    parts.push(`<div class="chip chip-slow"><div class="chip-dot dot-slow"></div>🔁 proxy ${activeProxyIdx>=0?'#'+(activeProxyIdx+1):'deneniyor'}</div>`);
+    parts.push(`<div class="chip chip-slow"><div class="chip-dot dot-slow"></div>🔁 proxy #${activeProxyIdx+1}</div>`);
   }
   bar.innerHTML=parts.join('');
 }
 
 // ═══════════════════════════════════════════
-//  WEBSOCKET — 3 paralel bağlantı
-//  Her biri 45 adres → 135 adres tam kapsam
+//  WEBSOCKET — 5 paralel bağlantı
+//  5 × 34 = 170 slot, tüm ~130 adres kapsanıyor
 // ═══════════════════════════════════════════
 function buildWsConnections(){
   for(let i=0;i<WS_COUNT;i++){
     const chunk=ALL_ADDRS.slice(i*WS_BATCH,(i+1)*WS_BATCH);
-    if(chunk.length)createWsConn(chunk,i);
+    if(chunk.length) createWsConn(chunk,i);
   }
 }
+
 function createWsConn(chunk,idx){
   try{
     const ws=new WebSocket('wss://ws.mempool.space/api/v1/ws');
@@ -543,143 +570,186 @@ function createWsConn(chunk,idx){
         wsStats[idx].rxCount++;
         if(data['multi-address-transactions']){
           for(const [addr,txData] of Object.entries(data['multi-address-transactions'])){
-            const known=KNOWN_MAP[addr.toLowerCase()];if(!known)continue;
+            const lAddr=addr.toLowerCase();
+            wsLastMsg[lAddr]=Date.now(); // WS aktif kaydı
+            const known=KNOWN_MAP[lAddr];if(!known)continue;
             const txs=txData.mempool||txData.confirmed||[];
             for(const tx of txs){
-              if(lastTxHashes[addr]===tx.txid)continue;
-              lastTxHashes[addr]=tx.txid;
-              await analyzeTx(addr,known,tx,'⚡ws');
+              if(lastTxHashes[lAddr]===tx.txid)continue;
+              lastTxHashes[lAddr]=tx.txid;
+              await analyzeTx(lAddr,known,tx,'⚡ws');
             }
           }
         }
         renderStatusBar();
       }catch(e){}
     };
-    ws.onclose=()=>{wsStats[idx].connected=false;renderStatusBar();setTimeout(()=>createWsConn(chunk,idx),12000);};
+    ws.onclose=()=>{
+      wsStats[idx].connected=false;
+      renderStatusBar();
+      setTimeout(()=>createWsConn(chunk,idx),3000); // 3sn'de yeniden bağlan
+    };
     ws.onerror=()=>{wsStats[idx].connected=false;ws.close();};
-  }catch(e){wsStats[idx].connected=false;}
-}
-
-// ═══════════════════════════════════════════
-//  TEK API REST POLL — blockstream.info
-//  Tüm 130+ adresi tek API ile, yavaş ama
-//  hatasız şekilde tarar.
-// ═══════════════════════════════════════════
-// CORS proxy fallback zinciri: bazı mobil tarayıcı/origin kombinasyonlarında
-// blockstream.info CORS header'ı dönmeyebiliyor. Doğrudan istek başarısız
-// olursa sırayla farklı proxy servisleri denenir; çalışan bulunduğunda
-// o proxy "yapışkan" hale gelir (her seferinde baştan denenmez).
-const PROXIES=[
-  u=>'https://corsproxy.io/?url='+encodeURIComponent(u),
-  u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
-  u=>'https://thingproxy.freeboard.io/fetch/'+u,
-];
-let activeProxyIdx=-1; // -1 = doğrudan istek modu, 0+ = PROXIES içindeki sabitlenmiş proxy
-let USE_PROXY=false; // status bar göstergesi için
-let LAST_ERR=''; // ekranda gösterilecek son hata mesajı (debug için)
-
-async function fetchSafe(url,timeoutMs=9000){
-  // 1) Doğrudan istek (henüz bir proxy'ye sabitlenmediysek dene)
-  if(activeProxyIdx===-1){
-    try{
-      const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
-      if(!r.ok)throw new Error('HTTP '+r.status);
-      return await r.json();
-    }catch(e){ LAST_ERR='direkt: '+(e.name||'')+' '+(e.message||e); }
-  }
-  // 2) Zaten sabitlenmiş bir proxy varsa direkt onu kullan
-  if(activeProxyIdx>=0){
-    try{
-      const r=await fetch(PROXIES[activeProxyIdx](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
-      if(!r.ok)throw new Error('Proxy HTTP '+r.status);
-      USE_PROXY=true;
-      return await r.json();
-    }catch(e){LAST_ERR='proxy#'+(activeProxyIdx+1)+': '+(e.name||'')+' '+(e.message||e);throw e;}
-  }
-  // 3) Henüz sabitlenmemiş proxy: hepsini sırayla dene, ilk çalışanı sabitle
-  let lastErr;
-  for(let i=0;i<PROXIES.length;i++){
-    try{
-      const r=await fetch(PROXIES[i](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
-      if(!r.ok)throw new Error('Proxy HTTP '+r.status);
-      const data=await r.json();
-      activeProxyIdx=i;USE_PROXY=true;
-      return data;
-    }catch(e){lastErr=e;LAST_ERR='proxy#'+(i+1)+': '+(e.name||'')+' '+(e.message||e);}
-  }
-  throw lastErr||new Error('Tüm proxyler başarısız');
-}
-async function pollOneAddr(api,addr){
-  const known=KNOWN_MAP[addr.toLowerCase()];if(!known)return;
-  const t0=Date.now();
-  try{
-    const raw=await fetchSafe(api.addrUrl(addr));
-    const parsed=api.parseAddr(raw);if(!parsed)return;
-    api.lastMs=Date.now()-t0;api.lastOkTime=Date.now();api.ok=true;
-    api.errors=Math.max(0,api.errors-1);api.reqCount++;
-
-    let txs=[];
-    if(api.txUrl){
-      const txRaw=await fetchSafe(api.txUrl(addr));
-      txs=api.parseTxs(txRaw);
-    }else{
-      txs=api.parseTxs(raw);
-    }
-    if(!txs.length)return;
-
-    const latest=txs[0].txid;
-    const prev=lastTxHashes[addr];
-    if(!prev){lastTxHashes[addr]=latest;return;}
-    if(prev!==latest){
-      lastTxHashes[addr]=latest;
-      // Tam TX detayını blockstream'den çek (mempool yerine — sertifika hatası riski)
-      let fullTx=txs[0];
-      try{fullTx=await fetchSafe(`https://blockstream.info/api/tx/${latest}`,6000);}catch{}
-      await analyzeTx(addr,known,fullTx,api.id);
-    }
   }catch(e){
-    api.errors++;
-    if(api.errors>=5)api.ok=false;
+    wsStats[idx].connected=false;
+    setTimeout(()=>createWsConn(chunk,idx),3000);
   }
 }
 
-async function runApiWorker(api,group){
-  // Baseline: ilk geçişte hash topla, sinyal çıkartma
-  for(const addr of group){
-    try{
-      const raw=await fetchSafe(api.addrUrl(addr));
-      const parsed=api.parseAddr(raw);if(!parsed){await sleep(api.rateMs);continue;}
-      api.lastMs=0;api.lastOkTime=Date.now();api.ok=true;api.reqCount++;
-      let txs=[];
-      if(api.txUrl){try{const r2=await fetchSafe(api.txUrl(addr));txs=api.parseTxs(r2);}catch{}}
-      else txs=api.parseTxs(raw);
-      if(txs.length&&!lastTxHashes[addr])lastTxHashes[addr]=txs[0].txid;
-    }catch(e){api.errors++;if(api.errors>=5)api.ok=false;}
-    await sleep(api.rateMs);
-    renderStatusBar();
+// ═══════════════════════════════════════════
+//  CORS-SAFE FETCH
+//  Önce direkt dene, başarısız olursa proxy zinciri
+// ═══════════════════════════════════════════
+async function fetchSafe(url,timeoutMs=9000){
+  // Sabitlenmiş proxy varsa direkt onu kullan
+  if(activeProxyIdx>=0){
+    const r=await fetch(PROXIES[activeProxyIdx](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    USE_PROXY=true;
+    return r.json();
   }
-  document.getElementById('s-sub').textContent=`baseline tamam · ${api.name}`;
-
-  // Sonsuz döngü
-  while(true){
-    const t0=Date.now();
-    let done=0;
-    for(const addr of group){
-      await sleep(api.rateMs);
-      await pollOneAddr(api,addr);
-      done++;
-      document.getElementById('progress-fill').style.width=Math.round(done/group.length*100)+'%';
-      if(done%5===0)renderStatusBar();
+  // Önce direkt
+  try{
+    const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return r.json();
+  }catch(directErr){
+    // Direkt başarısız → proxy zinciri dene
+    for(let i=0;i<PROXIES.length;i++){
+      try{
+        const r=await fetch(PROXIES[i](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
+        if(!r.ok)throw new Error('HTTP '+r.status);
+        activeProxyIdx=i;USE_PROXY=true;
+        return r.json();
+      }catch{}
     }
-    document.getElementById('progress-fill').style.width='0%';
-    document.getElementById('s-sub').textContent=`döngü ${Math.round((Date.now()-t0)/1000)}s · ${api.name}`;
-    await sleep(Math.max(0,5000-(Date.now()-t0)));
+    throw directErr;
   }
 }
 
-function startRestPolling(){
-  // Tek API var → tüm adresler tek worker'a gidiyor
-  APIS.forEach(api=>{runApiWorker(api,ALL_ADDRS);});
+// ═══════════════════════════════════════════
+//  REST — Sadece WS'den sessiz adresleri tara
+//  "Sessiz" = son WS_SILENCE_THRESHOLD ms'de
+//  bu adresten WS mesajı gelmedi demek
+// ═══════════════════════════════════════════
+function getSilentAddrs(){
+  const now=Date.now();
+  return ALL_ADDRS.filter(addr=>{
+    const last=wsLastMsg[addr];
+    return !last || (now-last)>WS_SILENCE_THRESHOLD;
+  });
+}
+
+async function restBaseline(){
+  // Tüm adreslerin son TX hash'ini tek seferde topla (sinyal çıkarmadan)
+  const total=ALL_ADDRS.length;
+  let done=0;
+  document.getElementById('s-sub').textContent='baseline başlıyor…';
+  for(const addr of ALL_ADDRS){
+    try{
+      const raw=await fetchSafe(`https://blockstream.info/api/address/${addr}/txs`,8000);
+      if(raw&&raw.length&&!lastTxHashes[addr]) lastTxHashes[addr]=raw[0].txid;
+    }catch{}
+    done++;
+    const pct=Math.round(done/total*100);
+    document.getElementById('progress-fill').style.width=pct+'%';
+    document.getElementById('progress-label').textContent=`Baseline: ${done}/${total} adres tarandı`;
+    document.getElementById('s-sub').textContent=`baseline ${pct}%`;
+    if(done%5===0)renderStatusBar();
+    await sleep(REST_RATE_MS);
+  }
+  document.getElementById('progress-fill').style.width='0%';
+  document.getElementById('progress-label').textContent='Baseline tamamlandı · WS izlemede';
+  document.getElementById('s-sub').textContent='canlı izleme';
+  baselineDone=true;
+  renderStatusBar();
+}
+
+async function restPollLoop(){
+  await restBaseline();
+
+  while(true){
+    restLoopCount++;
+    restSignalsThisLoop=0;
+    const targets=getSilentAddrs();
+
+    if(targets.length===0){
+      // Tüm adresler WS tarafından aktif izleniyor, REST'e gerek yok
+      document.getElementById('progress-label').textContent=`Tur #${restLoopCount} · Tüm adresler WS aktif ✓`;
+      document.getElementById('s-sub').textContent='WS tam kapsam';
+      await sleep(60000); // 1 dk bekle, sonra tekrar kontrol
+      continue;
+    }
+
+    document.getElementById('s-sub').textContent=`tur #${restLoopCount} · ${targets.length} adres`;
+    let done=0;
+    for(const addr of targets){
+      const known=KNOWN_MAP[addr];if(!known){done++;continue;}
+      try{
+        const txRaw=await fetchSafe(`https://blockstream.info/api/address/${addr}/txs`,8000);
+        if(!txRaw||!txRaw.length){done++;await sleep(REST_RATE_MS);continue;}
+        const latest=txRaw[0].txid;
+        const prev=lastTxHashes[addr];
+        if(!prev){lastTxHashes[addr]=latest;done++;await sleep(REST_RATE_MS);continue;}
+        if(prev!==latest){
+          lastTxHashes[addr]=latest;
+          let fullTx=txRaw[0];
+          try{fullTx=await fetchSafe(`https://blockstream.info/api/tx/${latest}`,7000);}catch{}
+          await analyzeTx(addr,known,fullTx,'rest');
+          restSignalsThisLoop++;
+        }
+      }catch{}
+      done++;
+      const pct=Math.round(done/targets.length*100);
+      document.getElementById('progress-fill').style.width=pct+'%';
+      document.getElementById('progress-label').textContent=`Tur #${restLoopCount}: ${done}/${targets.length} · ${restSignalsThisLoop} sinyal`;
+      if(done%5===0)renderStatusBar();
+      await sleep(REST_RATE_MS);
+    }
+
+    document.getElementById('progress-fill').style.width='0%';
+    renderStatusBar();
+
+    // Tur bitti — sinyal bulunamadıysa modal göster
+    if(restSignalsThisLoop===0 && signalLog.length===0){
+      await askRescan(targets.length,restLoopCount);
+    } else {
+      document.getElementById('progress-label').textContent=`Tur #${restLoopCount} tamam · ${restSignalsThisLoop} sinyal · yenileniyor…`;
+      await sleep(5000);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════
+//  YENİDEN TARA MODALI
+// ═══════════════════════════════════════════
+let rescanResolve=null;
+
+function askRescan(scannedCount,loopNum){
+  return new Promise(resolve=>{
+    rescanResolve=resolve;
+    document.getElementById('rescan-desc').innerHTML=
+      `Tur #${loopNum} tamamlandı. <b>${scannedCount}</b> adres tarandı.<br><br>`+
+      `0.5 BTC üstü veya altında herhangi bir transfer tespit edilmedi.<br><br>`+
+      `Yeniden tarama başlatmak ister misin?`;
+    document.getElementById('rescan-modal').classList.add('show');
+  });
+}
+
+function confirmRescan(yes){
+  document.getElementById('rescan-modal').classList.remove('show');
+  if(rescanResolve) rescanResolve(yes);
+  rescanResolve=null;
+  if(yes){
+    toast('Yeniden tarama başlatıldı 🔄','ok');
+    document.getElementById('progress-label').textContent='Yeniden tarama başlıyor…';
+  } else {
+    toast('Tarama durduruldu. Yeni hareket olduğunda WS bildirecek.','warn');
+    document.getElementById('progress-label').textContent='REST durduruldu · WS aktif izlemede';
+    document.getElementById('s-sub').textContent='WS izlemede';
+    // REST döngüsünü durdurma — sadece uzun süre beklet
+    // WS devam ettiği için anlık hareketler yine yakalanır
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -697,7 +767,7 @@ async function analyzeTx(watchAddr,known,tx,source){
     else if(v.scriptpubkey_address)cAddrs.push(v.scriptpubkey_address);
   });
   const netBtc=(recv-spent)/1e8;
-  if(Math.abs(netBtc)<0.5)return;
+  if(Math.abs(netBtc)<0.5)return; // 0.5 BTC altı filtrele
 
   const cEx=cAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
   const cEnt=cAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
@@ -752,7 +822,7 @@ function renderLog(){
       <div class="log-badge lb-${e.signalType}">${e.badge}</div>
       <div class="log-mid">
         <div class="log-name">${esc(e.entity)} <span style="font-size:9px;color:var(--muted);font-weight:400">${e.type}</span>
-          <span style="font-size:8px;color:${e.source==='⚡ws'?'#a78bfa':'var(--dim)'};font-family:monospace;margin-left:3px">${esc(e.source||'')}</span>
+          <span style="font-size:8px;color:${e.source==='⚡ws'?'#a78bfa':'#4ade8066'};font-family:monospace;margin-left:3px">${esc(e.source||'')}</span>
         </div>
         <div class="log-sum">${esc(e.summary)}</div>
         <div class="log-meta">${timeAgo(e.t)}${e.txHash?.length>10?' · <a href="https://mempool.space/tx/'+e.txHash+'" target="_blank">'+e.txHash.slice(0,10)+'…↗</a>':''}</div>
@@ -765,16 +835,15 @@ function renderLog(){
     </div>`).join('');
 }
 
-function clearLog(){signalLog=[];sBuy=0;sSell=0;
-  document.getElementById('s-buy').textContent='0';document.getElementById('s-sell').textContent='0';
-  document.getElementById('banner').style.display='none';renderLog();}
-
-function renderStatsBar(){
-  document.getElementById('stats-bar').innerHTML=Object.entries(CAT_META).map(([cat,m])=>
-    `<div class="cat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
+function clearLog(){
+  signalLog=[];sBuy=0;sSell=0;
+  document.getElementById('s-buy').textContent='0';
+  document.getElementById('s-sell').textContent='0';
+  document.getElementById('banner').style.display='none';
+  renderLog();
 }
 
-// ── ADRES SORGULA (manuel sorgu hâlâ blockstream kullanıyor — hızlı ve kararlı)
+// ── ADRES SORGULA
 function addrType(a){return a.startsWith('bc1p')?'Taproot':a.startsWith('bc1q')&&a.length>50?'SegWit Long':a.startsWith('bc1q')?'SegWit':a.startsWith('3')?'P2SH':a.startsWith('1')?'Legacy':'?';}
 function scoreLabel(s){if(s<35)return{text:'LOW',cls:'sl-low',color:'#4ade80'};if(s<55)return{text:'MED',cls:'sl-med',color:'#fcd34d'};if(s<75)return{text:'HIGH',cls:'sl-high',color:'#f87171'};return{text:'V.HIGH',cls:'sl-vhigh',color:'#fca5a5'};}
 function computeScore(addr,known){let s=20;if(addr.startsWith('bc1p'))s+=10;else if(addr.startsWith('bc1q')&&addr.length>50)s+=8;else if(addr.startsWith('bc1q'))s+=5;else if(addr.startsWith('3'))s+=15;else if(addr.startsWith('1'))s+=20;if(known){const t=known.cat;if(t==='exchange')s+=30;else if(t==='etf')s+=25;else if(t==='gov')s+=35;else if(t==='legendary')s+=40;else if(t==='miner')s+=20;else s+=15;}else s+=Math.abs(hashStr(addr))%25;return Math.min(s,99);}
@@ -852,13 +921,14 @@ async function init(){
   document.getElementById('s-total').textContent=ALL_ADDRS.length;
   document.getElementById('stats-bar').innerHTML=Object.entries(CAT_META).map(([cat,m])=>
     `<div class="cat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
+  document.getElementById('s-sub').textContent='başlıyor…';
   renderStatusBar();
   document.getElementById('q-addr').addEventListener('keydown',e=>{if(e.key==='Enter')queryAddr();});
   await fetchPrice();
   setInterval(fetchPrice,60000);
-  buildWsConnections();   // 3 WS bağlantısı → ~135 adres gerçek zamanlı
-  startRestPolling();     // blockstream.info → tek API, yavaş ama hatasız tarama
   setInterval(renderStatusBar,4000);
+  buildWsConnections();   // 5 WS → tüm adresler anlık kapsanıyor
+  restPollLoop();         // Baseline + sessiz adres taraması
 }
 init();
 </script>

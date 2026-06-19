@@ -13,28 +13,48 @@
   --safe-bottom:env(safe-area-inset-bottom,0px);
 }
 html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',sans-serif;font-size:14px;min-height:100vh;overscroll-behavior:none}
-.bar{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
-  padding:0 14px;height:52px;background:rgba(7,9,15,.98);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);
-  padding-top:env(safe-area-inset-top,0)}
+
+/* ── TOP BAR ── */
+.bar{position:sticky;top:0;z-index:50;background:rgba(7,9,15,.98);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);padding-top:env(safe-area-inset-top,0)}
+.bar-main{display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:50px}
 .logo{font-weight:800;font-size:16px;display:flex;align-items:center;gap:6px;letter-spacing:-.3px}
 .logo em{color:var(--orange);font-style:normal}
 .bar-r{display:flex;align-items:center;gap:6px}
 .price-pill{font-family:'SF Mono',monospace;font-weight:700;color:var(--orange);font-size:13px;
   background:rgba(247,147,26,.1);border:1px solid rgba(247,147,26,.25);padding:5px 10px;border-radius:20px}
-.live{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green);
-  background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.18);padding:4px 8px;border-radius:20px}
-.dot{width:5px;height:5px;border-radius:50%;background:var(--green);animation:blink 1.8s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.1}}
-.sound-btn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
-  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;
-  font-size:16px;color:var(--txt);transition:all .2s}
+
+/* Mini status row under bar */
+.bar-status{display:flex;align-items:center;gap:6px;padding:4px 14px 5px;overflow-x:auto;scrollbar-width:none}
+.bar-status::-webkit-scrollbar{display:none}
+.status-chip{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:700;
+  padding:3px 7px;border-radius:20px;border:1px solid;white-space:nowrap;flex-shrink:0}
+.chip-ok  {background:rgba(34,197,94,.08); border-color:rgba(34,197,94,.3); color:#4ade80}
+.chip-err {background:rgba(239,68,68,.08); border-color:rgba(239,68,68,.3); color:#f87171}
+.chip-slow{background:rgba(245,158,11,.08);border-color:rgba(245,158,11,.3);color:#fcd34d}
+.chip-idle{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1);color:var(--muted)}
+.chip-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.chip-dot.ok  {background:#22c55e;box-shadow:0 0 4px #22c55e}
+.chip-dot.err {background:#ef4444}
+.chip-dot.slow{background:#f59e0b}
+.chip-dot.idle{background:var(--muted)}
+.chip-ws{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.3);color:#a78bfa}
+.chip-dot.ws{background:#a78bfa;box-shadow:0 0 4px #a78bfa;animation:blink 1.8s infinite}
+.chip-dot.ws-off{background:var(--dim)}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+.sound-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;font-size:15px;color:var(--txt);transition:all .2s}
 .sound-btn.on{border-color:rgba(247,147,26,.4);background:rgba(247,147,26,.08);color:var(--orange)}
-.sound-btn.off{opacity:.45}
-.notif-btn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;
-  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;
-  font-size:15px;color:var(--txt);transition:all .2s}
+.sound-btn.off{opacity:.4}
+.notif-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;
+  border-radius:50%;border:1px solid rgba(255,255,255,.12);background:none;cursor:pointer;font-size:14px;color:var(--txt);transition:all .2s}
 .notif-btn.on{border-color:rgba(167,139,250,.4);background:rgba(167,139,250,.08);color:#a78bfa}
+
+/* ── PAGE ── */
 .page{max-width:480px;margin:0 auto;padding:10px 10px calc(24px + var(--safe-bottom))}
+
+/* Banner */
 #banner{display:none;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid}
 #banner.buy {background:rgba(34,197,94,.07); border-color:rgba(34,197,94,.3)}
 #banner.sell{background:rgba(239,68,68,.07); border-color:rgba(239,68,68,.3)}
@@ -49,18 +69,33 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .bn-amount{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;margin-bottom:5px;letter-spacing:-.5px}
 .bn-summary{font-size:12px;color:#8892aa;line-height:1.6;margin-bottom:8px}
 .bn-link{font-size:10px;color:var(--muted);font-family:monospace;text-decoration:none}
+
+/* Stats grid */
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;text-align:left}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px}
 .stat-l{font-size:9px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);margin-bottom:5px}
 .stat-v{font-size:20px;font-weight:800;font-family:'SF Mono',monospace;letter-spacing:-.5px}
 .stat-sub{font-size:10px;color:var(--muted);margin-top:2px}
-.co{color:var(--orange)}.cg{color:var(--green)}.cr{color:var(--red)}.cy{color:var(--yellow)}
-.progress-bar{height:3px;background:rgba(255,255,255,.05);margin-bottom:10px;border-radius:2px;overflow:hidden;position:relative}
-.progress-fill{height:3px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:2px;transition:width .3s;width:0%;position:relative}
+.co{color:var(--orange)}.cg{color:var(--green)}.cr{color:var(--red)}
+
+/* Category pills */
+.stats-bar{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.stats-bar::-webkit-scrollbar{display:none}
+.stat-pill{font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;
+  border:1px solid var(--border);background:var(--card);color:var(--muted)}
+.stat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
+
+/* Progress */
+.progress-bar{height:2px;background:rgba(255,255,255,.05);margin-bottom:10px;border-radius:1px;overflow:hidden}
+.progress-fill{height:2px;background:linear-gradient(90deg,var(--orange),#ffb347);border-radius:1px;transition:width .3s;width:0%}
+
+/* Sections */
 .section{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:10px}
 .sec-h{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid rgba(255,255,255,.05)}
-.sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);display:flex;align-items:center;gap:6px}
-.sec-act{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;white-space:nowrap;font-weight:600}
+.sec-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
+.sec-act{font-size:11px;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 8px;border-radius:6px;font-weight:600}
+
+/* Query box */
 .qbox{padding:12px}
 .qrow{margin-bottom:8px}
 .qrow input{width:100%;background:var(--bg);border:1px solid rgba(255,255,255,.1);color:var(--txt);
@@ -72,17 +107,17 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
   padding:11px 12px;border-radius:10px;font-size:16px;outline:none;min-width:0;-webkit-appearance:none}
 .qrow2 input:focus{border-color:var(--orange)}
 .qrow2 input::placeholder{color:var(--dim);font-size:13px}
-.qbtn{padding:11px 16px;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;letter-spacing:.2px}
+.qbtn{padding:11px 16px;border:none;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
 .qbtn-p{background:var(--orange);color:#000}
 .qbtn-s{background:none;border:1px solid rgba(255,255,255,.12);color:var(--txt)}
 #qr{display:none;border-top:1px solid var(--border);padding:14px}
 .qr-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:12px}
-.qr-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.qr-name{font-size:15px;font-weight:800}
 .qr-type{font-size:10px;color:var(--muted);margin-top:2px;font-weight:600}
 .qr-addr{font-family:monospace;font-size:9px;color:var(--muted);margin-top:3px}
 .qr-addr a{color:var(--muted);text-decoration:none}
 .qr-bal{text-align:right;flex-shrink:0}
-.qr-btc{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;color:var(--orange);letter-spacing:-.5px}
+.qr-btc{font-family:'SF Mono',monospace;font-size:22px;font-weight:800;color:var(--orange)}
 .qr-usd{font-size:11px;color:var(--muted);margin-top:1px}
 .summary-box{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:12px}
 .summary-title{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);margin-bottom:10px;font-weight:700}
@@ -105,13 +140,16 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .tx-amt{font-family:'SF Mono',monospace;font-size:12px;font-weight:700;text-align:right;white-space:nowrap;flex-shrink:0}
 .qr-actions{display:flex;gap:8px;margin-top:12px}
 .score-box{display:flex;align-items:center;gap:8px;margin:10px 0;padding:10px 12px;border-radius:10px;background:var(--bg);border:1px solid var(--border)}
-.score-num{font-family:'SF Mono',monospace;font-size:24px;font-weight:800;letter-spacing:-.5px}
+.score-num{font-family:'SF Mono',monospace;font-size:24px;font-weight:800}
 .score-label{font-size:9px;font-weight:800;padding:2px 9px;border-radius:20px}
 .sl-low  {background:rgba(34,197,94,.15); color:#4ade80;border:1px solid rgba(34,197,94,.3)}
 .sl-med  {background:rgba(245,158,11,.15);color:#fcd34d;border:1px solid rgba(245,158,11,.3)}
 .sl-high {background:rgba(239,68,68,.15); color:#f87171;border:1px solid rgba(239,68,68,.3)}
 .sl-vhigh{background:rgba(239,68,68,.3);  color:#fca5a5;border:1px solid rgba(239,68,68,.5)}
-.log-item{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer}
+
+/* Log */
+.log-item{display:flex;gap:8px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);cursor:pointer;transition:background .15s}
+.log-item:hover{background:rgba(255,255,255,.02)}
 .log-item:last-child{border-bottom:none}
 .log-badge{font-size:9px;font-weight:800;padding:3px 7px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:2px}
 .lb-buy {background:rgba(34,197,94,.14); color:#4ade80;border:1px solid rgba(34,197,94,.3)}
@@ -123,51 +161,29 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .log-meta{font-size:9px;color:var(--dim);margin-top:4px}
 .log-meta a{color:var(--dim);text-decoration:none;font-family:monospace}
 .log-right{text-align:right;flex-shrink:0}
-.log-btc{font-family:'SF Mono',monospace;font-size:13px;font-weight:700;letter-spacing:-.3px}
+.log-btc{font-family:'SF Mono',monospace;font-size:13px;font-weight:700}
 .log-usd{font-size:9px;color:var(--muted);margin-top:2px}
 .empty{text-align:center;padding:28px 16px;color:var(--dim);font-size:11px;line-height:1.8}
 .spin{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,.08);border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle}
 @keyframes sp{to{transform:rotate(360deg)}}
+
+/* Toasts */
 #toasts{position:fixed;bottom:calc(16px + var(--safe-bottom));left:50%;transform:translateX(-50%);z-index:999;
   display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:none;width:90%;max-width:380px}
 .toast{background:#161923;border:1px solid rgba(255,255,255,.1);border-radius:10px;
-  padding:10px 16px;font-size:12px;animation:tin .25s ease;pointer-events:auto;line-height:1.5;text-align:center;width:100%;font-weight:500}
+  padding:10px 16px;font-size:12px;animation:tin .25s ease;line-height:1.5;text-align:center;width:100%;font-weight:500}
 .toast.buy{border-color:rgba(34,197,94,.5);color:#4ade80;font-weight:700}
 .toast.sell{border-color:rgba(239,68,68,.6);color:#f87171;font-weight:700;background:#1a0d0d}
 .toast.warn{border-color:rgba(245,158,11,.5);color:#fcd34d;font-weight:700}
 .toast.ok{border-color:rgba(34,197,94,.25)}
 .toast.err{border-color:rgba(239,68,68,.3);color:#f87171}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.alert-banner{display:none;position:fixed;top:52px;left:0;right:0;z-index:40;
-  padding:10px 16px;text-align:center;font-size:13px;font-weight:700;letter-spacing:.2px;animation:flashin .3s ease}
+
+.alert-banner{display:none;position:fixed;top:0;left:0;right:0;z-index:40;
+  padding:10px 16px;text-align:center;font-size:13px;font-weight:700;animation:flashin .3s ease;margin-top:96px}
 .alert-banner.sell{background:rgba(239,68,68,.95);color:#fff}
 .alert-banner.buy{background:rgba(34,197,94,.9);color:#000}
 @keyframes flashin{0%{opacity:0;transform:translateY(-6px)}100%{opacity:1;transform:none}}
-.stats-bar{display:flex;gap:6px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px}
-.stat-pill{font-size:9px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;
-  border:1px solid var(--border);background:var(--card);color:var(--muted)}
-.stat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
-
-/* API Health Panel */
-.api-panel{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
-.api-panel-h{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.05);cursor:pointer}
-.api-panel-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--muted)}
-.api-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px}
-.api-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px;text-align:center}
-.api-name{font-size:9px;font-weight:700;color:var(--muted);margin-bottom:4px}
-.api-dot{width:7px;height:7px;border-radius:50%;background:var(--dim);display:inline-block;margin-bottom:3px}
-.api-dot.ok{background:var(--green)}
-.api-dot.err{background:var(--red)}
-.api-dot.slow{background:var(--yellow)}
-.api-stat{font-size:9px;color:var(--dim);font-family:monospace}
-
-/* WS panel */
-.ws-panel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:10px;border-top:1px solid rgba(255,255,255,.05)}
-.ws-card{background:var(--bg);border:1px solid rgba(255,255,255,.06);border-radius:8px;padding:7px;text-align:center}
-.ws-name{font-size:8px;font-weight:700;color:var(--muted);margin-bottom:3px}
-.ws-dot-c{width:6px;height:6px;border-radius:50%;background:var(--dim);display:inline-block;margin-bottom:2px;transition:background .3s}
-.ws-dot-c.connected{background:#a78bfa}
-.ws-count{font-size:9px;color:var(--dim);font-family:monospace}
 </style>
 </head>
 <body>
@@ -175,15 +191,17 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 <div class="alert-banner" id="alert-banner"></div>
 
 <div class="bar">
-  <div class="logo">🐋 <em>BTC</em> Watch</div>
-  <div class="bar-r">
-    <button class="notif-btn" id="notif-btn" onclick="toggleNotif()" title="Desktop bildirimi">🔔</button>
-    <button class="sound-btn on" id="sound-btn" onclick="toggleSound()" title="Ses bildirimi">🔊</button>
-    <div class="price-pill" id="price-pill">—</div>
-    <div class="live">
-      <div class="dot"></div>
-      <span id="status">Başlıyor</span>
+  <div class="bar-main">
+    <div class="logo">🐋 <em>BTC</em> Watch</div>
+    <div class="bar-r">
+      <button class="notif-btn" id="notif-btn" onclick="toggleNotif()">🔔</button>
+      <button class="sound-btn on" id="sound-btn" onclick="toggleSound()">🔊</button>
+      <div class="price-pill" id="price-pill">—</div>
     </div>
+  </div>
+  <!-- Mini status şeridi -->
+  <div class="bar-status" id="bar-status">
+    <div class="status-chip chip-idle"><div class="chip-dot idle"></div>yükleniyor…</div>
   </div>
 </div>
 
@@ -197,7 +215,7 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div class="bn-entity" id="bn-entity">—</div>
     <div class="bn-amount" id="bn-amount">—</div>
     <div class="bn-summary" id="bn-summary">—</div>
-    <a class="bn-link" id="bn-link" href="#" target="_blank">TX: —</a>
+    <a class="bn-link" id="bn-link" href="#" target="_blank"></a>
   </div>
 
   <div class="stats">
@@ -208,7 +226,7 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div class="stat">
       <div class="stat-l">🔍 İzlenen</div>
       <div class="stat-v" id="s-total" style="color:#60a5fa">—</div>
-      <div class="stat-sub" id="s-cycle-sub">döngü başlıyor</div>
+      <div class="stat-sub" id="s-cycle-sub">başlıyor…</div>
     </div>
     <div class="stat">
       <div class="stat-l">🟢 Birikim</div>
@@ -225,23 +243,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
   <div class="stats-bar" id="stats-bar"></div>
   <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
 
-  <!-- API + WS Durum Paneli -->
-  <div class="api-panel">
-    <div class="api-panel-h" onclick="toggleApiPanel()">
-      <span class="api-panel-title">⚡ API & WebSocket Durumu</span>
-      <span id="api-panel-arrow" style="font-size:10px;color:var(--muted)">▼</span>
-    </div>
-    <div id="api-panel-body">
-      <div class="api-grid" id="api-grid">
-        <!-- JS ile doldurulacak -->
-      </div>
-      <div class="ws-panel" id="ws-panel">
-        <!-- JS ile doldurulacak -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Adres Sorgula -->
   <div class="section">
     <div class="sec-h">
       <span class="sec-title">🔍 Adres Sorgula</span>
@@ -258,7 +259,6 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div id="qr"></div>
   </div>
 
-  <!-- Son Hareketler -->
   <div class="section">
     <div class="sec-h">
       <span class="sec-title">⚡ Son Hareketler</span>
@@ -274,12 +274,11 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 <div id="toasts"></div>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-//  VERİ — 130 adres, 8 kategori
-// ═══════════════════════════════════════════════════════════
-
+// ═══════════════════════════════════════════
+//  VERİ
+// ═══════════════════════════════════════════
 const RAW = {
-  exchange: [
+  exchange:[
     ["1PJiGp2yDLvUgqeBsuZVCBADArNsk6XEiw","Binance - Treasury"],
     ["34xp4vRoCGJym3xR7yCVPFHoCNxv4Twseo","Binance - Cold Wallet"],
     ["3M219KR5vEneNb47ewrPfWyb5jQ2DjxRP6","Binance - Cold Wallet 2"],
@@ -340,14 +339,14 @@ const RAW = {
     ["bc1q7uq3u829ahn22sdlpac0h0lurq3a9yfd3ew69f","Revolut - Cold Wallet"],
     ["bc1qysj2w7xsw09datsy9mt9x50jn7qjd6qde6d66qm3ce0a4y9uzdpqcavdr0","River - Cold Wallet"]
   ],
-  etf: [
+  etf:[
     ["bc1qjasf9z3h7w3jspkhtgatgpyvvzgpa2wwd2lr0eh5tx44reyn2k7sfc27a3","BlackRock IBIT - BTC ETF"],
     ["bc1q8yj0herd4r4yxszw3nkfvt53433thk0f5qst4g","BlackRock IBIT - Custody"],
     ["bc1qjh0akslml59uuczddqu0y4p3vj64hg5mc94c40","Fidelity FBTC - ETF"],
     ["3FHNBLobJnbCTFTVakh5TXmEneyf5PT61B","Fidelity FBTC - Custody"],
     ["12XqeqZRVkBDgmPLVY4ZC6Y4ruUUEug8Fx","Fidelity FBTC - Hot Wallet"]
   ],
-  gov: [
+  gov:[
     ["bc1qkmk4v2xn29yge68fq6zh7gvfdqrvpq3v3p3y0s","US Gov - Silk Road Seized"],
     ["bc1qxlth5har0qasqvattsjvgp80st2x402u5shuud","US Gov - Bitfinex Seized"],
     ["bc1q7ydrtdn8z62xhslqyqtyt38mm4e2c4h3mxjkug","US Gov - Additional Seized"],
@@ -359,7 +358,7 @@ const RAW = {
     ["1LruNZjwamWJXThX2Y8C2d47QqhAkkc5os","Çin Hükümeti - Seized"],
     ["38DN2uFMZPiHLHJigfv4kWC9JWJrNnhLcn","Çin Hükümeti - Cold"]
   ],
-  miner: [
+  miner:[
     ["bc1q2wcsxqq5xpd7k7h6k3wdz4ywms5f9x6pzqjwz2","MARA Holdings - Mining"],
     ["3Kzh9QAQgHkXDAX1RArMJdJAZU5rPZmFYo","MARA Holdings - Treasury"],
     ["19dSFkYFnQNkBpZsuF4XbPVDJGHMBCPmjz","MARA Holdings - Cold"],
@@ -373,7 +372,7 @@ const RAW = {
     ["bc1qx9t2l3pyny2spqpqlye8svce70nppwtaxwdrp4","Binance Pool - Mining 2"],
     ["1Q8QR5k32hexiMQnRgkJ6fmmjn5fMWhdv9","Binance Pool - Mining 3"]
   ],
-  fund: [
+  fund:[
     ["bc1qcpflj68s3ahy4xajez4d8v3vk28pvf7qte2jmlftvxzfke2u6mqsge3gvh","Investment Fund - Whale"],
     ["bc1qatjx2qc8vxz39m0qdz303z8et2pgmc74xz8km3","Investment Fund - Cold"],
     ["bc1q72nyp6mzxjxm02j7t85pg0pq24684zdj2wuweu","Investment Fund - Treasury"],
@@ -381,7 +380,7 @@ const RAW = {
     ["38rFtDdFpXc4y6XPbSnNd2UvveEt5Xms2E","Investment Fund - Whale 2"],
     ["3FM9vDYsN2iuMPKWjAcqgyahdwdrUxhbJ3","Investment Fund - Cold 2"]
   ],
-  company: [
+  company:[
     ["bc1q0cau4jfzqjpcsne6sq0lk6gx6vl8jk29zuy7tj","Strategy Inc. (MicroStrategy) - Main"],
     ["bc1qazcm763858nkj2dz7g20jud8mu0lgth25lnl2e","Tether/MicroStrategy - Shared"],
     ["bc1qdnf34kltjxm6p56pgeulx6vkxzuatmjndjy0cw","Strategy Inc. - Treasury"],
@@ -401,14 +400,14 @@ const RAW = {
     ["bc1p8jkwplu835wtjfuzzj3pwkzydyf98qlvvufyudutvqdlpns04h4qqqhnea","Babylon - Cold"],
     ["bc1qq2mvrp4g3ugd424dw4xv53rgsf8szkrv853jrc","Relay - Protocol"]
   ],
-  legendary: [
+  legendary:[
     ["1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa","Satoshi Nakamoto - Genesis Block"],
     ["12c6DSiU4Rq3P4ZxziKxzrL5LmMBrzjrJX","Satoshi - Additional Wallet"],
     ["1N7jWmv63mkMdsYzbNUVHbEYDQfcq1u8Yp","Mt. Gox - Cold Wallet"],
     ["1ANkDML9LtVv1E1EF7cwPFEkSv6Bpojwyt","Mt. Gox - Hot Wallet"],
     ["1FeexV6bAHb8ybZjqQMjJrcCrHGW9sb6uF","Mt. Gox Hacker"]
   ],
-  whale: [
+  whale:[
     ["bc1qd4ysezhmypwty5dnw7c8nqy5h5nxg0xqsvaefd0qn5kq32vwnwqqgv4rzr","Whale #1 - 100k+ BTC"],
     ["bc1qa5wkgaew2dkv56kfvj49j0av5nml45x9ek9hz6","Whale #2 - 50k+ BTC"],
     ["3LYJfcfHPXYJreMsASk2jkn69LWEYKzexb","Whale #3 - 40k+ BTC"],
@@ -427,236 +426,158 @@ const RAW = {
   ]
 };
 
-const CAT_META = {
-  exchange: {label:'Borsa',   color:'#60a5fa', emoji:'🏦'},
-  etf:      {label:'ETF',     color:'#a78bfa', emoji:'📊'},
-  gov:      {label:'Hükümet', color:'#f87171', emoji:'🏛'},
-  miner:    {label:'Miner',   color:'#fbbf24', emoji:'⛏'},
-  fund:     {label:'Fon',     color:'#34d399', emoji:'💼'},
-  company:  {label:'Şirket',  color:'#fb923c', emoji:'🏢'},
-  legendary:{label:'Efsane',  color:'#e879f9', emoji:'⚡'},
-  whale:    {label:'Balina',  color:'#38bdf8', emoji:'🐋'},
+const CAT_META={
+  exchange:{label:'Borsa',   color:'#60a5fa',emoji:'🏦'},
+  etf:     {label:'ETF',     color:'#a78bfa',emoji:'📊'},
+  gov:     {label:'Hükümet', color:'#f87171',emoji:'🏛'},
+  miner:   {label:'Miner',   color:'#fbbf24',emoji:'⛏'},
+  fund:    {label:'Fon',     color:'#34d399',emoji:'💼'},
+  company: {label:'Şirket',  color:'#fb923c',emoji:'🏢'},
+  legendary:{label:'Efsane',color:'#e879f9',emoji:'⚡'},
+  whale:   {label:'Balina',  color:'#38bdf8',emoji:'🐋'},
 };
 
-const EXCHANGES = new Set(RAW.exchange.map(([a])=>a.toLowerCase()));
-const KNOWN_MAP = {};
-for(const [cat, entries] of Object.entries(RAW)){
-  const meta = CAT_META[cat];
-  for(const [addr, name] of entries){
-    KNOWN_MAP[addr.toLowerCase()] = {name, type: meta.label, cat, color: meta.color};
-  }
+const EXCHANGES=new Set(RAW.exchange.map(([a])=>a.toLowerCase()));
+const KNOWN_MAP={};
+for(const [cat,entries] of Object.entries(RAW)){
+  const m=CAT_META[cat];
+  for(const [addr,name] of entries) KNOWN_MAP[addr.toLowerCase()]={name,type:m.label,cat,color:m.color};
 }
-const ALL_ADDRS = Object.keys(KNOWN_MAP);
+const ALL_ADDRS=Object.keys(KNOWN_MAP);
 
-// ═══════════════════════════════════════════════════════════
-//  ÇOK-API KONFIGÜRASYONU
-//  Her API'nin limiti ve güvenilirliği farklı.
-//  Adresler API'lere round-robin dağıtılır.
-// ═══════════════════════════════════════════════════════════
-
-const APIS = [
+// ═══════════════════════════════════════════
+//  ÇOK-API TANIMLAMALARI
+// ═══════════════════════════════════════════
+const APIS=[
   {
-    id: 'mempool',
-    name: 'mempool.space',
-    // Adres bilgisi
-    addrUrl: a => `https://mempool.space/api/address/${a}`,
-    txUrl:   a => `https://mempool.space/api/address/${a}/txs`,
-    parseAddr: d => ({
-      bal: (d.chain_stats.funded_txo_sum - d.chain_stats.spent_txo_sum) / 1e8,
-      txCount: d.chain_stats.tx_count
-    }),
-    parseTxs: txs => txs,
-    rateMs: 2000,   // istek arası bekleme (ms)
-    maxReqPerMin: 60,
-    ok: true, errors: 0, lastMs: 0, reqCount: 0
+    id:'mempool', name:'mempool',
+    addrUrl: a=>`https://mempool.space/api/address/${a}`,
+    txUrl:   a=>`https://mempool.space/api/address/${a}/txs`,
+    parseAddr: d=>({bal:(d.chain_stats.funded_txo_sum-d.chain_stats.spent_txo_sum)/1e8, txCount:d.chain_stats.tx_count}),
+    parseTxs: txs=>txs,
+    rateMs:400,
+    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   },
   {
-    id: 'blockchair',
-    name: 'Blockchair',
-    addrUrl: a => `https://api.blockchair.com/bitcoin/dashboards/address/${a}?limit=5`,
-    txUrl:   null, // addrUrl'den txs de geliyor
-    parseAddr: d => {
-      const info = d.data[Object.keys(d.data)[0]]?.address;
-      if(!info) return null;
-      return {
-        bal: info.balance / 1e8,
-        txCount: info.transaction_count
-      };
-    },
-    parseTxs: d => {
-      // Blockchair txs embedded in same response
-      const key = Object.keys(d.data)[0];
-      const txList = d.data[key]?.transactions || [];
-      // Convert to mempool-compatible minimal format
-      return txList.slice(0,5).map(txid => ({ txid, vin:[], vout:[], status:{} }));
-    },
-    rateMs: 300,
-    maxReqPerMin: 30,
-    ok: true, errors: 0, lastMs: 0, reqCount: 0
-  },
-  {
-    id: 'blockchain',
-    name: 'Blockchain.com',
-    addrUrl: a => `https://blockchain.info/rawaddr/${a}?limit=5&cors=true`,
+    id:'blockchain', name:'blockchain',
+    addrUrl: a=>`https://blockchain.info/rawaddr/${a}?limit=5&cors=true`,
     txUrl:   null,
-    parseAddr: d => ({
-      bal: d.final_balance / 1e8,
-      txCount: d.n_tx
-    }),
-    parseTxs: d => {
-      return (d.txs||[]).slice(0,5).map(tx => ({
-        txid: tx.hash,
-        vin: (tx.inputs||[]).map(i=>({
-          prevout: {
-            scriptpubkey_address: i.prev_out?.addr,
-            value: i.prev_out?.value||0
-          }
-        })),
-        vout: (tx.out||[]).map(o=>({
-          scriptpubkey_address: o.addr,
-          value: o.value||0
-        })),
-        status: { block_time: tx.time }
-      }));
-    },
-    rateMs: 250,
-    maxReqPerMin: 40,
-    ok: true, errors: 0, lastMs: 0, reqCount: 0
+    parseAddr: d=>({bal:d.final_balance/1e8, txCount:d.n_tx}),
+    parseTxs: d=>(d.txs||[]).slice(0,5).map(tx=>({
+      txid:tx.hash,
+      vin:(tx.inputs||[]).map(i=>({prevout:{scriptpubkey_address:i.prev_out?.addr,value:i.prev_out?.value||0}})),
+      vout:(tx.out||[]).map(o=>({scriptpubkey_address:o.addr,value:o.value||0})),
+      status:{block_time:tx.time}
+    })),
+    rateMs:500,
+    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   },
   {
-    id: 'bitaps',
-    name: 'Bitaps',
-    addrUrl: a => `https://api.bitaps.com/btc/v1/blockchain/address/state/${a}`,
-    txUrl:   a => `https://api.bitaps.com/btc/v1/blockchain/address/transactions/${a}`,
-    parseAddr: d => {
-      if(!d.data) return null;
-      return {
-        bal: (d.data.balance||0) / 1e8,
-        txCount: d.data.tx_count||0
-      };
+    id:'blockchair', name:'blockchair',
+    addrUrl: a=>`https://api.blockchair.com/bitcoin/dashboards/address/${a}?limit=5`,
+    txUrl:   null,
+    parseAddr: d=>{
+      const info=d.data[Object.keys(d.data)[0]]?.address;
+      return info?{bal:info.balance/1e8,txCount:info.transaction_count}:null;
     },
-    parseTxs: d => {
-      return (d.data?.list||[]).slice(0,5).map(tx => ({
-        txid: tx.tx_hash,
-        vin: [], vout: [],
-        status: { block_time: tx.time }
-      }));
+    parseTxs: d=>{
+      const key=Object.keys(d.data)[0];
+      return (d.data[key]?.transactions||[]).slice(0,5).map(txid=>({txid,vin:[],vout:[],status:{}}));
     },
-    rateMs: 400,
-    maxReqPerMin: 15,
-    ok: true, errors: 0, lastMs: 0, reqCount: 0
+    rateMs:600,
+    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   },
   {
-    id: 'chainso',
-    name: 'Chain.so',
-    addrUrl: a => `https://chain.so/api/v2/get_address_balance/BTC/${a}`,
-    txUrl:   a => `https://chain.so/api/v2/get_tx_received/BTC/${a}`,
-    parseAddr: d => {
-      if(d.status !== 'success') return null;
-      return {
-        bal: parseFloat(d.data?.confirmed_balance||0),
-        txCount: 0
-      };
-    },
-    parseTxs: d => {
-      return (d.data?.txs||[]).slice(0,5).map(tx => ({
-        txid: tx.txid,
-        vin: [], vout: [],
-        status: {}
-      }));
-    },
-    rateMs: 350,
-    maxReqPerMin: 20,
-    ok: true, errors: 0, lastMs: 0, reqCount: 0
+    id:'blockcypher', name:'blockcypher',
+    addrUrl: a=>`https://api.blockcypher.com/v1/btc/main/addrs/${a}?limit=5`,
+    txUrl:   null,
+    parseAddr: d=>({bal:(d.balance||0)/1e8, txCount:d.n_tx||0}),
+    parseTxs: d=>(d.txrefs||[]).slice(0,5).map(tx=>({
+      txid:tx.tx_hash, vin:[], vout:[],
+      status:{block_time:tx.confirmed?Math.floor(new Date(tx.confirmed).getTime()/1000):undefined}
+    })),
+    rateMs:500,
+    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   },
   {
-    id: 'blockcypher',
-    name: 'BlockCypher',
-    addrUrl: a => `https://api.blockcypher.com/v1/btc/main/addrs/${a}/balance`,
-    txUrl:   a => `https://api.blockcypher.com/v1/btc/main/addrs/${a}?limit=5`,
-    parseAddr: d => ({
-      bal: (d.balance||0) / 1e8,
-      txCount: d.n_tx||0
-    }),
-    parseTxs: d => {
-      return (d.txrefs||[]).slice(0,5).map(tx => ({
-        txid: tx.tx_hash,
-        vin: [], vout: [],
-        status: { block_time: tx.confirmed ? Math.floor(new Date(tx.confirmed).getTime()/1000) : undefined }
-      }));
-    },
-    rateMs: 200,
-    maxReqPerMin: 30,
-    ok: true, errors: 0, lastMs: 0, reqCount: 0
+    id:'bitaps', name:'bitaps',
+    addrUrl: a=>`https://api.bitaps.com/btc/v1/blockchain/address/state/${a}`,
+    txUrl:   a=>`https://api.bitaps.com/btc/v1/blockchain/address/transactions/${a}`,
+    parseAddr: d=>d.data?{bal:(d.data.balance||0)/1e8,txCount:d.data.tx_count||0}:null,
+    parseTxs: d=>(d.data?.list||[]).slice(0,5).map(tx=>({txid:tx.tx_hash,vin:[],vout:[],status:{block_time:tx.time}})),
+    rateMs:700,
+    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
+  },
+  {
+    id:'chainso', name:'chain.so',
+    addrUrl: a=>`https://chain.so/api/v2/get_address_balance/BTC/${a}`,
+    txUrl:   a=>`https://chain.so/api/v2/get_tx_received/BTC/${a}`,
+    parseAddr: d=>d.status==='success'?{bal:parseFloat(d.data?.confirmed_balance||0),txCount:0}:null,
+    parseTxs: d=>(d.data?.txs||[]).slice(0,5).map(tx=>({txid:tx.txid,vin:[],vout:[],status:{}})),
+    rateMs:700,
+    ok:true,errors:0,lastMs:0,reqCount:0,lastOkTime:0
   }
 ];
 
-// ═══════════════════════════════════════════
-//  STATE
-// ═══════════════════════════════════════════
-let signalLog=[], btcPrice=0, sBuy=0, sSell=0;
-let lastTxHashes = {};
-let soundEnabled = true, notifEnabled = false;
-let audioCtx = null;
-let apiPanelOpen = true;
+// ── STATE
+let signalLog=[],btcPrice=0,sBuy=0,sSell=0;
+let lastTxHashes={};
+let soundEnabled=true,notifEnabled=false;
+let audioCtx=null;
 
-// Adresleri API'lere böl — her API kendi grubunu tarar
-function splitAddrsToApis(addrs, apiList){
-  const groups = apiList.map(()=>[]);
-  addrs.forEach((a,i) => groups[i % apiList.length].push(a));
-  return groups;
-}
+// WS durum
+const WS_BATCH=40, WS_COUNT=3;
+const wsConns=[];
+const wsStats=Array.from({length:WS_COUNT},(_,i)=>({id:i,connected:false,trackCount:0,rxCount:0}));
 
 // ═══════════════════════════════════════════
 //  SES
 // ═══════════════════════════════════════════
 function getAudioCtx(){
-  if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
   return audioCtx;
 }
 function playAlert(type){
-  if(!soundEnabled) return;
+  if(!soundEnabled)return;
   try{
-    const ctx = getAudioCtx();
-    if(ctx.state==='suspended') ctx.resume();
+    const ctx=getAudioCtx();
+    if(ctx.state==='suspended')ctx.resume();
     if(type==='sell'){
-      [0,0.25,0.5].forEach(delay=>{
-        const osc=ctx.createOscillator(), gain=ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.type='square';
-        osc.frequency.setValueAtTime(880,ctx.currentTime+delay);
-        osc.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+delay+0.15);
-        gain.gain.setValueAtTime(0.35,ctx.currentTime+delay);
-        gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+0.15);
-        osc.start(ctx.currentTime+delay); osc.stop(ctx.currentTime+delay+0.15);
+      [0,.25,.5].forEach(d=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.type='square';
+        o.frequency.setValueAtTime(880,ctx.currentTime+d);
+        o.frequency.exponentialRampToValueAtTime(440,ctx.currentTime+d+.15);
+        g.gain.setValueAtTime(.35,ctx.currentTime+d);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.15);
+        o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.15);
       });
-    } else if(type==='buy'){
-      [[523,0],[659,0.18],[784,0.36]].forEach(([freq,delay])=>{
-        const osc=ctx.createOscillator(), gain=ctx.createGain();
-        osc.connect(gain); gain.connect(ctx.destination);
-        osc.type='sine';
-        osc.frequency.setValueAtTime(freq,ctx.currentTime+delay);
-        gain.gain.setValueAtTime(0.3,ctx.currentTime+delay);
-        gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+delay+0.2);
-        osc.start(ctx.currentTime+delay); osc.stop(ctx.currentTime+delay+0.2);
+    }else if(type==='buy'){
+      [[523,0],[659,.18],[784,.36]].forEach(([f,d])=>{
+        const o=ctx.createOscillator(),g=ctx.createGain();
+        o.connect(g);g.connect(ctx.destination);
+        o.type='sine';o.frequency.setValueAtTime(f,ctx.currentTime+d);
+        g.gain.setValueAtTime(.3,ctx.currentTime+d);
+        g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+d+.2);
+        o.start(ctx.currentTime+d);o.stop(ctx.currentTime+d+.2);
       });
-    } else {
-      const osc=ctx.createOscillator(), gain=ctx.createGain();
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.frequency.value=600;
-      gain.gain.setValueAtTime(0.2,ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.2);
-      osc.start(ctx.currentTime); osc.stop(ctx.currentTime+0.2);
+    }else{
+      const o=ctx.createOscillator(),g=ctx.createGain();
+      o.connect(g);g.connect(ctx.destination);
+      o.frequency.value=600;
+      g.gain.setValueAtTime(.2,ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.2);
+      o.start(ctx.currentTime);o.stop(ctx.currentTime+.2);
     }
   }catch(e){}
 }
 document.addEventListener('touchstart',()=>{try{getAudioCtx();}catch(e){}},{once:true});
-
 function toggleSound(){
   soundEnabled=!soundEnabled;
-  const btn=document.getElementById('sound-btn');
-  if(soundEnabled){btn.textContent='🔊';btn.className='sound-btn on';playAlert('move');toast('Ses AÇık','ok');}
-  else{btn.textContent='🔇';btn.className='sound-btn off';toast('Ses KAPALI','warn');}
+  const b=document.getElementById('sound-btn');
+  if(soundEnabled){b.textContent='🔊';b.className='sound-btn on';playAlert('move');toast('Ses AÇık','ok');}
+  else{b.textContent='🔇';b.className='sound-btn off';toast('Ses KAPALI','warn');}
 }
 
 // ═══════════════════════════════════════════
@@ -664,26 +585,22 @@ function toggleSound(){
 // ═══════════════════════════════════════════
 async function toggleNotif(){
   if(!('Notification' in window)){toast('Bildirim desteklenmiyor','err');return;}
-  if(notifEnabled){
-    notifEnabled=false;
-    document.getElementById('notif-btn').className='notif-btn';
-    toast('Bildirim KAPALI','warn'); return;
-  }
-  const perm = await Notification.requestPermission();
-  if(perm==='granted'){
+  if(notifEnabled){notifEnabled=false;document.getElementById('notif-btn').className='notif-btn';toast('Bildirim KAPALI','warn');return;}
+  const p=await Notification.requestPermission();
+  if(p==='granted'){
     notifEnabled=true;
     document.getElementById('notif-btn').className='notif-btn on';
     new Notification('BTC Whale Watch',{body:'Bildirimler aktif 🔔'});
     toast('Bildirim AÇık ✅','ok');
-  } else { toast('Bildirim izni reddedildi','err'); }
+  }else toast('İzin reddedildi','err');
 }
-function showDesktopNotif(title, body, type){
-  if(!notifEnabled || Notification.permission!=='granted') return;
-  new Notification(title, {body, tag: type+Date.now()});
+function showDesktopNotif(title,body,type){
+  if(!notifEnabled||Notification.permission!=='granted')return;
+  new Notification(title,{body,tag:type+Date.now()});
 }
-function showAlertBanner(text, type){
+function showAlertBanner(text,type){
   const b=document.getElementById('alert-banner');
-  b.textContent=text; b.className='alert-banner '+type; b.style.display='block';
+  b.textContent=text;b.className='alert-banner '+type;b.style.display='block';
   setTimeout(()=>{b.style.display='none';},6000);
 }
 
@@ -700,431 +617,245 @@ async function fetchPrice(){
 }
 
 // ═══════════════════════════════════════════
-//  WEBSOCKET — 3 paralel bağlantı × 40 adres
-//  mempool.space multi-WS: her bağlantı 40 adresi track eder
-//  Toplam: 120 adres gerçek zamanlı WS
-//  Kalan 10 adres REST'e düşer (etkilenme yok)
+//  STATUS BAR (üst chip'ler)
 // ═══════════════════════════════════════════
+function renderStatusBar(){
+  const bar=document.getElementById('bar-status');
+  if(!bar)return;
+  const chips=[];
 
-const WS_BATCH = 40;     // Her WS bağlantısı kaç adres izlesin
-const WS_COUNT = 3;      // Kaç paralel WS bağlantısı
-const wsConns = [];      // Aktif WS bağlantıları
-const wsStats = Array.from({length:WS_COUNT}, (_,i) => ({
-  id: i, connected: false, trackCount: 0, rxCount: 0
-}));
+  // WS chips
+  const wsOk=wsStats.filter(w=>w.connected).length;
+  const wsTotal=wsStats.length;
+  chips.push(`<div class="status-chip ${wsOk>0?'chip-ws':'chip-err'}">
+    <div class="chip-dot ${wsOk>0?'ws':'err'}"></div>
+    WS ${wsOk}/${wsTotal}
+  </div>`);
 
-function buildWsConnections(){
-  const addrChunks = [];
-  for(let i=0; i<WS_COUNT; i++){
-    const start = i * WS_BATCH;
-    addrChunks.push(ALL_ADDRS.slice(start, start + WS_BATCH));
+  // API chips
+  for(const api of APIS){
+    const age=api.lastOkTime?Math.floor((Date.now()-api.lastOkTime)/1000):null;
+    let cls,dotCls,label;
+    if(!api.ok||api.errors>=3){cls='chip-err';dotCls='err';label=api.name+' ✕';}
+    else if(api.reqCount===0){cls='chip-idle';dotCls='idle';label=api.name;}
+    else if(api.lastMs>2000){cls='chip-slow';dotCls='slow';label=api.name+' ~'+Math.round(api.lastMs/100)/10+'s';}
+    else{cls='chip-ok';dotCls='ok';label=api.name+(age!==null?' '+age+'s':'');}
+    chips.push(`<div class="status-chip ${cls}"><div class="chip-dot ${dotCls}"></div>${label}</div>`);
   }
-  addrChunks.forEach((chunk, idx) => {
-    if(!chunk.length) return;
-    createWsConn(chunk, idx);
-  });
+  bar.innerHTML=chips.join('');
 }
 
-function createWsConn(addrChunk, idx){
-  try{
-    const ws = new WebSocket('wss://ws.mempool.space/api/v1/ws');
-    ws.onopen = () => {
-  console.log("WS OPEN");
-  ws.send(JSON.stringify({
-    action: "want",
-    data: ["blocks", "stats"]
-  }));
-};
-    wsConns[idx] = ws;
+// ═══════════════════════════════════════════
+//  WEBSOCKET — 3 paralel × 40 adres = 120 gerçek zamanlı
+// ═══════════════════════════════════════════
+function buildWsConnections(){
+  for(let i=0;i<WS_COUNT;i++){
+    const chunk=ALL_ADDRS.slice(i*WS_BATCH,(i+1)*WS_BATCH);
+    if(chunk.length) createWsConn(chunk,i);
+  }
+}
 
-    ws.onopen = () => {
-      wsStats[idx].connected = true;
-      wsStats[idx].trackCount = addrChunk.length;
-      ws.send(JSON.stringify({'track-addresses': addrChunk}));
-      renderWsPanel();
+function createWsConn(chunk,idx){
+  try{
+    const ws=new WebSocket('wss://ws.mempool.space/api/v1/ws');
+    wsConns[idx]=ws;
+
+    ws.onopen=()=>{
+      wsStats[idx].connected=true;
+      wsStats[idx].trackCount=chunk.length;
+      ws.send(JSON.stringify({'track-addresses':chunk}));
+      renderStatusBar();
     };
 
-    ws.onmessage = async (event) => {
+    ws.onmessage=async(ev)=>{
       try{
-        const data = JSON.parse(event.data);
+        const data=JSON.parse(ev.data);
         wsStats[idx].rxCount++;
         if(data['multi-address-transactions']){
-          for(const [addr, txData] of Object.entries(data['multi-address-transactions'])){
-            const known = KNOWN_MAP[addr.toLowerCase()];
-            if(!known) continue;
-            const txs = txData.mempool || txData.confirmed || [];
+          for(const [addr,txData] of Object.entries(data['multi-address-transactions'])){
+            const known=KNOWN_MAP[addr.toLowerCase()];
+            if(!known)continue;
+            const txs=txData.mempool||txData.confirmed||[];
             for(const tx of txs){
-              if(lastTxHashes[addr] === tx.txid) continue;
-              lastTxHashes[addr] = tx.txid;
-              await analyzeTx(addr, known, tx, 'ws');
+              if(lastTxHashes[addr]===tx.txid)continue;
+              lastTxHashes[addr]=tx.txid;
+              await analyzeTx(addr,known,tx,'ws');
             }
           }
         }
-        renderWsPanel();
+        renderStatusBar();
       }catch(e){}
     };
 
-    ws.onclose = () => {
-      wsStats[idx].connected = false;
-      renderWsPanel();
-      setTimeout(() => createWsConn(addrChunk, idx), 10000);
+    ws.onclose=()=>{
+      wsStats[idx].connected=false;
+      renderStatusBar();
+      setTimeout(()=>createWsConn(chunk,idx),12000);
     };
-    ws.onerror = () => { wsStats[idx].connected=false; ws.close(); };
+    ws.onerror=()=>{wsStats[idx].connected=false;ws.close();};
   }catch(e){
-    wsStats[idx].connected = false;
-    renderWsPanel();
+    wsStats[idx].connected=false;
   }
 }
 
 // ═══════════════════════════════════════════
 //  MULTI-API REST POLL
-//  Adresler 6 API'ye eşit dağıtılır.
-//  Her API kendi grubunu paralel değil, 
-//  kendi rate limit'ine uyarak sırayla tarar.
-//  6 grup paralel çalışır → ~6x hız artışı
+//  Adresler 6 API'ye round-robin dağıtılır.
+//  Her API kendi grubunu paralel döngüde tarar.
 // ═══════════════════════════════════════════
+function splitAddrs(addrs,n){
+  const g=Array.from({length:n},()=>[]);
+  addrs.forEach((a,i)=>g[i%n].push(a));
+  return g;
+}
 
-async function fetchWithApi(api, url){
-  const start = Date.now();
-  const r = await fetch(url);
-  if(!r.ok) throw new Error(`HTTP ${r.status}`);
-  const data = await r.json();
-  api.lastMs = Date.now() - start;
-  api.errors = Math.max(0, api.errors - 1);
+async function fetchWithApi(api,url){
+  const t0=Date.now();
+  const r=await fetch(url,{signal:AbortSignal.timeout(9000)});
+  if(!r.ok)throw new Error('HTTP '+r.status);
+  const data=await r.json();
+  api.lastMs=Date.now()-t0;
+  api.lastOkTime=Date.now();
+  api.errors=Math.max(0,api.errors-1);
   api.reqCount++;
+  api.ok=true;
   return data;
 }
 
-// Bir API ile tek adres tara
-async function pollOneAddr(api, addr){
-  const known = KNOWN_MAP[addr.toLowerCase()];
-  if(!known) return;
+async function pollOneAddr(api,addr){
+  const known=KNOWN_MAP[addr.toLowerCase()];
+  if(!known)return;
   try{
-    const addrData = await fetchWithApi(api, api.addrUrl(addr));
-    const parsed = api.parseAddr(addrData);
-    if(!parsed) return;
+    const raw=await fetchWithApi(api,api.addrUrl(addr));
+    const parsed=api.parseAddr(raw);
+    if(!parsed)return;
 
-    let txs = [];
+    let txs=[];
     if(api.txUrl){
-      // Ayrı TX endpoint'i var
-      const txData = await fetchWithApi(api, api.txUrl(addr));
-      txs = api.parseTxs(txData);
-    } else {
-      // TX'ler addrUrl response içinde
-      txs = api.parseTxs(addrData);
+      const txRaw=await fetchWithApi(api,api.txUrl(addr));
+      txs=api.parseTxs(txRaw);
+    }else{
+      txs=api.parseTxs(raw);
     }
+    if(!txs.length)return;
 
-    if(!txs.length) return;
-    const latestHash = txs[0].txid;
-    const prev = lastTxHashes[addr];
-    if(!prev){
-      lastTxHashes[addr] = latestHash;
-      return; // ilk kez görüyoruz, baseline al
-    }
-    if(prev !== latestHash){
-      lastTxHashes[addr] = latestHash;
-      // mempool.space'den tam TX detayı çek (diğer API'lerde detay eksik)
+    const latest=txs[0].txid;
+    const prev=lastTxHashes[addr];
+    if(!prev){lastTxHashes[addr]=latest;return;}
+    if(prev!==latest){
+      lastTxHashes[addr]=latest;
+      let fullTx=txs[0];
       try{
-        const fullTx = await fetchFullTx(txs[0].txid);
-        await analyzeTx(addr, known, fullTx || txs[0], api.id);
-      }catch{
-        await analyzeTx(addr, known, txs[0], api.id);
-      }
+        const r2=await fetch(`https://mempool.space/api/tx/${latest}`,{signal:AbortSignal.timeout(6000)});
+        if(r2.ok)fullTx=await r2.json();
+      }catch{}
+      await analyzeTx(addr,known,fullTx,api.id);
     }
-    api.ok = true;
-catch(e){
-  console.error(api.name, e);
-  api.errors++;
-  if(api.errors > 5) api.ok = false;
-}
-
-// TX detayını mempool.space'den getir
-async function fetchFullTx(txid){
-  const r = await fetch(`https://mempool.space/api/tx/${txid}`, {signal: AbortSignal.timeout(6000)});
-  if(!r.ok) return null;
-  return r.json();
-}
-
-// Bir API için sonsuz döngü poll
-async function runApiWorker(api, addrGroup){
-  while(true){
-    const t0 = Date.now();
-    for(const addr of addrGroup){
-      await sleep(api.rateMs);
-      await pollOneAddr(api, addr);
-      renderApiGrid();
-    }
-    // Bir döngü ne kadar sürdü?
-    const elapsed = (Date.now()-t0)/1000;
-    // Min 60 saniye aralık — daha erken bitirse bekle
-    const wait = Math.max(0, 60000-(Date.now()-t0));
-    updateCycleSub(api, elapsed);
-    if(wait>0) await sleep(wait);
+  }catch(e){
+    api.errors++;
+    if(api.errors>=5)api.ok=false;
   }
 }
 
-function updateCycleSub(api, elapsed){
-  document.getElementById('s-cycle-sub').textContent =
-    `son döngü ${elapsed.toFixed(0)}s (${api.name})`;
+async function runApiWorker(api,group){
+  // İlk geçiş: baseline TX hash'leri topla (sinyal üretme)
+  for(const addr of group){
+    try{
+      const raw=await fetchWithApi(api,api.addrUrl(addr));
+      const parsed=api.parseAddr(raw);
+      if(!parsed)continue;
+      let txs=[];
+      if(api.txUrl){const r2=await fetchWithApi(api,api.txUrl(addr));txs=api.parseTxs(r2);}
+      else txs=api.parseTxs(raw);
+      if(txs.length&&!lastTxHashes[addr])lastTxHashes[addr]=txs[0].txid;
+    }catch{}
+    await sleep(api.rateMs);
+    renderStatusBar();
+  }
+  document.getElementById('s-cycle-sub').textContent=`${group.length} adres / ${api.name}`;
+
+  // Sonsuz döngü: değişim var mı?
+  while(true){
+    const t0=Date.now();
+    let done=0;
+    for(const addr of group){
+      await sleep(api.rateMs);
+      await pollOneAddr(api,addr);
+      done++;
+      const pct=Math.round(done/group.length*100);
+      document.getElementById('progress-fill').style.width=pct+'%';
+      renderStatusBar();
+    }
+    document.getElementById('progress-fill').style.width='0%';
+    document.getElementById('s-cycle-sub').textContent=`döngü ${Math.round((Date.now()-t0)/1000)}s · ${api.name}`;
+    const wait=Math.max(0,60000-(Date.now()-t0));
+    if(wait>0)await sleep(wait);
+  }
 }
 
-// Tüm API worker'larını başlat
 function startMultiApiPolling(){
-  const groups = splitAddrsToApis(ALL_ADDRS, APIS);
-  APIS.forEach((api, i) => {
-    if(groups[i].length) runApiWorker(api, groups[i]);
-  });
+  const groups=splitAddrs(ALL_ADDRS,APIS.length);
+  APIS.forEach((api,i)=>{if(groups[i].length)runApiWorker(api,groups[i]);});
 }
 
 // ═══════════════════════════════════════════
-//  TX ANALİZİ (kaynak API bilgisiyle)
+//  TX ANALİZİ
 // ═══════════════════════════════════════════
-async function analyzeTx(watchAddr, known, tx, source){
-  let recv=0, spentAmt=0;
+async function analyzeTx(watchAddr,known,tx,source){
+  let recv=0,spentAmt=0;
   const counterAddrs=[];
   (tx.vin||[]).forEach(v=>{
-    if(v.prevout?.scriptpubkey_address===watchAddr) spentAmt+=v.prevout.value;
-    else if(v.prevout?.scriptpubkey_address) counterAddrs.push(v.prevout.scriptpubkey_address);
+    if(v.prevout?.scriptpubkey_address===watchAddr)spentAmt+=v.prevout.value;
+    else if(v.prevout?.scriptpubkey_address)counterAddrs.push(v.prevout.scriptpubkey_address);
   });
   (tx.vout||[]).forEach(v=>{
-    if(v.scriptpubkey_address===watchAddr) recv+=v.value;
-    else if(v.scriptpubkey_address) counterAddrs.push(v.scriptpubkey_address);
+    if(v.scriptpubkey_address===watchAddr)recv+=v.value;
+    else if(v.scriptpubkey_address)counterAddrs.push(v.scriptpubkey_address);
   });
   const netBtc=(recv-spentAmt)/1e8;
-  const MIN_BTC = 0.5;
-  if(Math.abs(netBtc)<MIN_BTC) return;
+  if(Math.abs(netBtc)<0.5)return;
 
   const counterEx=counterAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
   const counterEnt=counterAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
-  const btcAbs=Math.abs(netBtc), usd=btcAbs*btcPrice;
-  let signalType, badge, summary;
+  const btcAbs=Math.abs(netBtc),usd=btcAbs*btcPrice;
+  let signalType,badge,summary;
 
   if(netBtc>0){
     if(counterEx){signalType='buy';badge='🟢 BİRİKİM';summary=`${known.name}, borsadan ${btcAbs.toFixed(4)} BTC çekti → soğuk cüzdan birikim sinyali.`;}
     else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'dan ${btcAbs.toFixed(4)} BTC aldı.`;}
     else{signalType='buy';badge='🟢 GİRİŞ';summary=`${known.name} cüzdanına ${btcAbs.toFixed(4)} BTC girdi.`;}
-  } else {
+  }else{
     if(counterEx){signalType='sell';badge='🔴 SATIŞ';summary=`${known.name}, borsaya ${btcAbs.toFixed(4)} BTC gönderdi! Satış hazırlığı uyarısı.`;}
     else if(counterEnt){signalType='move';badge='🟡 TRANSFER';summary=`${known.name}, ${counterEnt.name}'a ${btcAbs.toFixed(4)} BTC gönderdi.`;}
     else{signalType='move';badge='🟡 ÇIKIŞ';summary=`${known.name} cüzdanından ${btcAbs.toFixed(4)} BTC çıktı.`;}
   }
 
-  const entry={t:Date.now(),entity:known.name,type:known.type,btc:netBtc,usd,badge,signalType,summary,txHash:tx.txid,source:source||'rest'};
-  signalLog.unshift(entry); if(signalLog.length>60) signalLog.pop();
+  const entry={t:Date.now(),entity:known.name,type:known.type,btc:netBtc,usd,badge,signalType,summary,txHash:tx.txid,source};
+  signalLog.unshift(entry);if(signalLog.length>60)signalLog.pop();
   if(signalType==='sell'){sSell++;document.getElementById('s-sell').textContent=sSell;}
   else if(signalType==='buy'){sBuy++;document.getElementById('s-buy').textContent=sBuy;}
 
   playAlert(signalType);
-
   if(signalType==='sell'){
     showAlertBanner('🚨 SATIŞ: '+known.name+' — '+btcAbs.toFixed(4)+' BTC borsaya gönderildi!','sell');
     showDesktopNotif('🔴 Balina Satışı!',known.name+' → '+btcAbs.toFixed(4)+' BTC borsaya','sell');
-  } else if(signalType==='buy'){
+  }else if(signalType==='buy'){
     showAlertBanner('💚 BİRİKİM: '+known.name+' — '+btcAbs.toFixed(4)+' BTC çekildi','buy');
     showDesktopNotif('🟢 Balina Birikimi',known.name+' → '+btcAbs.toFixed(4)+' BTC çekildi','buy');
   }
-
   showBanner(entry);
   renderLog();
-  toast(badge+'\n'+known.name+' — '+btcAbs.toFixed(4)+' BTC'+(source?` [${source}]`:''), signalType==='sell'?'sell':'buy');
+  toast(badge+'\n'+known.name+' — '+btcAbs.toFixed(4)+' BTC',signalType==='sell'?'sell':'buy');
 }
 
 // ═══════════════════════════════════════════
-//  UI — API GRID & WS PANEL
-// ═══════════════════════════════════════════
-function renderApiGrid(){
-  const grid = document.getElementById('api-grid');
-  if(!grid) return;
-  grid.innerHTML = APIS.map(api=>{
-    const dotCls = !api.ok ? 'err' : api.lastMs > 2000 ? 'slow' : 'ok';
-    return `<div class="api-card">
-      <div class="api-name">${api.name}</div>
-      <div class="api-dot ${dotCls}"></div>
-      <div class="api-stat">${api.reqCount} req</div>
-      <div class="api-stat">${api.lastMs ? api.lastMs+'ms' : '—'}</div>
-      <div class="api-stat" style="color:${api.ok?'#4ade80':'#f87171'}">${api.ok?'OK':'ERR×'+api.errors}</div>
-    </div>`;
-  }).join('');
-}
-
-function renderWsPanel(){
-  const panel = document.getElementById('ws-panel');
-  if(!panel) return;
-  panel.innerHTML = wsStats.map(ws=>{
-    return `<div class="ws-card">
-      <div class="ws-name">WS #${ws.id+1}</div>
-      <div class="ws-dot-c ${ws.connected?'connected':''}"></div>
-      <div class="ws-count">${ws.trackCount} adres</div>
-      <div class="ws-count" style="color:${ws.connected?'#a78bfa':'var(--dim)'}">${ws.connected?'CANLI':'KAPALI'}</div>
-      <div class="ws-count">${ws.rxCount} msg</div>
-    </div>`;
-  }).join('');
-}
-
-function toggleApiPanel(){
-  const body = document.getElementById('api-panel-body');
-  const arrow = document.getElementById('api-panel-arrow');
-  apiPanelOpen = !apiPanelOpen;
-  body.style.display = apiPanelOpen ? '' : 'none';
-  arrow.textContent = apiPanelOpen ? '▲' : '▼';
-}
-
-// ═══════════════════════════════════════════
-//  ADRES SORGULA
-// ═══════════════════════════════════════════
-function addrType(addr){
-  if(addr.startsWith('bc1p')) return 'Taproot';
-  if(addr.startsWith('bc1q')&&addr.length>50) return 'SegWit Long';
-  if(addr.startsWith('bc1q')) return 'SegWit';
-  if(addr.startsWith('3')) return 'P2SH';
-  if(addr.startsWith('1')) return 'Legacy';
-  return '?';
-}
-function scoreLabel(s){
-  if(s<35) return{text:'LOW',cls:'sl-low',color:'#4ade80'};
-  if(s<55) return{text:'MED',cls:'sl-med',color:'#fcd34d'};
-  if(s<75) return{text:'HIGH',cls:'sl-high',color:'#f87171'};
-  return{text:'V.HIGH',cls:'sl-vhigh',color:'#fca5a5'};
-}
-function computeScore(addr, known){
-  let s=20;
-  if(addr.startsWith('bc1p')) s+=10;
-  else if(addr.startsWith('bc1q')&&addr.length>50) s+=8;
-  else if(addr.startsWith('bc1q')) s+=5;
-  else if(addr.startsWith('3')) s+=15;
-  else if(addr.startsWith('1')) s+=20;
-  if(known){
-    const t=known.cat;
-    if(t==='exchange') s+=30;
-    else if(t==='etf') s+=25;
-    else if(t==='gov') s+=35;
-    else if(t==='legendary') s+=40;
-    else if(t==='miner') s+=20;
-    else s+=15;
-  } else {
-    s += Math.abs(hashStr(addr))%25;
-  }
-  return Math.min(s,99);
-}
-function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
-
-async function queryAddr(){
-  const addr=document.getElementById('q-addr').value.trim();
-  const label=document.getElementById('q-name').value.trim();
-  if(!addr){toast('Adres boş','err');return;}
-  if(!isValidBTC(addr)){toast('Geçersiz BTC adresi','err');return;}
-  const res=document.getElementById('qr');
-  res.style.display='block';
-  res.innerHTML='<div style="padding:20px;text-align:center"><div class="spin"></div><br><span style="font-size:11px;color:var(--muted);margin-top:8px;display:block">Blockchain sorgulanıyor…</span></div>';
-  try{
-    const r1=await fetch(`https://mempool.space/api/address/${addr}`);
-    if(!r1.ok) throw new Error('mempool.space yanıt vermedi');
-    const info=await r1.json();
-    const funded=info.chain_stats.funded_txo_sum;
-    const spent=info.chain_stats.spent_txo_sum;
-    const bal=(funded-spent)/1e8;
-    const totalReceived=funded/1e8, totalSent=spent/1e8;
-    const totalTx=info.chain_stats.tx_count;
-
-    const r2=await fetch(`https://mempool.space/api/address/${addr}/txs`);
-    const txs=r2.ok?(await r2.json()).slice(0,6):[];
-
-    const known=KNOWN_MAP[addr.toLowerCase()];
-    const displayName=label||known?.name||'Bilinmeyen Adres';
-    const displayType=known?.type||'—';
-    const typeColor=known?.color||'#94a3b8';
-    const score=computeScore(addr, known);
-    const sl=scoreLabel(score);
-
-    const totalVolume=totalReceived+totalSent;
-    const roundBTC=v=>{if(v===0)return'0';if(v<1)return v.toFixed(2);if(v<10)return(Math.round(v*10)/10).toString();return Math.round(v).toLocaleString('tr-TR');};
-    const roundUSD=v=>{if(v===0)return'$0';if(v<1e6)return'$'+(v/1e3).toFixed(0)+'K';if(v<1e9)return'$'+(v/1e6).toFixed(2)+'M';return'$'+(v/1e9).toFixed(2)+'B';};
-
-    const txRows=txs.map(tx=>{
-      let recv=0,spentAmt=0;
-      (tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address===addr)spentAmt+=v.prevout.value;});
-      (tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address===addr)recv+=v.value;});
-      const net=(recv-spentAmt)/1e8, isIn=net>0;
-      const counterAddrs=[];
-      if(isIn)(tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address&&v.prevout.scriptpubkey_address!==addr)counterAddrs.push(v.prevout.scriptpubkey_address);});
-      else (tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address&&v.scriptpubkey_address!==addr)counterAddrs.push(v.scriptpubkey_address);});
-      const counterEx=counterAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
-      const counterKnown=counterAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
-      let summary;
-      if(isIn){
-        if(counterEx) summary='Borsadan çekildi → soğuk cüzdana';
-        else if(counterKnown) summary=counterKnown.name+' adresinden transfer';
-        else summary='Bilinmeyen kaynaktan giriş';
-      } else {
-        if(counterEx) summary='Borsaya gönderildi ⚠';
-        else if(counterKnown) summary=counterKnown.name+' adresine gönderildi';
-        else summary='Bilinmeyen adrese çıkış';
-      }
-      const when=tx.status?.block_time?timeAgo(tx.status.block_time*1000):'Bekliyor';
-      return`<div class="tx-item">
-        <div class="tx-dir ${isIn?'d-in':'d-out'}">${isIn?'↓ GİRDİ':'↑ ÇIKTI'}</div>
-        <div class="tx-body">
-          <div class="tx-sum">${summary}</div>
-          <div class="tx-meta">${when} · <a href="https://mempool.space/tx/${tx.txid}" target="_blank">${tx.txid.slice(0,10)}…↗</a></div>
-        </div>
-        <div class="tx-amt" style="color:${isIn?'#4ade80':'#f87171'}">${(isIn?'+':'')+net.toFixed(4)}<br><span style="font-size:8px;color:var(--orange)">BTC</span></div>
-      </div>`;
-    }).join('');
-
-    res.innerHTML=`
-      <div class="qr-top">
-        <div style="min-width:0">
-          <div class="qr-name">${esc(displayName)}</div>
-          <div class="qr-type" style="color:${typeColor}">${displayType} · ${addrType(addr)}</div>
-          <div class="qr-addr"><a href="https://mempool.space/address/${addr}" target="_blank" style="color:var(--orange)">${addr.slice(0,14)}…${addr.slice(-5)} ↗</a></div>
-        </div>
-        <div class="qr-bal">
-          <div class="qr-btc">${bal.toFixed(4)}</div>
-          <div style="font-size:8px;color:var(--orange);font-weight:700;margin-top:1px">BTC</div>
-          <div class="qr-usd">${btcPrice?'$'+fmtUSD(bal*btcPrice):''}</div>
-        </div>
-      </div>
-      <div class="score-box">
-        <div>
-          <div style="font-size:8px;color:var(--muted);margin-bottom:3px;font-weight:700">EXPOSURE SCORE</div>
-          <div class="score-num" style="color:${sl.color}">${score}</div>
-        </div>
-        <span class="score-label ${sl.cls}">${sl.text}</span>
-        <div style="flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin:0 8px">
-          <div style="height:4px;border-radius:2px;background:${sl.color};width:${score}%"></div>
-        </div>
-      </div>
-      <div class="summary-box">
-        <div class="summary-title">📊 Özet</div>
-        <div class="summary-row"><span class="summary-label">Toplam İşlem</span><div class="summary-vals"><div class="summary-btc" style="color:var(--txt)">${totalTx.toLocaleString('tr-TR')}</div></div></div>
-        <div class="summary-row"><span class="summary-label">Toplam Giriş</span><div class="summary-vals"><div class="summary-btc" style="color:#4ade80">+ ${roundBTC(totalReceived)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(totalReceived*btcPrice)}</div>`:''}</div></div>
-        <div class="summary-row"><span class="summary-label">Toplam Çıkış</span><div class="summary-vals"><div class="summary-btc" style="color:#f87171">– ${roundBTC(totalSent)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(totalSent*btcPrice)}</div>`:''}</div></div>
-        <div class="summary-row"><span class="summary-label">Toplam Hacim</span><div class="summary-vals"><div class="summary-btc" style="color:var(--orange)">${roundBTC(totalVolume)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(totalVolume*btcPrice)}</div>`:''}</div></div>
-        <div class="summary-row"><span class="summary-label">Güncel Bakiye</span><div class="summary-vals"><div class="summary-btc">${roundBTC(bal)} BTC</div>${btcPrice?`<div class="summary-usd">${roundUSD(bal*btcPrice)}</div>`:''}</div></div>
-      </div>
-      ${txs.length?`<div class="qr-tx-title">Son ${txs.length} İşlem</div>${txRows}`:'<div style="font-size:11px;color:var(--muted);padding:6px 0">İşlem bulunamadı</div>'}
-      <div class="qr-actions">
-        <button class="qbtn qbtn-s" style="flex:1" onclick="closeQR()">✕ Kapat</button>
-        <a href="https://mempool.space/address/${addr}" target="_blank" class="qbtn qbtn-s" style="text-decoration:none;text-align:center;flex:1">mempool ↗</a>
-      </div>`;
-  }catch(e){
-    res.innerHTML=`<div style="padding:16px;color:#f87171;font-size:12px">Hata: ${esc(e.message)}</div>`;
-  }
-}
-function closeQR(){
-  document.getElementById('qr').style.display='none';
-  document.getElementById('q-addr').value='';
-  document.getElementById('q-name').value='';
-}
-
-// ═══════════════════════════════════════════
-//  UI — BANNER & LOG
+//  UI
 // ═══════════════════════════════════════════
 function showBanner(e){
   const b=document.getElementById('banner');
-  b.className=e.signalType; b.style.display='block';
+  b.className=e.signalType;b.style.display='block';
   const badge=document.getElementById('bn-badge');
-  badge.textContent=e.badge; badge.className='bn-badge bb-'+e.signalType;
+  badge.textContent=e.badge;badge.className='bn-badge bb-'+e.signalType;
   document.getElementById('bn-time').textContent=timeAgo(e.t);
   const ent=document.getElementById('bn-entity');
   ent.textContent=e.entity+' · '+e.type;
@@ -1146,21 +877,21 @@ function renderLog(){
       <div class="log-badge lb-${e.signalType}">${e.badge}</div>
       <div class="log-mid">
         <div class="log-name">${esc(e.entity)} <span style="font-size:9px;color:var(--muted);font-weight:400">${e.type}</span>
-          ${e.source&&e.source!=='ws'?`<span style="font-size:8px;color:var(--dim);font-family:monospace"> [${e.source}]</span>`:''}
+          ${e.source&&e.source!=='ws'?`<span style="font-size:8px;color:var(--dim);font-family:monospace;margin-left:3px">[${e.source}]</span>`:'<span style="font-size:8px;color:#a78bfa;font-family:monospace;margin-left:3px">⚡ws</span>'}
         </div>
         <div class="log-sum">${esc(e.summary)}</div>
         <div class="log-meta">${timeAgo(e.t)}${e.txHash?.length>10?' · <a href="https://mempool.space/tx/'+e.txHash+'" target="_blank">'+e.txHash.slice(0,10)+'…↗</a>':''}</div>
       </div>
       <div class="log-right">
         <div class="log-btc" style="color:${e.signalType==='sell'?'#f87171':e.signalType==='buy'?'#4ade80':'#fcd34d'}">${(e.btc>0?'+':'')+e.btc.toFixed(4)}</div>
-        <div style="font-size:8px;color:var(--orange);font-weight:700">BTC</div>
+        <div style="font-size:8px;color:var(--orange);font-weight:700;margin-top:1px">BTC</div>
         ${e.usd?`<div class="log-usd">$${fmtUSD(e.usd)}</div>`:''}
       </div>
     </div>`).join('');
 }
 
 function clearLog(){
-  signalLog=[]; sBuy=0; sSell=0;
+  signalLog=[];sBuy=0;sSell=0;
   document.getElementById('s-buy').textContent='0';
   document.getElementById('s-sell').textContent='0';
   document.getElementById('banner').style.display='none';
@@ -1168,22 +899,129 @@ function clearLog(){
 }
 
 function renderStatsBar(){
-  const counts={};
-  for(const cat of Object.keys(CAT_META)) counts[cat]=RAW[cat].length;
   const bar=document.getElementById('stats-bar');
-  bar.innerHTML=Object.entries(CAT_META).map(([cat,meta])=>
-    `<div class="stat-pill">${meta.emoji} ${meta.label} <span>${counts[cat]}</span></div>`
-  ).join('');
+  bar.innerHTML=Object.entries(CAT_META).map(([cat,m])=>
+    `<div class="stat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
 }
 
-// ═══════════════════════════════════════════
-//  HELPERS
-// ═══════════════════════════════════════════
+// ── ADRES SORGULA
+function addrType(a){
+  if(a.startsWith('bc1p'))return'Taproot';
+  if(a.startsWith('bc1q')&&a.length>50)return'SegWit Long';
+  if(a.startsWith('bc1q'))return'SegWit';
+  if(a.startsWith('3'))return'P2SH';
+  if(a.startsWith('1'))return'Legacy';
+  return'?';
+}
+function scoreLabel(s){
+  if(s<35)return{text:'LOW',cls:'sl-low',color:'#4ade80'};
+  if(s<55)return{text:'MED',cls:'sl-med',color:'#fcd34d'};
+  if(s<75)return{text:'HIGH',cls:'sl-high',color:'#f87171'};
+  return{text:'V.HIGH',cls:'sl-vhigh',color:'#fca5a5'};
+}
+function computeScore(addr,known){
+  let s=20;
+  if(addr.startsWith('bc1p'))s+=10;
+  else if(addr.startsWith('bc1q')&&addr.length>50)s+=8;
+  else if(addr.startsWith('bc1q'))s+=5;
+  else if(addr.startsWith('3'))s+=15;
+  else if(addr.startsWith('1'))s+=20;
+  if(known){
+    const t=known.cat;
+    if(t==='exchange')s+=30;else if(t==='etf')s+=25;else if(t==='gov')s+=35;
+    else if(t==='legendary')s+=40;else if(t==='miner')s+=20;else s+=15;
+  }else s+=Math.abs(hashStr(addr))%25;
+  return Math.min(s,99);
+}
+function hashStr(s){let h=0;for(let i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0;}return Math.abs(h);}
+
+async function queryAddr(){
+  const addr=document.getElementById('q-addr').value.trim();
+  const label=document.getElementById('q-name').value.trim();
+  if(!addr){toast('Adres boş','err');return;}
+  if(!isValidBTC(addr)){toast('Geçersiz BTC adresi','err');return;}
+  const res=document.getElementById('qr');
+  res.style.display='block';
+  res.innerHTML='<div style="padding:20px;text-align:center"><div class="spin"></div><br><span style="font-size:11px;color:var(--muted);margin-top:8px;display:block">Sorgulanıyor…</span></div>';
+  try{
+    const r1=await fetch(`https://mempool.space/api/address/${addr}`);
+    if(!r1.ok)throw new Error('mempool.space yanıt vermedi');
+    const info=await r1.json();
+    const funded=info.chain_stats.funded_txo_sum,spent=info.chain_stats.spent_txo_sum;
+    const bal=(funded-spent)/1e8,totalReceived=funded/1e8,totalSent=spent/1e8;
+    const totalTx=info.chain_stats.tx_count;
+    const r2=await fetch(`https://mempool.space/api/address/${addr}/txs`);
+    const txs=r2.ok?(await r2.json()).slice(0,6):[];
+    const known=KNOWN_MAP[addr.toLowerCase()];
+    const dName=label||known?.name||'Bilinmeyen Adres';
+    const dType=known?.type||'—',tColor=known?.color||'#94a3b8';
+    const score=computeScore(addr,known),sl=scoreLabel(score);
+    const totalVol=totalReceived+totalSent;
+    const rBTC=v=>{if(v===0)return'0';if(v<1)return v.toFixed(2);if(v<10)return(Math.round(v*10)/10).toString();return Math.round(v).toLocaleString('tr-TR');};
+    const rUSD=v=>{if(v===0)return'$0';if(v<1e6)return'$'+(v/1e3).toFixed(0)+'K';if(v<1e9)return'$'+(v/1e6).toFixed(2)+'M';return'$'+(v/1e9).toFixed(2)+'B';};
+    const txRows=txs.map(tx=>{
+      let r=0,s2=0;
+      (tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address===addr)s2+=v.prevout.value;});
+      (tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address===addr)r+=v.value;});
+      const net=(r-s2)/1e8,isIn=net>0;
+      const cAddrs=[];
+      if(isIn)(tx.vin||[]).forEach(v=>{if(v.prevout?.scriptpubkey_address&&v.prevout.scriptpubkey_address!==addr)cAddrs.push(v.prevout.scriptpubkey_address);});
+      else(tx.vout||[]).forEach(v=>{if(v.scriptpubkey_address&&v.scriptpubkey_address!==addr)cAddrs.push(v.scriptpubkey_address);});
+      const cEx=cAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
+      const cKn=cAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
+      let sum2;
+      if(isIn){if(cEx)sum2='Borsadan çekildi → soğuk cüzdana';else if(cKn)sum2=cKn.name+' adresinden transfer';else sum2='Bilinmeyen kaynaktan giriş';}
+      else{if(cEx)sum2='Borsaya gönderildi ⚠';else if(cKn)sum2=cKn.name+' adresine gönderildi';else sum2='Bilinmeyen adrese çıkış';}
+      const when=tx.status?.block_time?timeAgo(tx.status.block_time*1000):'Bekliyor';
+      return`<div class="tx-item"><div class="tx-dir ${isIn?'d-in':'d-out'}">${isIn?'↓ GİRDİ':'↑ ÇIKTI'}</div>
+        <div class="tx-body"><div class="tx-sum">${sum2}</div>
+        <div class="tx-meta">${when} · <a href="https://mempool.space/tx/${tx.txid}" target="_blank">${tx.txid.slice(0,10)}…↗</a></div></div>
+        <div class="tx-amt" style="color:${isIn?'#4ade80':'#f87171'}">${(isIn?'+':'')+net.toFixed(4)}<br><span style="font-size:8px;color:var(--orange)">BTC</span></div></div>`;
+    }).join('');
+    res.innerHTML=`
+      <div class="qr-top"><div style="min-width:0">
+        <div class="qr-name">${esc(dName)}</div>
+        <div class="qr-type" style="color:${tColor}">${dType} · ${addrType(addr)}</div>
+        <div class="qr-addr"><a href="https://mempool.space/address/${addr}" target="_blank" style="color:var(--orange)">${addr.slice(0,14)}…${addr.slice(-5)} ↗</a></div>
+      </div><div class="qr-bal">
+        <div class="qr-btc">${bal.toFixed(4)}</div>
+        <div style="font-size:8px;color:var(--orange);font-weight:700;margin-top:1px">BTC</div>
+        <div class="qr-usd">${btcPrice?'$'+fmtUSD(bal*btcPrice):''}</div>
+      </div></div>
+      <div class="score-box"><div>
+        <div style="font-size:8px;color:var(--muted);margin-bottom:3px;font-weight:700">EXPOSURE SCORE</div>
+        <div class="score-num" style="color:${sl.color}">${score}</div>
+      </div><span class="score-label ${sl.cls}">${sl.text}</span>
+      <div style="flex:1;height:4px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;margin:0 8px">
+        <div style="height:4px;border-radius:2px;background:${sl.color};width:${score}%"></div>
+      </div></div>
+      <div class="summary-box"><div class="summary-title">📊 Özet</div>
+        <div class="summary-row"><span class="summary-label">Toplam İşlem</span><div class="summary-vals"><div class="summary-btc" style="color:var(--txt)">${totalTx.toLocaleString('tr-TR')}</div></div></div>
+        <div class="summary-row"><span class="summary-label">Toplam Giriş</span><div class="summary-vals"><div class="summary-btc" style="color:#4ade80">+ ${rBTC(totalReceived)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(totalReceived*btcPrice)}</div>`:''}</div></div>
+        <div class="summary-row"><span class="summary-label">Toplam Çıkış</span><div class="summary-vals"><div class="summary-btc" style="color:#f87171">– ${rBTC(totalSent)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(totalSent*btcPrice)}</div>`:''}</div></div>
+        <div class="summary-row"><span class="summary-label">Toplam Hacim</span><div class="summary-vals"><div class="summary-btc" style="color:var(--orange)">${rBTC(totalVol)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(totalVol*btcPrice)}</div>`:''}</div></div>
+        <div class="summary-row"><span class="summary-label">Güncel Bakiye</span><div class="summary-vals"><div class="summary-btc">${rBTC(bal)} BTC</div>${btcPrice?`<div class="summary-usd">${rUSD(bal*btcPrice)}</div>`:''}</div></div>
+      </div>
+      ${txs.length?`<div class="qr-tx-title">Son ${txs.length} İşlem</div>${txRows}`:'<div style="font-size:11px;color:var(--muted);padding:6px 0">İşlem bulunamadı</div>'}
+      <div class="qr-actions">
+        <button class="qbtn qbtn-s" style="flex:1" onclick="closeQR()">✕ Kapat</button>
+        <a href="https://mempool.space/address/${addr}" target="_blank" class="qbtn qbtn-s" style="text-decoration:none;text-align:center;flex:1">mempool ↗</a>
+      </div>`;
+  }catch(e){
+    res.innerHTML=`<div style="padding:16px;color:#f87171;font-size:12px">Hata: ${esc(e.message)}</div>`;
+  }
+}
+function closeQR(){
+  document.getElementById('qr').style.display='none';
+  document.getElementById('q-addr').value='';
+  document.getElementById('q-name').value='';
+}
+
+// ── HELPERS
 function fmtUSD(v){if(v>=1e9)return(v/1e9).toFixed(2)+'B';if(v>=1e6)return(v/1e6).toFixed(2)+'M';if(v>=1e3)return(v/1e3).toFixed(1)+'K';return v.toFixed(0);}
 function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return s+'sn önce';if(s<3600)return Math.floor(s/60)+'dk önce';return Math.floor(s/3600)+'sa önce';}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
-function setStatus(t){document.getElementById('status').textContent=t;}
 function isValidBTC(a){return/^(1|3)[a-zA-HJ-NP-Z0-9]{25,34}$/.test(a)||/^bc1[a-z0-9]{39,87}$/i.test(a)||a.length>=26;}
 function toast(msg,type=''){
   const t=document.createElement('div');
@@ -1197,29 +1035,16 @@ function toast(msg,type=''){
 //  INIT
 // ═══════════════════════════════════════════
 async function init(){
-  setStatus('Başlıyor…');
-  document.getElementById('s-total').textContent = ALL_ADDRS.length;
+  document.getElementById('s-total').textContent=ALL_ADDRS.length;
   renderStatsBar();
-  renderApiGrid();
-  renderWsPanel();
-
+  renderStatusBar();
   document.getElementById('q-addr').addEventListener('keydown',e=>{if(e.key==='Enter')queryAddr();});
-
   await fetchPrice();
-  setInterval(fetchPrice, 60000);
-
-  // 3 paralel WebSocket → 120 adres gerçek zamanlı
+  setInterval(fetchPrice,60000);
   buildWsConnections();
-
-  // 6 API worker paralel → 130 adres ~6x hızlı REST poll
   startMultiApiPolling();
-
-  // Her 5 saniyede UI refresh
-  setInterval(()=>{ renderApiGrid(); renderWsPanel(); }, 5000);
-
-  setStatus(`${ALL_ADDRS.length} adres · 6 API · 3 WS`);
+  setInterval(renderStatusBar,3000);
 }
-
 init();
 </script>
 </body>

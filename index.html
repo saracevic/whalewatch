@@ -71,8 +71,9 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .stat-sub{font-size:10px;color:var(--muted);margin-top:2px}
 .co{color:var(--orange)}.cg{color:var(--green)}.cr{color:var(--red)}
 
-.stats-bar{display:flex;gap:5px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
-.stats-bar::-webkit-scrollbar{display:none}
+/* Kategori pill bar */
+.cat-bar{display:flex;gap:5px;margin-bottom:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.cat-bar::-webkit-scrollbar{display:none}
 .cat-pill{font-size:9px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;
   border:1px solid var(--border);background:var(--card);color:var(--muted)}
 .cat-pill span{font-family:'SF Mono',monospace;color:var(--txt)}
@@ -179,7 +180,7 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
 .toast.err {border-color:rgba(239,68,68,.3);color:#f87171}
 @keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ── INLINE TICKER (kategori barı yerine) ── */
+/* ── INLINE TICKER ── */
 .inline-ticker-wrap{overflow:hidden;margin-bottom:8px;height:28px;display:flex;align-items:center;position:relative}
 .inline-ticker-wrap::after{content:'';position:absolute;right:0;top:0;bottom:0;width:32px;
   background:linear-gradient(to right,transparent,var(--bg));pointer-events:none;z-index:2}
@@ -249,9 +250,15 @@ html,body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkM
     <div class="stat"><div class="stat-l">🔴 Satış</div><div class="stat-v cr" id="s-sell">0</div><div class="stat-sub">sinyal</div></div>
   </div>
 
+  <!-- Kayan ticker şeridi -->
   <div class="inline-ticker-wrap">
-    <div class="ticker-track" id="ticker-track"></div>
+    <div class="ticker-track" id="ticker-track">
+      <!-- JS ile doldurulacak -->
+    </div>
   </div>
+
+  <!-- Kategori pill bar — gizli -->
+  <div class="cat-bar" id="cat-bar" style="display:none"></div>
 
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
@@ -453,26 +460,22 @@ const ALL_ADDRS=Object.keys(KNOWN_MAP);
 //  STATE
 // ═══════════════════════════════════════════
 let signalLog=[],btcPrice=0,sBuy=0,sSell=0;
-let lastTxHashes={};       // addr → last known txid (baseline)
+let lastTxHashes={};
 let soundEnabled=true,notifEnabled=false;
 let audioCtx=null;
 
-// WS: 5 bağlantı × 34 adres = 170 slot → tüm adresler kapsanıyor
 const WS_BATCH=34, WS_COUNT=5;
 const wsConns=[];
 const wsStats=Array.from({length:WS_COUNT},(_,i)=>({id:i,connected:false,trackCount:0,rxCount:0}));
 
-// REST yardımcıları
-const REST_RATE_MS=900;           // 900ms → ~110 req/dk, 429 yok
-const WS_SILENCE_THRESHOLD=3*60*1000; // 3 dakika sessizse REST tarar
-const wsLastMsg={};               // addr → timestamp (son WS mesajı)
+const REST_RATE_MS=900;
+const WS_SILENCE_THRESHOLD=3*60*1000;
+const wsLastMsg={};
 
-// Tarama durumu
 let baselineDone=false;
 let restLoopCount=0;
-let restSignalsThisLoop=0;        // her tur kaç sinyal bulundu
+let restSignalsThisLoop=0;
 
-// Proxy zinciri (CORS sorununda fallback)
 const PROXIES=[
   u=>'https://corsproxy.io/?url='+encodeURIComponent(u),
   u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),
@@ -526,13 +529,76 @@ function showAlertBanner(text,type){
 }
 
 // ═══════════════════════════════════════════
-//  FİYAT
+//  FİYAT — BTC/ETH tek seferde çekiliyor
+//  (fetchPrice + ticker birleştirildi, rate-limit sorunu giderildi)
 // ═══════════════════════════════════════════
-async function fetchPrice(){
-  try{const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd');btcPrice=(await r.json()).bitcoin.usd;}
-  catch{try{const r=await fetch('https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT');btcPrice=parseFloat((await r.json()).price);}catch{}}
-  if(btcPrice){document.getElementById('price-pill').textContent='$'+btcPrice.toLocaleString('en-US');
-    document.getElementById('s-price').textContent='$'+(btcPrice/1000).toFixed(1)+'K';}
+const tickerData={};
+
+async function fetchAllPrices(){
+  // Önce CoinGecko dene (BTC + ETH + 24s değişim)
+  let cgOk=false;
+  try{
+    const r=await fetch(
+      'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true',
+      {signal:AbortSignal.timeout(8000)}
+    );
+    if(r.ok){
+      const d=await r.json();
+      if(d.bitcoin){
+        btcPrice=d.bitcoin.usd;
+        tickerData['bitcoin']={price:d.bitcoin.usd,chg:d.bitcoin.usd_24h_change};
+      }
+      if(d.ethereum){
+        tickerData['ethereum']={price:d.ethereum.usd,chg:d.ethereum.usd_24h_change};
+      }
+      cgOk=true;
+    }
+  }catch{}
+
+  // CoinGecko başarısız → Binance fallback
+  if(!cgOk){
+    try{
+      const [br,er]=await Promise.all([
+        fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT',{signal:AbortSignal.timeout(6000)}),
+        fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT',{signal:AbortSignal.timeout(6000)}),
+      ]);
+      if(br.ok){const bd=await br.json();btcPrice=parseFloat(bd.lastPrice);tickerData['bitcoin']={price:btcPrice,chg:parseFloat(bd.priceChangePercent)};}
+      if(er.ok){const ed=await er.json();tickerData['ethereum']={price:parseFloat(ed.lastPrice),chg:parseFloat(ed.priceChangePercent)};}
+    }catch{}
+  }
+
+  // Fiyat pill güncelle
+  if(btcPrice){
+    document.getElementById('price-pill').textContent='$'+btcPrice.toLocaleString('en-US');
+    document.getElementById('s-price').textContent='$'+(btcPrice/1000).toFixed(1)+'K';
+  }
+
+  renderTicker();
+}
+
+// Yahoo Finance üzerinden NASDAQ + Altın (90sn'de bir)
+async function fetchMarketPrices(){
+  const symbols=[
+    {key:'nasdaq',sym:'%5EIXIC'},
+    {key:'gold',  sym:'GC%3DF'},
+  ];
+  for(const {key,sym} of symbols){
+    try{
+      const url=`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=2d`;
+      const proxy=`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      const r=await fetch(proxy,{signal:AbortSignal.timeout(9000)});
+      if(!r.ok)continue;
+      const d=await r.json();
+      const meta=d?.chart?.result?.[0]?.meta;
+      if(meta){
+        const price=meta.regularMarketPrice;
+        const prev=meta.chartPreviousClose||meta.previousClose;
+        const chg=prev?((price-prev)/prev*100):null;
+        tickerData[key]={price,chg};
+      }
+    }catch{}
+  }
+  renderTicker();
 }
 
 // ═══════════════════════════════════════════
@@ -549,10 +615,9 @@ function renderStatusBar(){
   }else{
     parts.push(`<div class="chip chip-ws-off"><div class="chip-dot dot-off"></div>WS bağlanıyor…</div>`);
   }
-  // REST durumu
   if(!baselineDone){
     parts.push(`<div class="chip chip-idle"><div class="chip-dot dot-idle"></div>REST baseline…</div>`);
-  } else {
+  }else{
     const silentCount=getSilentAddrs().length;
     const cls=silentCount>0?'chip-slow':'chip-ok';
     const dotCls=silentCount>0?'dot-slow':'dot-ok';
@@ -565,8 +630,7 @@ function renderStatusBar(){
 }
 
 // ═══════════════════════════════════════════
-//  WEBSOCKET — 5 paralel bağlantı
-//  5 × 34 = 170 slot, tüm ~130 adres kapsanıyor
+//  WEBSOCKET
 // ═══════════════════════════════════════════
 function buildWsConnections(){
   for(let i=0;i<WS_COUNT;i++){
@@ -592,7 +656,7 @@ function createWsConn(chunk,idx){
         if(data['multi-address-transactions']){
           for(const [addr,txData] of Object.entries(data['multi-address-transactions'])){
             const lAddr=addr.toLowerCase();
-            wsLastMsg[lAddr]=Date.now(); // WS aktif kaydı
+            wsLastMsg[lAddr]=Date.now();
             const known=KNOWN_MAP[lAddr];if(!known)continue;
             const txs=txData.mempool||txData.confirmed||[];
             for(const tx of txs){
@@ -608,7 +672,7 @@ function createWsConn(chunk,idx){
     ws.onclose=()=>{
       wsStats[idx].connected=false;
       renderStatusBar();
-      setTimeout(()=>createWsConn(chunk,idx),3000); // 3sn'de yeniden bağlan
+      setTimeout(()=>createWsConn(chunk,idx),3000);
     };
     ws.onerror=()=>{wsStats[idx].connected=false;ws.close();};
   }catch(e){
@@ -619,23 +683,19 @@ function createWsConn(chunk,idx){
 
 // ═══════════════════════════════════════════
 //  CORS-SAFE FETCH
-//  Önce direkt dene, başarısız olursa proxy zinciri
 // ═══════════════════════════════════════════
 async function fetchSafe(url,timeoutMs=9000){
-  // Sabitlenmiş proxy varsa direkt onu kullan
   if(activeProxyIdx>=0){
     const r=await fetch(PROXIES[activeProxyIdx](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
     if(!r.ok)throw new Error('HTTP '+r.status);
     USE_PROXY=true;
     return r.json();
   }
-  // Önce direkt
   try{
     const r=await fetch(url,{signal:AbortSignal.timeout(timeoutMs)});
     if(!r.ok)throw new Error('HTTP '+r.status);
     return r.json();
   }catch(directErr){
-    // Direkt başarısız → proxy zinciri dene
     for(let i=0;i<PROXIES.length;i++){
       try{
         const r=await fetch(PROXIES[i](url),{signal:AbortSignal.timeout(timeoutMs+4000)});
@@ -649,9 +709,7 @@ async function fetchSafe(url,timeoutMs=9000){
 }
 
 // ═══════════════════════════════════════════
-//  REST — Sadece WS'den sessiz adresleri tara
-//  "Sessiz" = son WS_SILENCE_THRESHOLD ms'de
-//  bu adresten WS mesajı gelmedi demek
+//  REST POLL
 // ═══════════════════════════════════════════
 function getSilentAddrs(){
   const now=Date.now();
@@ -662,7 +720,6 @@ function getSilentAddrs(){
 }
 
 async function restBaseline(){
-  // Tüm adreslerin son TX hash'ini tek seferde topla (sinyal çıkarmadan)
   const total=ALL_ADDRS.length;
   let done=0;
   document.getElementById('s-sub').textContent='baseline başlıyor…';
@@ -689,9 +746,6 @@ async function restBaseline(){
 async function restPollLoop(){
   await restBaseline();
 
-  // WS'in bağlanıp adres takibine başlaması için 3 dakika bekle.
-  // Bu sürede WS mesaj gönderdiği adresler wsLastMsg'e kaydedilir,
-  // REST döngüsü yalnızca gerçekten sessiz kalanları tarar.
   document.getElementById('s-sub').textContent='WS ısınıyor (3dk)…';
   document.getElementById('progress-label').textContent='WS bağlantıları yerleşiyor, 3 dakika bekleniyor…';
   for(let i=180;i>0;i--){
@@ -700,7 +754,7 @@ async function restPollLoop(){
     const covered=Object.keys(wsLastMsg).length;
     document.getElementById('progress-label').textContent=
       `WS ısınıyor: ${180-i}s geçti · ${wsOn}/${WS_COUNT} bağlı · ${covered} adres aktif`;
-    if(i%10===0) renderStatusBar();
+    if(i%10===0)renderStatusBar();
   }
 
   while(true){
@@ -709,10 +763,9 @@ async function restPollLoop(){
     const targets=getSilentAddrs();
 
     if(targets.length===0){
-      // Tüm adresler WS tarafından aktif izleniyor, REST'e gerek yok
       document.getElementById('progress-label').textContent=`Tur #${restLoopCount} · Tüm adresler WS aktif ✓`;
       document.getElementById('s-sub').textContent='WS tam kapsam';
-      await sleep(60000); // 1 dk bekle, sonra tekrar kontrol
+      await sleep(60000);
       continue;
     }
 
@@ -745,10 +798,9 @@ async function restPollLoop(){
     document.getElementById('progress-fill').style.width='0%';
     renderStatusBar();
 
-    // Tur bitti — sinyal bulunamadıysa modal göster
-    if(restSignalsThisLoop===0 && signalLog.length===0){
+    if(restSignalsThisLoop===0&&signalLog.length===0){
       await askRescan(targets.length,restLoopCount);
-    } else {
+    }else{
       document.getElementById('progress-label').textContent=`Tur #${restLoopCount} tamam · ${restSignalsThisLoop} sinyal · yenileniyor…`;
       await sleep(5000);
     }
@@ -768,17 +820,10 @@ function askRescan(scannedCount,loopNum){
     rescanCountdownSec=10;
     document.getElementById('rescan-modal').classList.add('show');
     _renderRescanDesc(scannedCount,loopNum,rescanCountdownSec);
-
-    // Geri sayım
     rescanCountdownTimer=setInterval(()=>{
       rescanCountdownSec--;
       _renderRescanDesc(scannedCount,loopNum,rescanCountdownSec);
-      // Geri sayım bitti → otomatik "Evet"
-      if(rescanCountdownSec<=0){
-        clearInterval(rescanCountdownTimer);
-        rescanCountdownTimer=null;
-        confirmRescan(true);
-      }
+      if(rescanCountdownSec<=0){clearInterval(rescanCountdownTimer);rescanCountdownTimer=null;confirmRescan(true);}
     },1000);
   });
 }
@@ -792,23 +837,21 @@ function _renderRescanDesc(scannedCount,loopNum,sec){
     `<div style="background:rgba(255,255,255,.06);border-radius:8px;overflow:hidden;height:4px;margin-bottom:6px">`+
     `<div style="height:4px;background:var(--orange);border-radius:8px;transition:width .9s linear;width:${pct}%"></div></div>`+
     `<span style="font-size:11px;color:var(--muted);font-family:monospace">`+
-    `${sec > 0 ? `${sec} saniye içinde otomatik yeniden tarama başlayacak…` : 'Başlatılıyor…'}</span>`;
+    `${sec>0?`${sec} saniye içinde otomatik yeniden tarama başlayacak…`:'Başlatılıyor…'}</span>`;
 }
 
 function confirmRescan(yes){
   if(rescanCountdownTimer){clearInterval(rescanCountdownTimer);rescanCountdownTimer=null;}
   document.getElementById('rescan-modal').classList.remove('show');
-  if(rescanResolve) rescanResolve(yes);
+  if(rescanResolve)rescanResolve(yes);
   rescanResolve=null;
   if(yes){
     toast('Yeniden tarama başlatıldı 🔄','ok');
     document.getElementById('progress-label').textContent='Yeniden tarama başlıyor…';
-  } else {
+  }else{
     toast('Tarama durduruldu. Yeni hareket olduğunda WS bildirecek.','warn');
     document.getElementById('progress-label').textContent='REST durduruldu · WS aktif izlemede';
     document.getElementById('s-sub').textContent='WS izlemede';
-    // REST döngüsünü durdurma — sadece uzun süre beklet
-    // WS devam ettiği için anlık hareketler yine yakalanır
   }
 }
 
@@ -827,7 +870,7 @@ async function analyzeTx(watchAddr,known,tx,source){
     else if(v.scriptpubkey_address)cAddrs.push(v.scriptpubkey_address);
   });
   const netBtc=(recv-spent)/1e8;
-  if(Math.abs(netBtc)<0.5)return; // 0.5 BTC altı filtrele
+  if(Math.abs(netBtc)<0.5)return;
 
   const cEx=cAddrs.some(a=>EXCHANGES.has(a.toLowerCase()));
   const cEnt=cAddrs.map(a=>KNOWN_MAP[a.toLowerCase()]).find(Boolean);
@@ -976,68 +1019,20 @@ function toast(msg,type=''){const t=document.createElement('div');t.className='t
 
 // ═══════════════════════════════════════════
 //  KAYAN FİYAT ŞERİDİ
-//  BTC · ETH · Nasdaq · Gold
 // ═══════════════════════════════════════════
 const TICKER_ASSETS=[
-  {id:'bitcoin',       label:'BTC',    symbol:'₿',  coingecko:'bitcoin',   isCrypto:true},
-  {id:'ethereum',      label:'ETH',    symbol:'Ξ',  coingecko:'ethereum',  isCrypto:true},
-  {id:'nasdaq',        label:'NASDAQ', symbol:'',   coingecko:null,        isCrypto:false},
-  {id:'gold',          label:'GOLD',   symbol:'',   coingecko:null,        isCrypto:false},
+  {id:'bitcoin', label:'BTC',    isCrypto:true},
+  {id:'ethereum',label:'ETH',   isCrypto:true},
+  {id:'nasdaq',  label:'NASDAQ',isCrypto:false},
+  {id:'gold',    label:'GOLD',  isCrypto:false},
 ];
 
-// Fiyat + 24s değişim deposu
-const tickerData={};
-
-async function fetchTickerCrypto(){
-  try{
-    const r=await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
-    const d=await r.json();
-    if(d.bitcoin){tickerData['bitcoin']={price:d.bitcoin.usd,chg:d.bitcoin.usd_24h_change};}
-    if(d.ethereum){tickerData['ethereum']={price:d.ethereum.usd,chg:d.ethereum.usd_24h_change};}
-  }catch{
-    // Binance fallback — sadece fiyat, değişim yok
-    try{
-      const [br,er]=await Promise.all([
-        fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=BTCUSDT'),
-        fetch('https://api.binance.com/api/v3/ticker/24hr?symbol=ETHUSDT'),
-      ]);
-      const bd=await br.json(),ed=await er.json();
-      tickerData['bitcoin']={price:parseFloat(bd.lastPrice),chg:parseFloat(bd.priceChangePercent)};
-      tickerData['ethereum']={price:parseFloat(ed.lastPrice),chg:parseFloat(ed.priceChangePercent)};
-    }catch{}
-  }
-}
-
-async function fetchTickerMarkets(){
-  // Yahoo Finance üzerinden Nasdaq (^IXIC) ve Gold (GC=F)
-  // CORS sorununu aşmak için allorigins proxy kullanılıyor
-  const symbols=[
-    {key:'nasdaq', sym:'%5EIXIC'},  // ^IXIC URL-encoded
-    {key:'gold',   sym:'GC%3DF'},   // GC=F URL-encoded
-  ];
-  for(const {key,sym} of symbols){
-    try{
-      const url=`https://query1.finance.yahoo.com/v8/finance/chart/${sym}?interval=1d&range=2d`;
-      const proxy=`https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
-      const r=await fetch(proxy,{signal:AbortSignal.timeout(8000)});
-      const d=await r.json();
-      const meta=d?.chart?.result?.[0]?.meta;
-      if(meta){
-        const price=meta.regularMarketPrice;
-        const prev=meta.chartPreviousClose||meta.previousClose;
-        const chg=prev?((price-prev)/prev*100):null;
-        tickerData[key]={price,chg};
-      }
-    }catch{}
-  }
-}
-
 function fmtTickerPrice(val,id){
-  if(val===undefined||val===null)return '—';
-  if(id==='bitcoin')return '$'+Math.round(val).toLocaleString('en-US');
-  if(id==='ethereum')return '$'+Math.round(val).toLocaleString('en-US');
-  if(id==='gold')return '$'+val.toFixed(1);
-  if(id==='nasdaq')return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+  if(val===undefined||val===null)return'—';
+  if(id==='bitcoin') return'$'+Math.round(val).toLocaleString('en-US');
+  if(id==='ethereum')return'$'+Math.round(val).toLocaleString('en-US');
+  if(id==='gold')    return'$'+val.toFixed(1);
+  if(id==='nasdaq')  return val.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',');
   return val.toFixed(2);
 }
 
@@ -1050,7 +1045,7 @@ function buildTickerHTML(){
     const chgStr=chg!=null?(up?'▲':'▼')+Math.abs(chg).toFixed(2)+'%':'—';
     const chgCls=chg!=null?(up?'ticker-up':'ticker-dn'):'';
     const dotCls=chg!=null?(up?'ticker-dot-up':'ticker-dot-dn'):'ticker-dot-na';
-    return `<div class="ticker-item">
+    return`<div class="ticker-item">
       <div class="ticker-dot ${dotCls}"></div>
       <span class="ticker-name">${a.label}</span>
       <span class="ticker-price">${price}</span>
@@ -1060,36 +1055,48 @@ function buildTickerHTML(){
 }
 
 function renderTicker(){
+  const track=document.getElementById('ticker-track');
+  if(!track)return;
+  // Sonsuz döngü: 2× kopya
   const html=buildTickerHTML();
-  // Sonsuz döngü için 2× kopya
-  document.getElementById('ticker-track').innerHTML=html+html;
-}
-
-async function tickerInit(){
-  await Promise.all([fetchTickerCrypto(),fetchTickerMarkets()]);
-  renderTicker();
-  // BTC/ETH her 30sn, piyasa verileri her 90sn güncellenir
-  setInterval(async()=>{await fetchTickerCrypto();renderTicker();},30000);
-  setInterval(async()=>{await fetchTickerMarkets();renderTicker();},90000);
+  track.innerHTML=html+html;
 }
 
 // ═══════════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════════
 async function init(){
+  // İzlenen adres sayısı
   document.getElementById('s-total').textContent=ALL_ADDRS.length;
-  document.getElementById('stats-bar').innerHTML=Object.entries(CAT_META).map(([cat,m])=>
-    `<div class="cat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
+
+  // Kategori pill bar — id="cat-bar" (HTML'de var)
+  const catBarEl=document.getElementById('cat-bar');
+  if(catBarEl){
+    catBarEl.innerHTML=Object.entries(CAT_META).map(([cat,m])=>
+      `<div class="cat-pill">${m.emoji} ${m.label} <span>${RAW[cat].length}</span></div>`).join('');
+  }
+
   document.getElementById('s-sub').textContent='başlıyor…';
   renderStatusBar();
+
+  // Keyboard enter → sorgu
   document.getElementById('q-addr').addEventListener('keydown',e=>{if(e.key==='Enter')queryAddr();});
-  await fetchPrice();
-  setInterval(fetchPrice,60000);
-  setInterval(renderStatusBar,4000);
-  tickerInit();              // Kayan fiyat şeridi
-  buildWsConnections();   // 5 WS → tüm adresler anlık kapsanıyor
-  restPollLoop();         // Baseline + sessiz adres taraması
+
+  // İlk fiyat çekimi — ticker + price pill aynı anda
+  await fetchAllPrices();
+
+  // Periyodik güncellemeler
+  setInterval(fetchAllPrices, 30000);          // BTC+ETH 30sn
+  setInterval(fetchMarketPrices, 90000);       // NASDAQ+Gold 90sn
+  setInterval(renderStatusBar, 4000);
+
+  // İlk yüklemede market fiyatlarını da çek
+  fetchMarketPrices();
+
+  buildWsConnections();
+  restPollLoop();
 }
+
 init();
 </script>
 </body>
